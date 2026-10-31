@@ -1,6 +1,6 @@
-# Phir — Environmental Recovery POC
+# Phir — Environmental Recovery Platform
 
-Phir is a hackathon proof of concept for helping recyclable household material
+Phir is an environmental resource recovery platform and proof of concept for helping recyclable household material
 reach the existing kabadiwala and recycling network.
 
 ```text
@@ -16,7 +16,7 @@ from recorded prototype data; they are not real-world deployment results.
 
 The repository contains a local Python API and a separate, stylized frontend
 with AWS API bridges. The local API can run without AWS in mock mode. The
-hosted deployment was reported by hackathon judges to return HTTP 500 from its
+hosted deployment was previously reported in external testing to return HTTP 500 from its
 data endpoints, even though its mock classify endpoint responded. Treat the
 deployed data flow as broken/unverified until the deployed artifact and API are
 smoke-tested together. The currently deployed bundle was also reported to

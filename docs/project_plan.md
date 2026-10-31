@@ -1,4 +1,4 @@
-# Environmental Hackathon Project — Current Plan
+# Environmental Resource Recovery Platform — Project Plan
 
 ## Working Concept
 

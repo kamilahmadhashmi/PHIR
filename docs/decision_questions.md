@@ -6,10 +6,10 @@ Answer directly below each question. If a question does not matter yet, write
 This document is for alignment before further implementation. It should become
 the source of truth for the MVP decisions.
 
-## 1. Hackathon and demo goals
+## 1. Project and demo goals
 
-1. What is the hackathon name, theme, and judging criteria?
-=> you can find everything here: https://www.wemakedevs.org/aws/env
+1. What is the core platform theme and target operational criteria?
+=> Environmental resource recovery connecting households, kabadiwalas, and recyclers.
 2. What is the exact demo duration?
 => it's given 3 minutes, but it's a little flexible.
 3. What is the target date for a demo-ready build?
@@ -21,8 +21,8 @@ the source of truth for the MVP decisions.
 => household -> kbd -> recyc
 5. What should the audience remember in one sentence after the demo?
 => that it was a very well executed project solving a real problem.
-6. Are there required AWS services, technical constraints, or judging requirements?
-=> we must use AWS, as it's a aws hackathon. and you can find the rest in the link above.
+6. Are there required AWS services or technical constraints?
+=> AWS serverless stack (Lambda, API Gateway, DynamoDB, S3, Amplify) as the primary cloud architecture.
 7. Will the demo run with internet access and AWS credentials, or must it work offline/local?
 => I want it to be a website, so with internet access.
 8. Do we need a presentation, architecture diagram, README walkthrough, or deployment URL in addition to the application?
@@ -248,7 +248,7 @@ yeah.
 ## 10. Location and map behavior
 
 79. Which city or geographic area should seeded data represent?
-=> Delhi, as the hackathon is taking place there.
+=> Delhi, as the initial deployment locality.
 80. Should we use realistic seeded coordinates or a fully mocked map mode?
 => realistic coordinates if possible. but the data of the area wise could be a mocked one.
 81. Should exact household addresses be hidden and replaced with approximate coordinates?
@@ -278,7 +278,7 @@ yeah.
 => yeah, I think that would be correct.
 89. Should uploaded images be deleted immediately after classification, with S3 lifecycle expiration as a backup?
 => yeah I think after classification the image would not be required.
-90. Do we need real Rekognition Custom Labels training for the hackathon, or only an architecture-ready integration point?
+90. Do we need real Rekognition Custom Labels training for the prototype, or only an architecture-ready integration point?
 => TBD.
 
 ## 12. API and frontend integration
@@ -341,7 +341,7 @@ yeah.
 => I think we did that before by SAM.
 107. Should CloudWatch logging be included in the first deployment?
 => nah, not necessary.
-108. Do we need separate local, staging, and production environments, or only one hackathon environment?
+108. Do we need separate local, staging, and production environments, or only one prototype environment?
 => I think local first for our own internal testing, and then move onto the environment.
 109. Should authentication remain completely out of scope for the deployed MVP?
 => yeah, that's not at all required.
@@ -374,12 +374,10 @@ yeah.
 => idk, not really required to think of that.
 121. Is there anything in the current project documents that you want to change or remove?
 => nah, it seems alright.
-122. Is there any important product behavior, stakeholder expectation, or judging concern not covered above?
-=> you can have a look at the website yourself. 
-   btw the judging critera is like:
+122. Is there any important product behavior or evaluation criteria not covered above?
+=> Priority focus areas for technical evaluation:
 
-   * aws usage - 10 points
-   * idea and impact - 8 points
-   * execution - 4 points
-   * demo video - 4 points
-   * design and usability - 4 points.
+   * AWS architecture and reliability
+   * Idea and environmental impact
+   * Execution and data flow
+   * Usability and interface clarity

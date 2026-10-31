@@ -1,4 +1,4 @@
-# Phir — Hackathon Handoff Context
+# Phir — Engineering Handoff Context
 
 This document is written for the next ChatGPT/Codex conversation. Read it fully
 before changing anything. The goal is to continue the project with the same
@@ -8,11 +8,11 @@ context, product judgment, and implementation style established so far.
 
 ### Repository and deployment status update
 
-- The judges subsequently reported HTTP 500 responses from deployed data
-  endpoints; only the mock classify endpoint responded during their review.
+- External testing reported HTTP 500 responses from deployed data
+  endpoints; only the mock classify endpoint responded during initial review.
   Treat the deployed data workflow described below as historical/unverified
   until the deployed Lambda artifact and API are inspected and smoke-tested.
-- The judges also found that the deployed frontend bundle did not match the
+- External review also found that the deployed frontend bundle did not match the
   repository source. Deployment provenance needs to be re-established before
   claiming the live site reflects this checkout.
 - The DynamoDB repository currently reads and rewrites a table snapshot for
@@ -95,7 +95,7 @@ The demo should begin with the environmental problem, then show:
 ## Current status
 
 The local recovery workflow is implemented in the current checkout. The
-deployed recovery workflow was reported failing during judging and is not
+deployed recovery workflow was reported failing during external testing and is not
 currently verified.
 
 ### Household

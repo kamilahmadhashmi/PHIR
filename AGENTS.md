@@ -1,4 +1,4 @@
-# AGENTS.md — Environmental Hackathon Project
+# AGENTS.md — Environmental Resource Recovery Platform
 
 ## 0. Status
 
@@ -20,7 +20,7 @@ Build a focused proof-of-concept that improves the flow of recyclable household 
 
 `Household → Recovery Request → Kabadiwala → Collected Material → Recycler`
 
-The project must remain a **focused hackathon POC**, not a production waste-management platform.
+The project must remain a **focused resource recovery POC**, not a production waste-management platform.
 
 ---
 
@@ -112,7 +112,7 @@ Do not introduce additional AWS services without a real implementation requireme
 - Keep S3 objects temporary; never upload raw datasets or household images to Git.
 - Use deterministic seed data and scripts instead of repeatedly creating cloud resources.
 - Start Rekognition Custom Labels models only for evaluation/inference and stop them immediately afterward; do not leave models running unattended.
-- Use small, controlled datasets and one model version for the hackathon proof of concept.
+- Use small, controlled datasets and one model version for the proof of concept.
 - Check resource names, region, and expected cost before creating buckets, models, or other billable resources.
 - Reuse existing AWS resources when safe; avoid duplicate buckets, projects, models, and stacks.
 - Do not delete or alter existing AWS resources without explicitly confirming the exact target.
@@ -385,4 +385,4 @@ When deciding whether to add something, ask:
 
 > **Does this materially improve the recovery of household recyclable material through the existing kabadiwala system?**
 
-If the answer is no, it probably does not belong in the hackathon MVP.
+If the answer is no, it probably does not belong in the MVP.

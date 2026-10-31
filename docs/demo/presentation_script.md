@@ -1,6 +1,6 @@
 # Phir demo dialogue
 
-Continuation script for `assets/demo/Phir_Hackathon_Vox_V9.mp4` (kept locally; excluded from Git because of its size).
+Continuation script for `assets/demo/Phir_Demo_Vox_V9.mp4` (kept locally; excluded from Git because of its size).
 
 The current video is 62 seconds long and ends on the Phir landing page with the
 three role cards visible. This continuation is paced for roughly two minutes at

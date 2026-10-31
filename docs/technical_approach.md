@@ -1,4 +1,4 @@
-# Technical Plan — Environmental Hackathon Project
+# Technical Plan — Resource Recovery Platform
 
 ## 1. Technical Objective
 
@@ -75,7 +75,7 @@ Primary actions:
 - View nearby collection requests on a map
 - See material, approximate quantity and estimated value for requests
 - Accept / reject requests
-- Use a radius-based view to judge where collection opportunities are concentrated
+- Use a radius-based view to evaluate where collection opportunities are concentrated
 - Track collected material in inventory
 - View recycler requirements relevant to their inventory
 - Review basic collection/impact metrics
@@ -464,7 +464,7 @@ Amazon Location Service is used for:
 - proximity calculations where appropriate
 - drawing/displaying service-radius regions
 
-For the hackathon, realistic seeded/demo coordinates are acceptable. They should be clearly treated as demonstration data rather than claiming live municipal coverage.
+For the prototype, realistic seeded/demo coordinates are acceptable. They should be clearly treated as demonstration data rather than claiming live municipal coverage.
 
 ---
 
@@ -484,7 +484,7 @@ Full production IAM, fraud prevention, audit systems and privacy workflows are o
 
 ## 19. Demonstration Dataset / Seed Data
 
-Because this is a hackathon proof of concept, the app should include seeded data for:
+Because this is a prototype and proof of concept, the app should include seeded data for:
 - households
 - kabadiwalas
 - collection requests

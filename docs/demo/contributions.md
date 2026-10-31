@@ -7,7 +7,7 @@ the journey **Household → Collection partner → Recycler**.
 
 ## Project lead — [Your name]
 
-- Defined the problem, target users, and focused hackathon scope.
+- Defined the problem, target users, and focused project scope.
 - Chose manual material entry as the main path, with optional photo
   identification that suggests a material for the user to confirm.
 - Set privacy-conscious locality mapping, database-backed demo data, and clear

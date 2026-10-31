@@ -1,6 +1,6 @@
 # Environmental Recovery Platform
 
-A hackathon proof of concept that helps recyclable household material enter the
+A resource recovery platform and proof of concept that helps recyclable household material enter the
 existing kabadiwala recovery network and continue toward recycling companies.
 
 ## Repository structure

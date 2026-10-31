@@ -1,7 +1,7 @@
 # Phir — Project and AWS Architecture Notes
 
 This document describes the intended/reference AWS architecture and prior
-integration. It is not a live health report: the hackathon review found that
+integration. It is not a live health report: external review found that
 deployed data endpoints returned HTTP 500, and the deployed bundle did not
 match the repository source. Check the root README and `development_status.md`
 before presenting any integration as currently verified.
@@ -75,7 +75,7 @@ map. **Amazon Location Service** is the planned AWS-native extension for a
 production location layer; it is not presented as the source of exact household
 locations in this prototype.
 
-Authentication is intentionally outside the current hackathon MVP. The demo
+Authentication is intentionally outside the current MVP. The demo
 uses lightweight profiles and seeded data so the complete recovery journey can
 be shown without adding a production identity system.
 

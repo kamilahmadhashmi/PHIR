@@ -70,6 +70,14 @@ app.add_middleware(
 )
 
 
+@app.exception_handler(HTTPException)
+async def custom_http_exception_handler(request, exc: HTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.detail, "error": {"code": str(exc.status_code), "message": exc.detail}},
+    )
+
+
 # --- System & Diagnostic Endpoints ---
 @app.get("/healthz", tags=["System"])
 def health_check():
@@ -118,11 +126,12 @@ def create_demo_profile(payload: ProfileCreate):
 
 # --- Household Material Endpoints ---
 @app.get("/api/households/{household_id}/inventory", tags=["Household"])
+@app.get("/api/households/{household_id}/materials", tags=["Household"])
 def get_household_inventory(household_id: str):
     with get_db() as conn:
         repo = SqliteRecoveryRepository(conn)
         materials = repo.get_household_materials(household_id)
-        return materials
+        return {"inventory": materials, "materials": materials}
 
 
 @app.post("/api/materials", status_code=status.HTTP_201_CREATED, tags=["Household"])
@@ -148,16 +157,18 @@ def update_household_material(material_id: str, payload: MaterialUpdate):
 
 
 @app.delete("/api/materials/{material_id}", tags=["Household"])
-def delete_household_material(material_id: str, payload: MaterialDelete):
+def delete_household_material(material_id: str, payload: Optional[MaterialDelete] = None, userId: Optional[str] = None):
+    user_id = payload.userId if payload else (userId or "household_1")
     with get_db() as conn:
         repo = SqliteRecoveryRepository(conn)
         try:
-            repo.remove_material(payload.userId, material_id)
+            repo.remove_material(user_id, material_id)
             return {"ok": True}
         except ValueError as exc:
             raise HTTPException(status_code=400, detail=str(exc))
 
 
+@app.get("/api/households/{household_id}/collection-request", tags=["Household"])
 @app.get("/api/households/{household_id}/requests", tags=["Household"])
 def get_household_request(household_id: str):
     with get_db() as conn:
@@ -192,10 +203,59 @@ def get_collector_areas(collector_id: Optional[str] = None):
         repo = SqliteRecoveryRepository(conn)
         areas = repo.get_area_summaries()
         total_open = sum(a["requestCount"] for a in areas)
+        cur = conn.execute("SELECT status, COUNT(*) AS count FROM collection_requests GROUP BY status;")
+        counts = {r["status"]: r["count"] for r in cur.fetchall()}
         return {
             "areas": areas,
-            "requestSummary": {"total": total_open, "open": total_open, "inProgress": 0}
+            "requestSummary": {
+                "total": sum(counts.values()) or total_open,
+                "open": counts.get("pending", total_open),
+                "accepted": counts.get("accepted", 0),
+                "collected": counts.get("collected", 0),
+                "rejected": counts.get("rejected", 0),
+                "cancelled": counts.get("cancelled", 0),
+            },
         }
+
+
+@app.post("/api/demo/reset", tags=["Demo"])
+def reset_demo_state():
+    with get_db() as conn:
+        conn.execute("DELETE FROM bookings;")
+        conn.execute("DELETE FROM recycler_requirements;")
+        conn.execute("DELETE FROM collection_requests;")
+        conn.execute("DELETE FROM materials;")
+        conn.execute("DELETE FROM profiles;")
+        conn.execute("DELETE FROM rate_cards;")
+        conn.execute("DELETE FROM audit_events;")
+        repo = SqliteRecoveryRepository(conn)
+        repo.seed_initial_data()
+        return {"ok": True}
+
+
+@app.get("/api/demo/users", tags=["Demo"])
+def get_demo_users():
+    with get_db() as conn:
+        repo = SqliteRecoveryRepository(conn)
+        profiles = repo.list_profiles()
+        return {"users": [{"id": p["id"], "role": p["role"], "name": p["name"]} for p in profiles]}
+
+
+@app.post("/api/image-upload", tags=["Household"])
+def create_image_upload(payload: Dict[str, Any]):
+    filename = payload.get("filename", "item.jpg")
+    key = f"mock_upload_{filename}"
+    return {
+        "uploadUrl": f"/api/mock-upload/{key}",
+        "url": f"/api/mock-upload/{key}",
+        "key": key,
+        "fields": {},
+    }
+
+
+@app.put("/api/mock-upload/{key:path}", tags=["Household"])
+def mock_upload_sink(key: str):
+    return {"ok": True, "key": key}
 
 
 @app.get("/api/kabadiwalas/{collector_id}/areas/{area_id}/opportunities", tags=["Collector"])
@@ -276,9 +336,30 @@ def get_collector_metrics(collector_id: str):
 
 @app.post("/api/kabadiwalas/{collector_id}/route", tags=["Collector"])
 def calculate_route_preview(collector_id: str, payload: Dict[str, Any]):
-    stops = payload.get("stops", [])
-    preview = plan_preview(stops)
-    return {"route": preview}
+    with get_db() as conn:
+        repo = SqliteRecoveryRepository(conn)
+        profile = repo.get_profile(collector_id)
+        origin = {
+            "latitude": profile["latitude"] if profile else 28.6800,
+            "longitude": profile["longitude"] if profile else 77.1500,
+        }
+        raw_stops = payload.get("stops")
+        if raw_stops:
+            stops = raw_stops
+        else:
+            req_ids = set(payload.get("requestIds", []))
+            area_id = payload.get("areaId", "")
+            opportunities = repo.get_area_opportunities(area_id)
+            matched = [o for o in opportunities if o["requestId"] in req_ids] if req_ids else opportunities
+            stops = [
+                {
+                    "requestId": o["requestId"],
+                    "latitude": o.get("approximateLatitude") or origin["latitude"],
+                    "longitude": o.get("approximateLongitude") or origin["longitude"],
+                }
+                for o in matched
+            ]
+        return plan_preview(origin, stops)
 
 
 # --- Recycler Marketplace Endpoints ---
@@ -346,7 +427,7 @@ def get_recycler_metrics(recycler_id: str):
 # --- Vision / Classification Endpoint ---
 @app.post("/api/classify-image", tags=["Vision"])
 def classify_image(payload: Dict[str, Any]):
-    filename = str(payload.get("filename", "")).lower()
+    filename = str(payload.get("filename") or payload.get("s3Key") or "").lower()
     materials = ["pet", "cardboard", "paper", "aluminium", "glass"]
     detected = next((m for m in materials if m in filename or (m == "pet" and "plastic" in filename)), None)
     if not detected:

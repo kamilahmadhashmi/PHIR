@@ -32,7 +32,7 @@ class SqliteRecoveryRepository:
         self.conn = db_conn
 
     def seed_initial_data(self) -> None:
-        """Seed initial profiles, rate cards, and baseline inventory if empty."""
+        """Seed comprehensive initial profiles, rate cards, materials, requests and requirements."""
         cur = self.conn.execute("SELECT COUNT(*) AS count FROM profiles;")
         if cur.fetchone()["count"] > 0:
             return  # Already seeded
@@ -40,81 +40,98 @@ class SqliteRecoveryRepository:
         now = _now()
         rate_engine.seed_default_rates(self.conn)
 
-        # 1. Households
-        household_names = [
-            "Asha Verma", "Bharat Singh", "Chitra Rao", "Deepak Sharma", "Esha Mehta", "Farhan Khan",
-            "Gauri Nair", "Harish Gupta", "Ishita Jain", "Jatin Kapoor", "Kavita Das", "Lokesh Yadav",
-            "Meena Iyer", "Nikhil Batra", "Pooja Shah", "Ravi Menon", "Sara Thomas", "Tarun Bose",
-            "Uma Sethi", "Vikram Joshi", "Wafa Ali", "Yash Malhotra", "Zoya Sen", "Anil Roy"
-        ]
-        for index, name in enumerate(household_names, start=1):
-            area = DELHI_AREAS[(index - 1) % len(DELHI_AREAS)]
-            lat = 28.7042 if index == 1 else area.center_latitude
-            lon = 77.1024 if index == 1 else area.center_longitude
+        from .api_server import build_state
+        service, area_service = build_state(with_demo_requests=True)
+
+        for p in service.profiles.values():
+            role_val = p.role.value if hasattr(p.role, "value") else str(p.role)
+            mats = list(p.supported_materials) if hasattr(p, "supported_materials") and p.supported_materials else []
             self.conn.execute(
                 """
-                INSERT INTO profiles (id, role, name, latitude, longitude, locality, contact, is_demo, created_at)
-                VALUES (?, 'household', ?, ?, ?, ?, ?, 1, ?)
+                INSERT OR REPLACE INTO profiles (id, role, name, latitude, longitude, radius_km, supported_materials, rating, price_factor, locality, contact, is_demo, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
-                (f"household_{index}", name, lat, lon, area.name, f"household{index}@demo.in", now)
+                (
+                    p.id,
+                    role_val,
+                    p.name,
+                    p.latitude,
+                    p.longitude,
+                    getattr(p, "service_radius_km", 25.0) or 25.0,
+                    json.dumps(mats),
+                    getattr(p, "demo_rating", 4.8) or 4.8,
+                    getattr(p, "payout_index", 1.0) or 1.0,
+                    p.locality or "Delhi",
+                    p.contact or f"{p.id}@demo.in",
+                    1 if getattr(p, "is_demo", True) else 0,
+                    now,
+                )
             )
 
-        # 2. Kabadiwalas
-        kabadiwalas = [
-            ("Ramesh Recovery", "West", ["pet", "cardboard", "paper", "aluminium", "glass", "wood"]),
-            ("Farida Collection", "West", ["pet", "cardboard", "paper", "glass"]),
-            ("Suresh Kabadi Network", "Central", ["pet", "paper", "aluminium", "glass"]),
-            ("Lakshmi Materials", "South", ["pet", "cardboard", "paper", "aluminium", "wood"]),
-            ("Yamuna Circular Collectives", "North East", ["pet", "cardboard", "paper", "aluminium", "glass"]),
-            ("Green Lane Recovery", "South West", ["pet", "cardboard", "paper", "aluminium", "wood"]),
-        ]
-        for index, (name, region, materials) in enumerate(kabadiwalas, start=1):
-            area = next((a for a in DELHI_AREAS if a.name == region), DELHI_AREAS[0])
+        for m in service.materials.values():
             self.conn.execute(
                 """
-                INSERT INTO profiles (id, role, name, latitude, longitude, radius_km, supported_materials, rating, price_factor, locality, contact, is_demo, created_at)
-                VALUES (?, 'kabadiwala', ?, ?, ?, 25.0, ?, ?, ?, ?, ?, 1, ?)
+                INSERT OR REPLACE INTO materials (id, material_type, quantity_kg, estimated_value, source_id, current_holder_id, destination_id, status, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
-                (f"kabadiwala_{index}", name, area.center_latitude, area.center_longitude, json.dumps(materials), 4.8, 1.0, region, f"collector{index}@demo.in", now)
+                (
+                    m.id,
+                    m.material_type,
+                    m.quantity_kg,
+                    m.estimated_value,
+                    m.source_id,
+                    m.current_holder_id,
+                    getattr(m, "destination_id", None),
+                    m.status,
+                    getattr(m, "created_at", now) or now,
+                    getattr(m, "updated_at", now) or now,
+                )
             )
 
-        # 3. Recyclers
-        recyclers = [
-            ("GreenCycle Delhi", "Central", ["pet"]),
-            ("ReForm Plastics", "North West", ["pet"]),
-            ("Nayi Disha Paper", "West", ["paper", "cardboard"]),
-            ("MetalLoop India", "South East", ["aluminium"]),
-            ("GlassRoot Works", "South", ["glass"]),
-            ("Urban Fibre Co", "North", ["wood", "paper"]),
-        ]
-        for index, (name, region, materials) in enumerate(recyclers, start=1):
-            area = next((a for a in DELHI_AREAS if a.name == region), DELHI_AREAS[0])
+        for r in service.requests.values():
+            status_val = r.status.value if hasattr(r.status, "value") else str(r.status)
             self.conn.execute(
                 """
-                INSERT INTO profiles (id, role, name, latitude, longitude, supported_materials, locality, contact, is_demo, created_at)
-                VALUES (?, 'recycler', ?, ?, ?, ?, ?, ?, 1, ?)
+                INSERT OR REPLACE INTO collection_requests (id, household_id, assigned_kabadiwala_id, status, is_demo, latitude, longitude, material_ids, quantity_by_type, estimated_value, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
-                (f"recycler_{index}", name, area.center_latitude, area.center_longitude, json.dumps(materials), region, f"recycler{index}@demo.in", now)
+                (
+                    r.id,
+                    r.household_id,
+                    r.assigned_kabadiwala_id,
+                    status_val,
+                    1 if getattr(r, "is_demo", True) else 0,
+                    r.latitude,
+                    r.longitude,
+                    json.dumps(r.material_ids),
+                    json.dumps(r.quantity_by_type),
+                    r.estimated_value,
+                    getattr(r, "created_at", now) or now,
+                    getattr(r, "updated_at", now) or now,
+                )
             )
 
-        # 4. Seed baseline materials for household_1
-        sample_items = [
-            ("pet", 4.5),
-            ("cardboard", 6.0),
-            ("paper", 3.2),
-            ("glass", 2.5),
-        ]
-        for m_type, qty in sample_items:
-            val = rate_engine.calculate_value(m_type, qty, "Delhi", self.conn)
+        for rq in service.requirements.values():
+            status_val = rq.status.value if hasattr(rq.status, "value") else str(rq.status)
             self.conn.execute(
                 """
-                INSERT INTO materials (id, material_type, quantity_kg, estimated_value, source_id, current_holder_id, status, created_at, updated_at)
-                VALUES (?, ?, ?, ?, 'household_1', 'household_1', 'available', ?, ?)
+                INSERT OR REPLACE INTO recycler_requirements (id, recycler_id, material_type, required_quantity_kg, minimum_quantity_kg, fulfilled_quantity_kg, status, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
-                (_uid("mat"), m_type, qty, val, now, now)
+                (
+                    rq.id,
+                    rq.recycler_id,
+                    rq.material_type,
+                    rq.required_quantity_kg,
+                    rq.minimum_quantity_kg,
+                    getattr(rq, "fulfilled_quantity_kg", 0.0),
+                    status_val,
+                    getattr(rq, "created_at", now) or now,
+                    getattr(rq, "updated_at", now) or now,
+                )
             )
 
-        # 5. Seed stock for kabadiwala_1
+        # Baseline collected stock for kabadiwala_1 to support immediate recycler marketplace bookings
         collector_stock = [
             ("pet", 65.0),
             ("cardboard", 120.0),
@@ -130,15 +147,6 @@ class SqliteRecoveryRepository:
                 """,
                 (_uid("mat"), m_type, qty, val, now, now)
             )
-
-        # 6. Seed active recycler requirement
-        self.conn.execute(
-            """
-            INSERT INTO recycler_requirements (id, recycler_id, material_type, required_quantity_kg, minimum_quantity_kg, fulfilled_quantity_kg, status, created_at, updated_at)
-            VALUES (?, 'recycler_1', 'pet', 100.0, 10.0, 0.0, 'open', ?, ?)
-            """,
-            (_uid("reqmt"), now, now)
-        )
 
     # Profiles
     def get_profile(self, profile_id: str) -> Optional[Dict[str, Any]]:
@@ -765,12 +773,25 @@ class SqliteRecoveryRepository:
 
         # Landfill volume saved: ~0.0025 m3 per kg of compressed recyclable waste
         landfill_m3 = round(total_diverted_kg * 0.0025, 2)
+        cur_req = self.conn.execute(
+            "SELECT COUNT(*) AS cnt FROM collection_requests WHERE household_id = ? AND status = 'collected'",
+            (household_id,)
+        )
+        collections_completed = int(cur_req.fetchone()["cnt"] or 0)
+        total_recorded_kg = round(total_diverted_kg + pending_pickup_kg, 1)
+
         return {
             "divertedKg": round(total_diverted_kg, 1),
             "pendingPickupKg": round(pending_pickup_kg, 1),
             "totalEarningsInr": round(total_earnings_inr),
             "landfillVolumeM3": landfill_m3,
             "impactTreeFactor": round(total_diverted_kg * 0.04, 1),
+            "totalRecordedKg": total_recorded_kg,
+            "totalCollectedKg": round(total_diverted_kg, 1),
+            "estimatedValueInr": round(total_earnings_inr),
+            "collectionsCompleted": collections_completed,
+            "byMaterialType": {},
+            "downstreamDestinations": [],
         }
 
     def get_kabadiwala_metrics(self, kabadiwala_id: str) -> Dict[str, Any]:
@@ -789,11 +810,29 @@ class SqliteRecoveryRepository:
             (kabadiwala_id,)
         )
         stock_row = cur_inv.fetchone()
+        cur_trans = self.conn.execute(
+            "SELECT SUM(quantity_kg) AS qty FROM bookings WHERE kabadiwala_id = ? AND status = 'confirmed'",
+            (kabadiwala_id,)
+        )
+        transferred_kg = float(cur_trans.fetchone()["qty"] or 0)
+        stock_kg = round(float(stock_row["stock"] or 0), 1)
+        payout_inr = round(float(row["total_payout"] or 0))
+        pickups = int(row["total_pickups"] or 0)
+
         return {
-            "totalPickups": int(row["total_pickups"] or 0),
-            "totalPayoutInr": round(float(row["total_payout"] or 0)),
-            "currentStockKg": round(float(stock_row["stock"] or 0), 1),
+            "totalPickups": pickups,
+            "totalPayoutInr": payout_inr,
+            "currentStockKg": stock_kg,
             "reliabilityScore": 4.9,
+            "requestsAccepted": pickups,
+            "collectionsCompleted": pickups,
+            "totalCollectedKg": stock_kg,
+            "estimatedRevenueInr": payout_inr,
+            "byMaterialType": {},
+            "reservedForTransferKg": 0.0,
+            "transferredToRecyclersKg": round(transferred_kg, 1),
+            "demoRating": 4.8,
+            "payoutIndex": 1.0,
         }
 
     def get_recycler_metrics(self, recycler_id: str) -> Dict[str, Any]:
@@ -807,11 +846,25 @@ class SqliteRecoveryRepository:
         )
         row = cur.fetchone()
         recovered = float(row["total_recovered_kg"] or 0)
+        reqs = self.get_recycler_requirements(recycler_id)
+        cur2 = self.conn.execute(
+            "SELECT status, COUNT(*) as cnt, SUM(quantity_kg) as total_kg FROM bookings WHERE recycler_id = ? GROUP BY status",
+            (recycler_id,)
+        )
+        b_counts = {r["status"]: (r["cnt"], r["total_kg"]) for r in cur2.fetchall()}
+        confirmed_cnt, confirmed_kg = b_counts.get("confirmed", (0, 0.0))
+        reserved_cnt, reserved_kg = b_counts.get("reserved", (0, 0.0))
+        fulfilled_kg = sum(r.get("fulfilledQuantityKg", 0.0) for r in reqs)
+
         return {
             "confirmedOrders": int(row["confirmed_bookings"] or 0),
             "totalRecoveredKg": round(recovered, 1),
             "co2OffsetKg": round(recovered * 1.85, 1),
             "circularYieldPct": 94.2,
+            "requirements": reqs,
+            "fulfilledQuantityKg": round(fulfilled_kg, 2),
+            "completedBookings": int(confirmed_cnt or 0),
+            "reservedBookings": int(reserved_cnt or 0),
         }
 
     # Area Summaries & Opportunities

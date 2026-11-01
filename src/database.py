@@ -24,6 +24,8 @@ def get_db_path() -> Path:
     override = os.getenv("PHIR_DB_PATH")
     if override:
         return Path(override)
+    if os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"):
+        return Path("/tmp/phir.db")
     DEFAULT_DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     return DEFAULT_DB_PATH
 

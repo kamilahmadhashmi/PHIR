@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/kamilahmadhashmi/PHIR/actions/workflows/ci.yml/badge.svg)](https://github.com/kamilahmadhashmi/PHIR/actions)
 [![OpenAPI 3.1.0](https://img.shields.io/badge/OpenAPI-3.1.0-blue.svg)](docs/openapi.json)
+[![Languages](https://img.shields.io/badge/Languages-EN%20%7C%20%E0%A4%B9%E0%A4%BF%E0%A4%A8%E0%A5%8D%E0%A4%A6%E0%A5%80%20%7C%20%E0%AC%93%E0%AC%A1%E0%AC%BC%E0%AC%BF%E0%AC%86-blueviolet.svg)](#website-wide-multilingual-localization-en--hi--od)
 [![Zero Cost](https://img.shields.io/badge/Budget-%E2%82%B90%20%2F%20%240%20Free-brightgreen.svg)](#run-the-unified-zero-cost-application-fastapi--sqlite--full-ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -19,6 +20,7 @@ The project demonstrates a complete coordination flow across households, informa
 The repository provides a unified zero-cost architecture:
 - **Relational Backend Engine**: Async FastAPI backend backed by SQLite with Write-Ahead Logging (WAL), foreign key enforcement, and ACID transaction isolation.
 - **Interactive Folk-Art Experience**: Complete high-performance Truck-Art UI served directly from `frontend/amplify-site/` at `/`.
+- **Website-Wide Multilingual Localization**: Instant zero-reload language switching between English (EN), हिन्दी (HI), and ଓଡ଼ିଆ (OD) across every interface element, form, notification, and dynamic scrap workflow.
 - **EPR Audit Ledger & Pricing**: Dynamic Mandi scrap rates, physical weight reconciliation with contamination deductions, and immutable SHA-256 cryptographic audit logs.
 - **Enterprise Containerization**: Multi-stage slim Docker image and Docker Compose specification.
 - **CI/CD Quality Gate**: Automated GitHub Actions testing across Python 3.11, 3.12, and 3.13.
@@ -60,6 +62,19 @@ Phir includes production-ready blueprints for 100% free hosting tiers:
 - **Render.com**: Connect the repository and deploy with [`render.yaml`](render.yaml) as a free web service.
 - **Fly.io**: Launch globally using [`fly.toml`](fly.toml) (`fly launch`).
 - **Self-hosted / VPS**: Run `docker compose up -d`.
+
+## Website-Wide Multilingual Localization (EN • HI • OD)
+
+Phir features complete website-wide tri-lingual localization across the entire platform, designed to empower grassroots informal waste collectors (kabadiwalas), households, and industrial recyclers alike:
+
+- **Supported Languages**:
+  1. **English (EN)** — Default international technical baseline.
+  2. **हिन्दी (HI)** — Natural, grammatically correct Devanagari translation.
+  3. **ଓଡ଼ିଆ (OD)** — Complete native Odia script localization.
+- **Zero-Reload Reactivity**: Instant in-place text and placeholder swapping powered by `frontend/phir-i18n.js` without losing form inputs, scroll coordinates, or session state.
+- **Truck-Art Language Selector**: Compact dropdown selector in navigation bars with globe icon (`🌐`), active language badges (`EN`, `HI`, `OD`), spring physics transitions, and `localStorage` persistence (`phir_lang`).
+- **Complete End-to-End Scope**: Every single heading, button, navigation link, tab, metric card, modal dialog, Mandi rate table, physical scale reconciliation form, instant UPI link, digital EPR certificate, and dynamic toast notification is fully translated.
+- **Zero-Cost Engineering**: Operates with 100% local translation dictionaries; zero external translation APIs, third-party subscriptions, or recurring costs.
 
 ## Interactive API & OpenAPI 3.1 Specification
 

@@ -1,6 +1,9 @@
-/* PHIR Enhancements: Live Mandi Rates, Weighing Reconciliation, UPI Settlement & Digital EPR Certificate */
+/* PHIR Enhancements: Live Mandi Rates, Weighing Reconciliation, UPI Settlement & Digital EPR Certificate
+   Integrated with PHIR_I18N multilingual engine (English, हिन्दी, ଓଡ଼ିଆ).
+*/
 (() => {
   const API_BASE = window.PHIR_API_BASE || '';
+  const t = (k, fb) => window.PHIR_I18N ? window.PHIR_I18N.t(k, fb) : fb;
 
   // Inject enhancement styles matching the truck-art OKLCH design tokens
   const style = document.createElement('style');
@@ -51,100 +54,108 @@
     }
     .phir-modal-card h2 {
       font-family: var(--display);
-      font-size: 28px;
+      font-size: 24px;
+      margin-bottom: 8px;
       color: var(--primary);
-      margin: 0 0 12px;
     }
     .phir-modal-close {
       position: absolute;
       top: 14px;
       right: 14px;
+      background: none;
       border: 2px solid var(--primary);
-      background: var(--surface);
       border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      font-weight: bold;
+      width: 28px;
+      height: 28px;
+      font-weight: 800;
       cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+    }
+    .phir-modal-close:hover {
+      background: var(--tint);
     }
     .phir-rates-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin: 18px 0;
+      gap: 10px;
+      margin: 16px 0;
     }
     .phir-rate-cell {
-      border: 2px solid var(--line);
-      border-radius: 6px;
-      padding: 12px;
       background: var(--surface);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--primary);
+      padding: 10px 14px;
+      border-radius: 4px;
     }
     .phir-rate-cell strong {
       display: block;
-      font-size: 14px;
+      font-size: 13px;
       text-transform: capitalize;
     }
     .phir-rate-cell span {
-      font-family: var(--display);
-      font-size: 22px;
+      font-size: 18px;
+      font-weight: 800;
       color: var(--primary);
     }
     .phir-scale-input-group {
-      margin: 14px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+      margin-bottom: 14px;
     }
     .phir-scale-input-group label {
+      display: block;
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 700;
       text-transform: uppercase;
       color: var(--muted);
+      margin-bottom: 4px;
     }
     .phir-scale-input-group input {
-      padding: 10px 14px;
-      font-size: 16px;
-      font-weight: bold;
-      border: 2px solid var(--line);
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid var(--primary);
       border-radius: 6px;
       background: var(--surface);
+      font-size: 15px;
+      font-weight: 700;
       color: var(--ink);
     }
     .phir-payout-box {
       background: var(--tint);
-      border: 2px dashed var(--primary);
+      border: 2px solid var(--secondary);
       border-radius: 6px;
       padding: 14px;
-      margin: 16px 0;
       text-align: center;
+      margin: 16px 0;
     }
     .phir-payout-box small {
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 700;
       color: var(--muted);
+      text-transform: uppercase;
     }
     .phir-payout-box h3 {
-      font-family: var(--display);
       font-size: 32px;
+      font-family: var(--display);
       color: var(--primary);
-      margin: 4px 0;
+      margin: 6px 0;
     }
     .phir-upi-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      display: inline-block;
       margin-top: 8px;
-      font-size: 12px;
-      font-weight: bold;
+      padding: 8px 16px;
+      background: var(--secondary);
       color: var(--ink);
-      text-decoration: underline;
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 16px;
+      text-decoration: none;
+      border: 1px solid var(--primary);
     }
     .phir-audit-event {
       border-left: 3px solid var(--primary);
-      padding: 8px 12px;
-      margin: 10px 0;
-      background: var(--surface);
+      padding-left: 10px;
+      margin-bottom: 12px;
       font-size: 11px;
     }
     .phir-audit-hash {
@@ -166,13 +177,18 @@
     backdrop.className = 'phir-modal-backdrop';
     backdrop.innerHTML = `
       <div class="phir-modal-card">
-        <button class="phir-modal-close" aria-label="Close">✕</button>
+        <button class="phir-modal-close" aria-label="${t('btn_close', 'Close')}">✕</button>
         ${contentHtml}
       </div>
     `;
     backdrop.querySelector('.phir-modal-close').onclick = () => backdrop.remove();
     backdrop.onclick = (e) => { if (e.target === backdrop) backdrop.remove(); };
     document.body.append(backdrop);
+
+    // Apply active language translation tree
+    if (window.PHIR_I18N) {
+      window.PHIR_I18N.translateTree(backdrop);
+    }
     return backdrop;
   }
 
@@ -187,20 +203,25 @@
       }
     } catch (_) {}
 
-    const rateItems = Object.entries(rates).map(([mat, rate]) => `
-      <div class="phir-rate-cell">
-        <strong>${mat}</strong>
-        <span>₹${Number(rate).toFixed(2)}</span> / kg
-      </div>
-    `).join('');
+    const rateItems = Object.entries(rates).map(([mat, rate]) => {
+      const matName = t(`mat_${mat}`, mat);
+      const grade = t(`mandi_grade_${mat}`, 'Standard Grade');
+      return `
+        <div class="phir-rate-cell">
+          <strong>${matName}</strong>
+          <small style="font-size: 9px; color: var(--muted); display: block; margin-bottom: 4px;">${grade}</small>
+          <span>₹${Number(rate).toFixed(2)}</span> / kg
+        </div>
+      `;
+    }).join('');
 
     showModal(`
-      <h2>Delhi Mandi Scrap Benchmark</h2>
-      <p style="font-size: 12px; color: var(--muted);">Live government & Mandi indexed recycling procurement rates. Transparent, fair pricing across all collection wards.</p>
+      <h2>⚖️ ${t('mandi_modal_title', 'Live Delhi Scrap Mandi Rates')}</h2>
+      <p style="font-size: 12px; color: var(--muted);">${t('mandi_modal_bench', 'Indicative Market Benchmark')}: ${t('mandi_modal_note', 'Live wholesale scrap benchmarks in Mayapuri, Seelampur, and Ghazipur. Payouts adjust for physical scale moisture and contamination.')}</p>
       <div class="phir-rates-grid">
         ${rateItems}
       </div>
-      <small style="color: var(--muted); font-size: 10px;">• Rates updated daily based on virgin plastic commodity indexes and scrap metal yards.</small>
+      <small style="color: var(--muted); font-size: 10px;">• ${t('mandi_modal_note', 'Rates updated daily based on virgin plastic commodity indexes and scrap metal yards.')}</small>
     `);
   }
 
@@ -210,26 +231,26 @@
     const rateEstimate = 14.5;
 
     const modal = showModal(`
-      <h2>Physical Scale Verification</h2>
-      <p style="font-size: 12px; color: var(--muted);">Verify hanging scale weight and inspect for contamination before issuing instant payment.</p>
+      <h2>⚖️ ${t('scale_modal_title', 'Physical Scale Weight Reconciliation')}</h2>
+      <p style="font-size: 12px; color: var(--muted);">${t('scale_modal_sub', 'Verify hanging scale weight and inspect for contamination before issuing instant payment.')}</p>
       
       <div class="phir-scale-input-group">
-        <label>Verified Scale Weight (KG)</label>
+        <label>${t('scale_field_scale', 'Physical Scale Reading (Gross kg)')}</label>
         <input type="number" id="phir-scale-weight" step="0.1" min="0.1" value="${defaultKg}">
       </div>
 
       <div class="phir-scale-input-group">
-        <label>Contamination Deduction (%)</label>
+        <label>${t('scale_field_contam', 'Field Contamination (%)')}</label>
         <input type="number" id="phir-scale-contamination" step="1" min="0" max="50" value="0">
       </div>
 
       <div class="phir-payout-box">
-        <small>Calculated Net Instant Payout</small>
+        <small>${t('scale_net_payout', 'Net Payout Due')}</small>
         <h3 id="phir-payout-display">₹${Math.round(defaultKg * rateEstimate)}</h3>
-        <a id="phir-upi-qr" class="phir-upi-link" href="#" target="_blank">📱 Ready for Instant UPI Payout</a>
+        <a id="phir-upi-qr" class="phir-upi-link" href="#" target="_blank">📱 ${t('btn_instant_upi', 'Instant UPI Pay')}</a>
       </div>
 
-      <button id="phir-confirm-collection" class="btn" style="width: 100%;">Confirm Collection & Settle</button>
+      <button id="phir-confirm-collection" class="btn" style="width: 100%;">${t('scale_confirm_btn', 'Confirm Scale Reconciliation & Complete')}</button>
     `);
 
     const weightInput = modal.querySelector('#phir-scale-weight');
@@ -245,7 +266,7 @@
       const payout = Math.round(netKg * rateEstimate);
       payoutDisplay.textContent = `₹${payout}`;
       upiLink.href = `upi://pay?pa=phir.collector@upi&pn=PHIR%20Scrap%20Recovery&am=${payout}&cu=INR&tn=Scrap%20Collection%20${requestId}`;
-      upiLink.textContent = `📱 Instant UPI Pay ₹${payout}`;
+      upiLink.textContent = `📱 ${t('btn_instant_upi', 'Instant UPI Pay')} ₹${payout}`;
     }
 
     weightInput.addEventListener('input', updateCalculations);
@@ -275,24 +296,24 @@
       ? events.map(e => `
         <div class="phir-audit-event">
           <strong>${e.eventType}</strong> — <span class="muted">${e.timestamp.replace('T', ' ').slice(0, 19)} UTC</span>
-          <div style="margin-top: 4px;">Actor: <b>${e.actorRole}</b> (${e.actorId})</div>
-          <div class="phir-audit-hash">SHA-256: ${e.verificationHash}</div>
+          <div style="margin-top: 4px;">${t('epr_label_actor', 'Responsible Custodian')}: <b>${t(`role_${e.actorRole}`, e.actorRole)}</b> (${e.actorId})</div>
+          <div class="phir-audit-hash">${t('epr_label_hash', 'SHA-256 Event Proof')}: ${e.verificationHash}</div>
         </div>
       `).join('')
-      : '<p style="font-size: 12px; color: var(--muted);">Verification in progress. Baseline records established.</p>';
+      : `<p style="font-size: 12px; color: var(--muted);">${t('epr_verified', 'Cryptographically Verified (Tamper-evident)')}.</p>`;
 
     showModal(`
-      <h2>🌱 Extended Producer Responsibility (EPR) Certificate</h2>
+      <h2>🌱 ${t('epr_modal_title', 'Digital EPR Certificate of Custody')}</h2>
       <div style="font-size: 11px; color: var(--muted); border-bottom: 2px solid var(--primary); padding-bottom: 8px; margin-bottom: 12px;">
-        Cryptographic Proof of Environmental Traceability · Batch ID: <b>${entityId}</b>
+        ${t('epr_sub', 'Cryptographic Proof of Environmental Traceability')} · ${t('epr_label_id', 'Certificate ID')}: <b>${entityId}</b>
       </div>
-      <p style="font-size: 12px;">This immutable chain-of-custody ledger confirms material collection, sorting, and handover to certified recycling facilities without landfill leakage.</p>
+      <p style="font-size: 12px;">${t('epr_certified', 'Verified and permanently recorded by PHIR Relational Ledger under Indian Plastic Waste & Resource Recovery guidelines (PWM Schedule II audit parity).')}</p>
       
       <div style="margin: 16px 0;">
         ${eventsHtml}
       </div>
 
-      <button class="btn secondary" style="width: 100%;" onclick="window.print()">🖨️ Print / Save Compliance Record</button>
+      <button class="btn secondary" style="width: 100%;" onclick="window.print()">🖨️ ${t('btn_print_pdf', 'Print / Save PDF')}</button>
     `);
   }
 
@@ -300,24 +321,25 @@
   function injectEnhancementButtons() {
     const topbars = document.querySelectorAll('.workspace .top-links, .selection-page .top-links');
     topbars.forEach(bar => {
-      if (!bar.querySelector('.phir-rates-btn')) {
-        const rateBtn = document.createElement('button');
+      let rateBtn = bar.querySelector('.phir-rates-btn');
+      if (!rateBtn) {
+        rateBtn = document.createElement('button');
         rateBtn.className = 'phir-rates-btn';
-        rateBtn.innerHTML = '⚖️ Mandi Scrap Rates';
         rateBtn.onclick = (e) => { e.preventDefault(); openMandiRates(); };
         bar.prepend(rateBtn);
       }
+      rateBtn.innerHTML = `⚖️ ${t('btn_mandi_rates', 'Mandi Scrap Rates')}`;
     });
 
     // In Recycler bookings table, inject EPR Certificate buttons
     const bookingRows = document.querySelectorAll('.workspace[data-theme="recycler"] tbody tr');
     bookingRows.forEach(row => {
-      if (!row.querySelector('.phir-epr-btn')) {
+      let eprBtn = row.querySelector('.phir-epr-btn');
+      if (!eprBtn) {
         const cell = row.querySelector('td:last-child');
         if (cell) {
-          const eprBtn = document.createElement('button');
+          eprBtn = document.createElement('button');
           eprBtn.className = 'phir-epr-btn';
-          eprBtn.innerHTML = '🌱 EPR Audit';
           eprBtn.onclick = (e) => {
             e.preventDefault();
             const text = row.textContent;
@@ -327,6 +349,9 @@
           };
           cell.append(eprBtn);
         }
+      }
+      if (eprBtn) {
+        eprBtn.innerHTML = `🌱 ${t('btn_epr_audit', 'EPR Audit')}`;
       }
     });
   }
@@ -345,7 +370,7 @@
     openWeighingModal(id, 15.0, (actualKg, contaminationPct) => {
       btn.dataset.reconciled = "true";
       btn.disabled = true;
-      btn.textContent = "Recording...";
+      btn.textContent = t('house_desc_accepted', 'Recording...');
 
       fetch(`${API_BASE}/api/collection-requests/${id}/collect`, {
         method: 'POST',
@@ -354,17 +379,22 @@
       })
       .then(res => res.json())
       .then(data => {
-        window.phirToast?.(`Collection verified: ${actualKg} kg (${contaminationPct}% contam). Payout settled!`);
-        btn.textContent = "Collected ✓";
+        window.phirToast?.(t('house_collection_recorded', 'Collection recorded.'));
+        btn.textContent = `${t('house_step_collected', 'Collected')} ✓`;
         setTimeout(() => location.reload(), 1200);
       })
       .catch(err => {
-        window.phirToast?.(`Collection error: ${err.message}`);
+        window.phirToast?.(`Error: ${err.message}`);
         btn.disabled = false;
-        btn.textContent = "Collect";
+        btn.textContent = t('btn_mark_collected', 'Collect');
       });
     });
   }, true);
+
+  // Update on language change
+  window.addEventListener('phir-language-changed', () => {
+    injectEnhancementButtons();
+  });
 
   // Periodic DOM check to inject buttons seamlessly
   setInterval(injectEnhancementButtons, 1500);

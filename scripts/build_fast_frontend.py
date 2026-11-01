@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE_HTML = ROOT / "frontend" / "phirFinal.optimized.html"
 BRIDGES = (
     "phir-config.js",
+    "phir-i18n.js",
     "phir-polish.js",
     "phir-identity.js",
     "phir-api-bridge.js",
@@ -94,7 +95,7 @@ def build(output: Path) -> None:
     # Cache-bust the separately served bridge scripts when rebuilding the app.
     # Otherwise browsers/CDNs may continue using the old interaction handlers.
     html = re.sub(
-        r"(phir-(?:config|polish|identity|api-bridge|recycler-api-bridge|collector-api-bridge|enhancements).js\?v=)[^\" ]+",
+        r"(phir-(?:config|i18n|polish|identity|api-bridge|recycler-api-bridge|collector-api-bridge|enhancements).js\?v=)[^\" ]+",
         r"\g<1>20261013-2",
         html,
     )

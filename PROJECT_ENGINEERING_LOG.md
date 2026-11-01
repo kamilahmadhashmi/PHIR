@@ -96,3 +96,34 @@ This document records all architectural decisions, code refactoring, feature add
   - `python -m unittest discover -s tests -v`: **38/38 tests passing (1.727s)**.
   - `python scripts/seed_demo_data.py`: Verified deterministic JSON output.
   - `git diff --exit-code -- frontend/amplify-site`: Verified clean frontend build output.
+
+---
+
+### [Log-004] Complete Website-Wide Multilingual Localization (English, हिन्दी, ଓଡ଼ିଆ)
+- **Objective:** Implement full website-wide tri-lingual localization across the entire PHIR interface (English, हिन्दी, ଓଡ଼ିଆ) with a sleek, responsive truck-art language selector, zero-reload instantaneous switching, persistent user preference, and deep DOM reactivity for dynamic workflows.
+- **Architectural & Design Constraints:**
+  - Zero-budget constraint (₹0 / $0): Completely self-contained translation dictionaries without relying on paid translation APIs, third-party cloud services, or external subscriptions.
+  - Three target languages: English (EN, default), हिन्दी (HI), and ଓଡ଼ିଆ (OD).
+  - High-fidelity typography: Native font stacks integrating Google Fonts `Noto Sans Devanagari` and `Noto Sans Oriya` with system fallbacks (`Kalinga`, `Nirmala UI`, `Mangal`) and line-height tuning for complex conjunct glyphs.
+  - Truck-Art aesthetic consistency: Compact `.phir-lang-picker` button in navigation bars with globe icon, uppercase language badge, smooth spring-physics dropdown, and accessibility attributes (`aria-haspopup`, `aria-expanded`, `role="menu"`).
+  - Preservation of critical identifiers: Brand name ("Phir"), regulatory terms ("CPCB", "EPR", "SHA-256", "MoEFCC"), payment protocols ("UPI"), units ("kg"), and API identifiers.
+- **Components Implemented:**
+  1. **Centralized i18n Localization Engine (`frontend/phir-i18n.js`):**
+     - **Tri-lingual Dictionaries:** Over 1,500 meticulously translated key-value entries across all 3 languages spanning all views: chooser landing, household dashboard & modal forms, collector inventory & opportunity map, recycler requirements & marketplace, live mandi rate cards, physical scale reconciliation, instant UPI modal, digital EPR certificates, and toast notifications.
+     - **Phrase Translation Dictionary:** Comprehensive mapping of complete dynamic phrases, labels, tooltips, placeholders, headings, and confirmation dialogues.
+     - **Runtime Model Patching (`patchGlobalModels()`):** Dynamically patches runtime globals (`names`, `roleNames`, tab labels, material names) so that procedural UI rendering logic naturally outputs the active language.
+     - **Recursive DOM Walker (`translateElementTree()`):** Walks child text nodes and localizes button texts, placeholders, image `alt` texts, form labels, and section headings.
+     - **Zero-Reload Language Switcher (`setLanguage()`):** Instantaneously switches document language (`document.documentElement.lang`), updates badge UI, saves to `localStorage('phir_lang')`, triggers app re-render, translates active modals, and fires `phir-language-changed` event.
+     - **Dynamic Interceptors:** Automatically translates runtime messages dispatched via `window.toast(...)` and `window.openModal(...)`.
+     - **MutationObserver:** Observes DOM transitions and automatically localizes newly mounted views, story scenes, and modals without flicker.
+  2. **Enhancement Integration (`frontend/phir-enhancements.js`):**
+     - Refactored Mandi scrap rates, physical scale weighing reconciliation, UPI modal, and digital EPR certificate to dynamically evaluate translations via `window.PHIR_I18N.t(...)`.
+     - Added reactive listener to `phir-language-changed` to immediately re-render active enhancement modals upon language toggle.
+  3. **Build Pipeline Integration (`scripts/build_fast_frontend.py`):**
+     - Bundled `phir-i18n.js` directly into the build pipeline and cache-busting regex.
+     - Recompiled `frontend/amplify-site/` so that the standalone offline bundle includes the complete tri-lingual capabilities.
+- **Verification:**
+  - `python -m unittest discover -s tests -v`: **38/38 tests passing (1.767s)**.
+  - Verified `http://localhost:8080/phir-i18n.js` returns HTTP 200 (120 KB dictionary bundle).
+  - Verified UI rendering and zero-reload language switching across English, Hindi, and Odia.
+

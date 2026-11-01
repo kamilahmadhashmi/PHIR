@@ -219,17 +219,47 @@ class SqliteRecoveryRepository:
     def add_material(self, user_id: str, material_type: str, quantity_kg: float) -> Dict[str, Any]:
         profile = self.get_profile(user_id)
         if not profile:
-            raise ValueError("User profile not found")
+            profile = self.create_or_update_profile({
+                "id": user_id,
+                "role": "household",
+                "name": user_id.replace("_", " ").title() if "_" in user_id else f"User {user_id}",
+                "locality": "Delhi",
+            })
         mat_id = _uid("mat")
         now = _now()
         val = rate_engine.calculate_value(material_type, quantity_kg, profile["locality"], self.conn)
+
+        # Check if household has an active pending collection request to join
+        cur_req = self.conn.execute(
+            "SELECT * FROM collection_requests WHERE household_id = ? AND status = 'pending'",
+            (user_id,)
+        )
+        pending_req = cur_req.fetchone()
+        mat_status = "requested" if pending_req else "available"
+
         self.conn.execute(
             """
             INSERT INTO materials (id, material_type, quantity_kg, estimated_value, source_id, current_holder_id, status, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, 'available', ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
-            (mat_id, material_type.lower(), float(quantity_kg), val, user_id, user_id, now, now)
+            (mat_id, material_type.lower(), float(quantity_kg), val, user_id, user_id, mat_status, now, now)
         )
+
+        if pending_req:
+            mat_ids = json.loads(pending_req["material_ids"] or "[]")
+            mat_ids.append(mat_id)
+            qty_by_type = json.loads(pending_req["quantity_by_type"] or "{}")
+            qty_by_type[material_type.lower()] = round(qty_by_type.get(material_type.lower(), 0.0) + float(quantity_kg), 3)
+            new_est_val = round(float(pending_req["estimated_value"]) + val, 2)
+            self.conn.execute(
+                """
+                UPDATE collection_requests
+                SET material_ids = ?, quantity_by_type = ?, estimated_value = ?, updated_at = ?
+                WHERE id = ?
+                """,
+                (json.dumps(mat_ids), json.dumps(qty_by_type), new_est_val, now, pending_req["id"])
+            )
+
         record_audit_event(
             self.conn,
             event_type="MATERIAL_DECLARED",
@@ -295,7 +325,12 @@ class SqliteRecoveryRepository:
 
         profile = self.get_profile(household_id)
         if not profile:
-            raise ValueError("Household profile not found")
+            profile = self.create_or_update_profile({
+                "id": household_id,
+                "role": "household",
+                "name": household_id.replace("_", " ").title() if "_" in household_id else f"User {household_id}",
+                "locality": "Delhi",
+            })
 
         # Select available materials
         if material_ids:

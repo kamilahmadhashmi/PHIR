@@ -108,11 +108,17 @@ def list_demo_users():
 @app.get("/api/recyclers/{recycler_id}/profile", tags=["Profiles"])
 def get_user_profile(household_id: Optional[str] = None, collector_id: Optional[str] = None, recycler_id: Optional[str] = None):
     p_id = household_id or collector_id or recycler_id
+    role = "household" if household_id else ("kabadiwala" if collector_id else "recycler")
     with get_db() as conn:
         repo = SqliteRecoveryRepository(conn)
         p = repo.get_profile(p_id)
         if not p:
-            raise HTTPException(status_code=404, detail="Profile not found")
+            p = repo.create_or_update_profile({
+                "id": p_id,
+                "role": role,
+                "name": p_id.replace("_", " ").title() if "_" in p_id else f"User {p_id}",
+                "locality": "Delhi",
+            })
         return p
 
 

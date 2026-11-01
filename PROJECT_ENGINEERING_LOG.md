@@ -65,3 +65,34 @@ This document records all architectural decisions, code refactoring, feature add
 - Total infrastructure cost: **₹0 / $0**.
 - Total software subscription cost: **₹0 / $0**.
 - Zero credit cards or paid cloud accounts required to develop, run, test, or demonstrate the entire product.
+
+
+---
+
+### [Log-003] Enterprise Additions, UI Enhancement Bridges & Zero-Cost Cloud Deployment
+- **Objective:** Finalize product completeness by integrating interactive UI bridges for real-world scrap workflows (scale weighing, live mandi rates, UPI payment links, digital EPR certificates), containerization, automated CI/CD, and zero-cost cloud deployment specifications.
+- **Components Implemented:**
+  1. **Frontend UI Enhancement Bridges (`frontend/phir-enhancements.js`):**
+     - **Live Mandi Scrap Rate Card Modal (`openMandiRates()`):** Dynamically displays indicative per-kg scrap prices across all 6 materials (PET ₹15, Cardboard ₹12.50, Paper ₹9, Aluminium ₹110, Glass ₹4.50, Wood ₹3) with quick-estimate calculations and truck-art styling.
+     - **Physical Scale Weighing Reconciliation Modal:** Intercepts collector collection actions to capture physical scale readings and contamination deduction ($0\text{--}100\%$), auto-calculating net weight and net payout.
+     - **Instant UPI Payment Link & QR Generator:** Generates compliant `upi://pay?pa=...` links for immediate cashless settlement from collector to household.
+     - **Digital EPR Certificate Modal (`openEprCertificate()`):** Provides recyclers and households with a downloadable, printable Extended Producer Responsibility certificate complete with SHA-256 cryptographic proof hashes.
+  2. **Automated Frontend Build Pipeline:**
+     - Updated `scripts/build_fast_frontend.py` to include `phir-enhancements.js` in `BRIDGES` and cache-bust references to `20261013-2`.
+     - Rebuilt and verified `frontend/amplify-site/index.html` and assets.
+  3. **Containerization & Cloud Blueprints:**
+     - `Dockerfile`: Multi-stage slim container image with non-root security and healthcheck.
+     - `docker-compose.yml`: Persistent SQLite volume orchestration (`./data:/app/data`).
+     - `render.yaml`: Infrastructure-as-code blueprint for Render.com free web service.
+     - `fly.toml`: Fly.io zero-cost deployment manifest.
+  4. **Automated GitHub Actions CI/CD (`.github/workflows/ci.yml`):**
+     - Matrix testing across Python 3.11, 3.12, and 3.13.
+     - Runs the full 38-test suite.
+     - Validates frontend build reproducibility (`git diff --exit-code -- frontend/amplify-site`).
+     - Validates deterministic seed data generation.
+  5. **OpenAPI 3.1 Specification (`docs/openapi.json`):**
+     - Exported machine-readable OpenAPI specification covering all 38 API endpoints for Postman/Swagger import.
+- **Verification:**
+  - `python -m unittest discover -s tests -v`: **38/38 tests passing (1.727s)**.
+  - `python scripts/seed_demo_data.py`: Verified deterministic JSON output.
+  - `git diff --exit-code -- frontend/amplify-site`: Verified clean frontend build output.

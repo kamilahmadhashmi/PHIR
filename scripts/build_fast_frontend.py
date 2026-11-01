@@ -21,6 +21,7 @@ BRIDGES = (
     "phir-api-bridge.js",
     "phir-recycler-api-bridge.js",
     "phir-collector-api-bridge.js",
+    "phir-enhancements.js",
 )
 DATA_URI = re.compile(r"data:([^;,]+);base64,([A-Za-z0-9+/=]+)")
 FONT_FACE = re.compile(r"@font-face\s*\{([^}]+)\}", re.IGNORECASE)
@@ -93,7 +94,7 @@ def build(output: Path) -> None:
     # Cache-bust the separately served bridge scripts when rebuilding the app.
     # Otherwise browsers/CDNs may continue using the old interaction handlers.
     html = re.sub(
-        r"(phir-(?:config|polish|identity|api-bridge|recycler-api-bridge|collector-api-bridge)\.js\?v=)[^\" ]+",
+        r"(phir-(?:config|polish|identity|api-bridge|recycler-api-bridge|collector-api-bridge|enhancements).js\?v=)[^\" ]+",
         r"\g<1>20261013-2",
         html,
     )

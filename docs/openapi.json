@@ -1,0 +1,2033 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PHIR Resource Recovery Platform",
+    "description": "Decoupled, zero-cost environmental recovery API connecting households, collection partners, and recyclers.",
+    "version": "2.0.0"
+  },
+  "paths": {
+    "/healthz": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Health Check",
+        "operationId": "health_check_healthz_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/status": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Api Status",
+        "operationId": "api_status_api_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/demo/users": {
+      "get": {
+        "tags": [
+          "Profiles"
+        ],
+        "summary": "List Demo Users",
+        "operationId": "list_demo_users_api_demo_users_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/recyclers/{recycler_id}/profile": {
+      "get": {
+        "tags": [
+          "Profiles"
+        ],
+        "summary": "Get User Profile",
+        "operationId": "get_user_profile_api_recyclers__recycler_id__profile_get",
+        "parameters": [
+          {
+            "name": "recycler_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Recycler Id"
+            }
+          },
+          {
+            "name": "household_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "collector_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Collector Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kabadiwalas/{collector_id}/profile": {
+      "get": {
+        "tags": [
+          "Profiles"
+        ],
+        "summary": "Get User Profile",
+        "operationId": "get_user_profile_api_kabadiwalas__collector_id__profile_get",
+        "parameters": [
+          {
+            "name": "collector_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Collector Id"
+            }
+          },
+          {
+            "name": "household_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "recycler_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Recycler Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/households/{household_id}/profile": {
+      "get": {
+        "tags": [
+          "Profiles"
+        ],
+        "summary": "Get User Profile",
+        "operationId": "get_user_profile_api_households__household_id__profile_get",
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "collector_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Collector Id"
+            }
+          },
+          {
+            "name": "recycler_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Recycler Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/demo/profiles": {
+      "post": {
+        "tags": [
+          "Profiles"
+        ],
+        "summary": "Create Demo Profile",
+        "operationId": "create_demo_profile_api_demo_profiles_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/households/{household_id}/inventory": {
+      "get": {
+        "tags": [
+          "Household"
+        ],
+        "summary": "Get Household Inventory",
+        "operationId": "get_household_inventory_api_households__household_id__inventory_get",
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/materials": {
+      "post": {
+        "tags": [
+          "Household"
+        ],
+        "summary": "Add Household Material",
+        "operationId": "add_household_material_api_materials_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaterialCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/materials/{material_id}": {
+      "put": {
+        "tags": [
+          "Household"
+        ],
+        "summary": "Update Household Material",
+        "operationId": "update_household_material_api_materials__material_id__put",
+        "parameters": [
+          {
+            "name": "material_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Material Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaterialUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Household"
+        ],
+        "summary": "Delete Household Material",
+        "operationId": "delete_household_material_api_materials__material_id__delete",
+        "parameters": [
+          {
+            "name": "material_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Material Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaterialDelete"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/households/{household_id}/requests": {
+      "get": {
+        "tags": [
+          "Household"
+        ],
+        "summary": "Get Household Request",
+        "operationId": "get_household_request_api_households__household_id__requests_get",
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/collection-requests": {
+      "post": {
+        "tags": [
+          "Household"
+        ],
+        "summary": "Create Collection Request",
+        "operationId": "create_collection_request_api_collection_requests_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionRequestCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/households/{household_id}/metrics": {
+      "get": {
+        "tags": [
+          "Household"
+        ],
+        "summary": "Get Household Metrics",
+        "operationId": "get_household_metrics_api_households__household_id__metrics_get",
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/demo/areas": {
+      "get": {
+        "tags": [
+          "Collector"
+        ],
+        "summary": "Get Collector Areas",
+        "operationId": "get_collector_areas_api_demo_areas_get",
+        "parameters": [
+          {
+            "name": "collector_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Collector Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kabadiwalas/{collector_id}/areas": {
+      "get": {
+        "tags": [
+          "Collector"
+        ],
+        "summary": "Get Collector Areas",
+        "operationId": "get_collector_areas_api_kabadiwalas__collector_id__areas_get",
+        "parameters": [
+          {
+            "name": "collector_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Collector Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kabadiwalas/{collector_id}/areas/{area_id}/opportunities": {
+      "get": {
+        "tags": [
+          "Collector"
+        ],
+        "summary": "Get Collector Area Opportunities",
+        "operationId": "get_collector_area_opportunities_api_kabadiwalas__collector_id__areas__area_id__opportunities_get",
+        "parameters": [
+          {
+            "name": "collector_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Collector Id"
+            }
+          },
+          {
+            "name": "area_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Area Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kabadiwalas/{collector_id}/requests": {
+      "get": {
+        "tags": [
+          "Collector"
+        ],
+        "summary": "Get Collector Requests",
+        "operationId": "get_collector_requests_api_kabadiwalas__collector_id__requests_get",
+        "parameters": [
+          {
+            "name": "collector_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Collector Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/collection-requests/{request_id}/accept": {
+      "post": {
+        "tags": [
+          "Collector"
+        ],
+        "summary": "Accept Request",
+        "operationId": "accept_request_api_collection_requests__request_id__accept_post",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionAccept"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/collection-requests/{request_id}/reject": {
+      "post": {
+        "tags": [
+          "Collector"
+        ],
+        "summary": "Reject Request",
+        "operationId": "reject_request_api_collection_requests__request_id__reject_post",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionAccept"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/collection-requests/{request_id}/collect": {
+      "post": {
+        "tags": [
+          "Collector"
+        ],
+        "summary": "Complete Collection",
+        "operationId": "complete_collection_api_collection_requests__request_id__collect_post",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionComplete"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kabadiwalas/{collector_id}/inventory": {
+      "get": {
+        "tags": [
+          "Collector"
+        ],
+        "summary": "Get Collector Inventory",
+        "operationId": "get_collector_inventory_api_kabadiwalas__collector_id__inventory_get",
+        "parameters": [
+          {
+            "name": "collector_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Collector Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kabadiwalas/{collector_id}/metrics": {
+      "get": {
+        "tags": [
+          "Collector"
+        ],
+        "summary": "Get Collector Metrics",
+        "operationId": "get_collector_metrics_api_kabadiwalas__collector_id__metrics_get",
+        "parameters": [
+          {
+            "name": "collector_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Collector Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/kabadiwalas/{collector_id}/route": {
+      "post": {
+        "tags": [
+          "Collector"
+        ],
+        "summary": "Calculate Route Preview",
+        "operationId": "calculate_route_preview_api_kabadiwalas__collector_id__route_post",
+        "parameters": [
+          {
+            "name": "collector_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Collector Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "title": "Payload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/recyclers/{recycler_id}/requirements": {
+      "get": {
+        "tags": [
+          "Recycler"
+        ],
+        "summary": "Get Recycler Requirements",
+        "operationId": "get_recycler_requirements_api_recyclers__recycler_id__requirements_get",
+        "parameters": [
+          {
+            "name": "recycler_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Recycler Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/recycler-requirements": {
+      "post": {
+        "tags": [
+          "Recycler"
+        ],
+        "summary": "Publish Requirement",
+        "operationId": "publish_requirement_api_recycler_requirements_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequirementCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/recyclers/{recycler_id}/available-material": {
+      "get": {
+        "tags": [
+          "Recycler"
+        ],
+        "summary": "Get Available Material",
+        "operationId": "get_available_material_api_recyclers__recycler_id__available_material_get",
+        "parameters": [
+          {
+            "name": "recycler_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Recycler Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bookings": {
+      "post": {
+        "tags": [
+          "Recycler"
+        ],
+        "summary": "Create Booking",
+        "operationId": "create_booking_api_bookings_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bookings/{booking_id}/confirm": {
+      "post": {
+        "tags": [
+          "Recycler"
+        ],
+        "summary": "Confirm Booking",
+        "operationId": "confirm_booking_api_bookings__booking_id__confirm_post",
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Booking Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingConfirm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/recyclers/{recycler_id}/bookings": {
+      "get": {
+        "tags": [
+          "Recycler"
+        ],
+        "summary": "Get Recycler Bookings",
+        "operationId": "get_recycler_bookings_api_recyclers__recycler_id__bookings_get",
+        "parameters": [
+          {
+            "name": "recycler_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Recycler Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/recyclers/{recycler_id}/metrics": {
+      "get": {
+        "tags": [
+          "Recycler"
+        ],
+        "summary": "Get Recycler Metrics",
+        "operationId": "get_recycler_metrics_api_recyclers__recycler_id__metrics_get",
+        "parameters": [
+          {
+            "name": "recycler_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Recycler Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/classify-image": {
+      "post": {
+        "tags": [
+          "Vision"
+        ],
+        "summary": "Classify Image",
+        "operationId": "classify_image_api_classify_image_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Payload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/households/{household_id}/dashboard": {
+      "get": {
+        "tags": [
+          "V1 Dashboards"
+        ],
+        "summary": "Get Household Dashboard",
+        "operationId": "get_household_dashboard_api_v1_households__household_id__dashboard_get",
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/collectors/{collector_id}/dashboard": {
+      "get": {
+        "tags": [
+          "V1 Dashboards"
+        ],
+        "summary": "Get Collector Dashboard",
+        "operationId": "get_collector_dashboard_api_v1_collectors__collector_id__dashboard_get",
+        "parameters": [
+          {
+            "name": "collector_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Collector Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/recyclers/{recycler_id}/dashboard": {
+      "get": {
+        "tags": [
+          "V1 Dashboards"
+        ],
+        "summary": "Get Recycler Dashboard",
+        "operationId": "get_recycler_dashboard_api_v1_recyclers__recycler_id__dashboard_get",
+        "parameters": [
+          {
+            "name": "recycler_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Recycler Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/audit/{entity_id}": {
+      "get": {
+        "tags": [
+          "Audit"
+        ],
+        "summary": "Get Entity Audit Trail",
+        "operationId": "get_entity_audit_trail_api_v1_audit__entity_id__get",
+        "parameters": [
+          {
+            "name": "entity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Entity Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/rate-cards": {
+      "get": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "Get Rate Cards",
+        "operationId": "get_rate_cards_api_v1_rate_cards_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{filename}.js": {
+      "get": {
+        "summary": "Serve Js",
+        "operationId": "serve_js__filename__js_get",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Filename"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Serve Index",
+        "operationId": "serve_index__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BookingConfirm": {
+        "properties": {
+          "recyclerId": {
+            "type": "string",
+            "title": "Recyclerid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "recyclerId"
+        ],
+        "title": "BookingConfirm"
+      },
+      "BookingCreate": {
+        "properties": {
+          "recyclerId": {
+            "type": "string",
+            "title": "Recyclerid"
+          },
+          "kabadiwalaId": {
+            "type": "string",
+            "title": "Kabadiwalaid"
+          },
+          "materialType": {
+            "type": "string",
+            "title": "Materialtype"
+          },
+          "quantityKg": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Quantitykg"
+          },
+          "requirementId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requirementid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "recyclerId",
+          "kabadiwalaId",
+          "materialType",
+          "quantityKg"
+        ],
+        "title": "BookingCreate"
+      },
+      "CollectionAccept": {
+        "properties": {
+          "kabadiwalaId": {
+            "type": "string",
+            "title": "Kabadiwalaid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kabadiwalaId"
+        ],
+        "title": "CollectionAccept"
+      },
+      "CollectionComplete": {
+        "properties": {
+          "kabadiwalaId": {
+            "type": "string",
+            "title": "Kabadiwalaid"
+          },
+          "actualKg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actualkg"
+          },
+          "contaminationPct": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contaminationpct",
+            "default": 0.0
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kabadiwalaId"
+        ],
+        "title": "CollectionComplete"
+      },
+      "CollectionRequestCreate": {
+        "properties": {
+          "householdId": {
+            "type": "string",
+            "title": "Householdid"
+          },
+          "materialIds": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Materialids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "householdId"
+        ],
+        "title": "CollectionRequestCreate"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "MaterialCreate": {
+        "properties": {
+          "userId": {
+            "type": "string",
+            "title": "Userid"
+          },
+          "materialType": {
+            "type": "string",
+            "title": "Materialtype"
+          },
+          "quantityKg": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Quantitykg"
+          }
+        },
+        "type": "object",
+        "required": [
+          "userId",
+          "materialType",
+          "quantityKg"
+        ],
+        "title": "MaterialCreate"
+      },
+      "MaterialDelete": {
+        "properties": {
+          "userId": {
+            "type": "string",
+            "title": "Userid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "userId"
+        ],
+        "title": "MaterialDelete"
+      },
+      "MaterialUpdate": {
+        "properties": {
+          "userId": {
+            "type": "string",
+            "title": "Userid"
+          },
+          "quantityKg": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Quantitykg"
+          }
+        },
+        "type": "object",
+        "required": [
+          "userId",
+          "quantityKg"
+        ],
+        "title": "MaterialUpdate"
+      },
+      "ProfileCreate": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "locality": {
+            "type": "string",
+            "title": "Locality",
+            "default": "Delhi"
+          },
+          "contact": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "latitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latitude",
+            "default": 28.6139
+          },
+          "longitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude",
+            "default": 77.209
+          },
+          "supportedMaterials": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supportedmaterials"
+          }
+        },
+        "type": "object",
+        "required": [
+          "role",
+          "name"
+        ],
+        "title": "ProfileCreate"
+      },
+      "RequirementCreate": {
+        "properties": {
+          "recyclerId": {
+            "type": "string",
+            "title": "Recyclerid"
+          },
+          "materialType": {
+            "type": "string",
+            "title": "Materialtype"
+          },
+          "requiredQuantityKg": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Requiredquantitykg"
+          },
+          "minimumQuantityKg": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Minimumquantitykg",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "recyclerId",
+          "materialType",
+          "requiredQuantityKg"
+        ],
+        "title": "RequirementCreate"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

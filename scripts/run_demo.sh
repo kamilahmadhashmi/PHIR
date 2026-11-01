@@ -49,10 +49,17 @@ if [[ "$START_REKOGNITION_MODEL" == "true" && -n "$REKOGNITION_MODEL_ARN" ]]; th
   [[ "$STATUS" == "RUNNING" ]] || { echo "Timed out waiting for Rekognition model." >&2; exit 1; }
 fi
 
-echo "Starting the recovery demo at http://localhost:${PORT}"
+echo "Starting the recovery platform at http://localhost:${PORT}"
 echo "Press Ctrl+C to stop."
 cd "$ROOT_DIR"
 PYTHON_BIN="${PYTHON_BIN:-$ROOT_DIR/.venv/bin/python}"
 [[ -x "$PYTHON_BIN" ]] || PYTHON_BIN="python3"
 export PORT AWS_REGION DYNAMODB_ENABLED DYNAMODB_TABLE ML_S3_BUCKET REKOGNITION_MODEL_ARN
-"$PYTHON_BIN" -m src.api_server
+
+if "$PYTHON_BIN" -c "import fastapi, uvicorn" 2>/dev/null; then
+  echo "Launching unified FastAPI server with full truck-art interface..."
+  exec "$PYTHON_BIN" run.py --port "$PORT"
+else
+  echo "FastAPI not found, falling back to dependency-free standard library server..."
+  exec "$PYTHON_BIN" -m src.api_server
+fi

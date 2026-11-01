@@ -16,4 +16,8 @@ build/
 *.egg-info/
 ml/data/
 ml/models/
+data/
+*.db
+*.sqlite
+*.sqlite3
 /assets/demo/Phir_Demo_Vox_V9.mp4

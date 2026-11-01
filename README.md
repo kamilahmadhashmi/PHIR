@@ -3,6 +3,7 @@
 [![CI](https://github.com/kamilahmadhashmi/PHIR/actions/workflows/ci.yml/badge.svg)](https://github.com/kamilahmadhashmi/PHIR/actions)
 [![OpenAPI 3.1.0](https://img.shields.io/badge/OpenAPI-3.1.0-blue.svg)](docs/openapi.json)
 [![Languages](https://img.shields.io/badge/Languages-EN%20%7C%20%E0%A4%B9%E0%A4%BF%E0%A4%A8%E0%A5%8D%E0%A4%A6%E0%A5%80%20%7C%20%E0%AC%93%E0%AC%A1%E0%AC%BC%E0%AC%BF%E0%AC%86-blueviolet.svg)](#website-wide-multilingual-localization-en--hi--od)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/kamilahmadhashmi/PHIR)
 [![Zero Cost](https://img.shields.io/badge/Budget-%E2%82%B90%20%2F%20%240%20Free-brightgreen.svg)](#run-the-unified-zero-cost-application-fastapi--sqlite--full-ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 

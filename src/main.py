@@ -11,7 +11,6 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-import uvicorn
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
@@ -453,6 +452,7 @@ if FRONTEND_DIR.exists():
 
 
 if __name__ == "__main__":
+    import uvicorn
     port = int(os.environ.get("PORT", "8080"))
     print(f"Starting PHIR Unified Server at http://localhost:{port}")
     uvicorn.run("src.main:app", host="0.0.0.0", port=port, reload=False)

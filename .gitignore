@@ -21,3 +21,5 @@ data/
 *.sqlite
 *.sqlite3
 /assets/demo/Phir_Demo_Vox_V9.mp4
+
+.vercel

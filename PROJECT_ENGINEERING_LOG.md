@@ -127,3 +127,20 @@ This document records all architectural decisions, code refactoring, feature add
   - Verified `http://localhost:8080/phir-i18n.js` returns HTTP 200 (120 KB dictionary bundle).
   - Verified UI rendering and zero-reload language switching across English, Hindi, and Odia.
 
+---
+
+### [Log-005] Vercel Serverless Production Deployment & Live Verification
+- **Objective:** Deploy PHIR to Vercel Serverless Edge architecture at permanent zero cost (₹0 / $0) using the Vercel CLI, resolving serverless filesystem and dependency isolation constraints.
+- **Architectural Adaptations:**
+  1. **Serverless Entrypoint (`api/index.py`):** Configured ASGI handler exposing `handler = app` to `@vercel/python`.
+  2. **Routing & Rewrites (`vercel.json`):** Unified all wildcard routes `/(.*)` into `api/index.py` so FastAPI dynamically serves the frontend HTML, hashed media assets, static JS bundles, and all 38 REST endpoints.
+  3. **Writable Ephemeral SQLite Database Adapter (`src/database.py`):** Automatically detects `VERCEL="1"` or Lambda environments and redirects the database path from `./data/phir.db` to `/tmp/phir.db`, eliminating read-only filesystem errors while maintaining transactional ACID isolation.
+  4. **Isolated Dependency Management (`api/requirements.txt`):** Decoupled serverless function dependencies from standalone server dependencies (lazy-imported `uvicorn` in `src/main.py`), preventing module resolution failures during cold-start bundling.
+  5. **Build Optimization (`.vercelignore`):** Excluded local test fixtures, documentation, and database artifacts to keep the deployment archive compact (<35MB).
+- **Verification & Live Status:**
+  - **Production URL:** `https://phir.vercel.app` (HTTP 200 OK, 368 KB HTML payload).
+  - **Health Check:** `https://phir.vercel.app/healthz` (`{"status":"healthy","service":"phir-api","version":"2.0.0","cost":"₹0"}`).
+  - **REST API Subsystem:** `https://phir.vercel.app/api/status` (`{"status":"online","engine":"FastAPI + SQLite WAL","cloudDependency":false}`).
+  - **Multilingual Bundle:** `https://phir.vercel.app/phir-i18n.js` (HTTP 200 OK, 120 KB, 328 keys per language).
+
+

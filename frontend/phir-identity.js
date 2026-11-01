@@ -69,16 +69,42 @@
   async function openPicker(forceRole) {
     const role = forceRole || roleForView();
     if (!role) return;
-    close();
+
+    // If dialog is already open and not forcing a different role, focus the name input
+    const existingDialog = document.querySelector('.phir-identity-dialog');
+    if (existingDialog) {
+      const existingInput = existingDialog.querySelector('#phir-demo-name');
+      existingInput?.focus();
+      return;
+    }
+
+    // Ensure main modal dialog doesn't block identity dialog
+    const mainModal = document.querySelector('dialog#modal');
+    if (mainModal?.open) mainModal.close();
+
     const current = identity.profileFor(role);
     const label = role === 'kabadiwala' ? 'collection partner' : role;
     const currentArea = current.locality || areas[0];
+    const promptKey = `phir-account-seen:${role}`;
     const dialog = document.createElement('div');
     dialog.className = 'phir-identity-dialog';
-    dialog.innerHTML = `<form class="phir-identity-card"><h2>Your ${safe(label)} profile</h2><p>Enter a name and choose the Delhi area ${role === 'kabadiwala' ? 'you serve' : 'you live in'}. This creates a lightweight demo profile—no password required.</p><label for="phir-demo-name">Name</label><input id="phir-demo-name" name="name" required maxlength="80" value="${safe(current.name === 'New profile' ? '' : current.name || '')}" placeholder="Your name"><label for="phir-demo-area">${role === 'kabadiwala' ? 'Service area' : 'Area'}</label><select id="phir-demo-area" name="locality" required>${areas.map(area => `<option ${area === currentArea ? 'selected' : ''}>${area}</option>`).join('')}</select><div class="phir-identity-actions"><button type="button" class="btn secondary" data-cancel>Cancel</button><button class="btn" type="submit">Continue</button></div></form>`;
+    dialog.innerHTML = `<form class="phir-identity-card" autocomplete="off"><h2>Your ${safe(label)} profile</h2><p>Enter a name and choose the Delhi area ${role === 'kabadiwala' ? 'you serve' : 'you live in'}. This creates a lightweight demo profile—no password required.</p><label for="phir-demo-name">Name</label><input id="phir-demo-name" name="name" required maxlength="80" autocomplete="name" autofocus value="${safe(current.name === 'New profile' ? '' : current.name || '')}" placeholder="Your name"><label for="phir-demo-area">${role === 'kabadiwala' ? 'Service area' : 'Area'}</label><select id="phir-demo-area" name="locality" required>${areas.map(area => `<option ${area === currentArea ? 'selected' : ''}>${area}</option>`).join('')}</select><div class="phir-identity-actions"><button type="button" class="btn secondary" data-cancel>Cancel</button><button class="btn" type="submit">Continue</button></div></form>`;
     document.body.append(dialog);
-    dialog.querySelector('[data-cancel]').onclick = close;
-    dialog.addEventListener('click', event => { if (event.target === dialog) close(); });
+
+    const nameInput = dialog.querySelector('#phir-demo-name');
+    setTimeout(() => {
+      nameInput?.focus();
+      nameInput?.select();
+    }, 50);
+
+    const handleDismiss = () => {
+      try { sessionStorage.setItem(promptKey, 'dismissed'); } catch (_) {}
+      close();
+    };
+    dialog.querySelector('[data-cancel]').onclick = handleDismiss;
+    dialog.addEventListener('click', event => { if (event.target === dialog) handleDismiss(); });
+    dialog.querySelector('.phir-identity-card').onclick = event => event.stopPropagation();
+
     dialog.querySelector('form').onsubmit = event => {
       event.preventDefault();
       const form = dialog.querySelector('form');
@@ -113,15 +139,10 @@
   window.phirOpenIdentityPicker = openPicker;
 
   function install() {
-    // The workspace is rendered locally before the API hydration finishes.
-    // Reveal that cached view immediately so a failed/slow recycler request
-    // cannot strand the user behind the live-workspace loading veil.
     window.phirMarkWorkspaceReady?.();
     const role = roleForView();
     const links = document.querySelector('#app .workspace .top-links');
     if (!role || !links) return;
-    // Recycler companies manage their identity from the Company profile tab.
-    // Do not show the household/kabadiwala lightweight profile prompt here.
     if (role === 'recycler') {
       links.querySelector('.phir-account-button')?.remove();
       return;
@@ -131,11 +152,18 @@
       button = document.createElement('button');
       button.type = 'button';
       button.className = 'text-link phir-account-button';
-      button.onclick = () => openPicker(role);
+      button.onclick = () => {
+        close();
+        openPicker(role);
+      };
       links.append(button);
     }
     const label = `Account · ${identity.profileFor(role).name}`;
     if (button.textContent !== label) button.textContent = label;
+
+    // Do not schedule auto-open if dialog is already open
+    if (document.querySelector('.phir-identity-dialog')) return;
+
     const promptKey = `phir-account-seen:${role}`;
     let setupComplete = false;
     try { setupComplete = sessionStorage.getItem(`phir-profile-setup:${role}`) === 'complete'; } catch (_) {}
@@ -144,10 +172,13 @@
     if (hasUrlHandoff) {
       try { sessionStorage.setItem(`phir-profile-setup:${role}`, 'complete'); } catch (_) {}
     }
-    if (!hasCustomProfile) sessionStorage.removeItem(promptKey);
     if (!hasCustomProfile && !sessionStorage.getItem(promptKey)) {
-      sessionStorage.setItem(promptKey, 'true');
-      setTimeout(() => openPicker(role), 250);
+      try { sessionStorage.setItem(promptKey, 'true'); } catch (_) {}
+      setTimeout(() => {
+        if (!document.querySelector('.phir-identity-dialog')) {
+          openPicker(role);
+        }
+      }, 250);
     }
   }
   new MutationObserver(install).observe(document.querySelector('#app') || document.body, {childList: true, subtree: true});

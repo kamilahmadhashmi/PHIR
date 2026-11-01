@@ -207,6 +207,41 @@ class FastApiServerTests(unittest.TestCase):
         for e in events:
             self.assertEqual(len(e["verificationHash"]), 64)
 
+    def test_07_collection_request_cancellation(self):
+        test_hh = "household_test_cancel"
+        # Add material
+        add_resp = self.client.post("/api/materials", json={
+            "userId": test_hh,
+            "materialType": "glass",
+            "quantityKg": 5.0
+        })
+        self.assertEqual(add_resp.status_code, 201)
+
+        # Create request
+        req_resp = self.client.post("/api/collection-requests", json={
+            "householdId": test_hh
+        })
+        self.assertEqual(req_resp.status_code, 201)
+        req_id = req_resp.json()["id"]
+
+        # Cancel request
+        cancel_resp = self.client.post(f"/api/collection-requests/{req_id}/cancel", json={
+            "householdId": test_hh
+        })
+        self.assertEqual(cancel_resp.status_code, 200)
+        self.assertEqual(cancel_resp.json()["status"], "cancelled")
+
+        # Materials should be available again
+        inv_resp = self.client.get(f"/api/households/{test_hh}/inventory")
+        self.assertEqual(inv_resp.status_code, 200)
+        materials = inv_resp.json()["inventory"]
+        self.assertTrue(any(m["materialType"] == "glass" and m["status"] == "available" for m in materials))
+
+        # Active request should now be null
+        req_check = self.client.get(f"/api/households/{test_hh}/collection-request")
+        self.assertEqual(req_check.status_code, 200)
+        self.assertIsNone(req_check.json()["request"])
+
 
 if __name__ == "__main__":
     unittest.main()

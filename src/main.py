@@ -194,6 +194,23 @@ def create_collection_request(payload: CollectionRequestCreate):
             raise HTTPException(status_code=400, detail=str(exc))
 
 
+@app.post("/api/collection-requests/{request_id}/cancel", tags=["Household"])
+def cancel_collection_request(request_id: str, payload: Optional[Dict[str, Any]] = None):
+    household_id = (payload or {}).get("householdId")
+    with get_db() as conn:
+        repo = SqliteRecoveryRepository(conn)
+        try:
+            if not household_id:
+                cur = conn.execute("SELECT household_id FROM collection_requests WHERE id = ?", (request_id,))
+                row = cur.fetchone()
+                if not row:
+                    raise HTTPException(status_code=404, detail="Collection request not found")
+                household_id = row["household_id"]
+            return repo.cancel_collection_request(household_id, request_id)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc))
+
+
 @app.get("/api/households/{household_id}/metrics", tags=["Household"])
 def get_household_metrics(household_id: str):
     with get_db() as conn:

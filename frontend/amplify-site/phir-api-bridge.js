@@ -35,7 +35,7 @@
     reader.readAsDataURL(file);
   });
   const localMaterial = item => ({id: item.id, type: item.materialType, quantityKg: Number(item.quantityKg), estimatedValue: item.estimatedValueInr, status: item.status || 'available', owner: 'household'});
-  const localRequest = item => item && ({id: item.id, status: item.status, quantityKg: Object.values(item.quantityByType || {}).reduce((sum, value) => sum + Number(value), 0), quantityByType: item.quantityByType || {}, materialIds: [], area: item.region || 'Delhi', region: item.region || 'Delhi', regionId: item.regionId, assignedKabadiwalaId: item.assignedKabadiwalaId});
+  const localRequest = item => item && ({id: item.id, status: item.status, quantityKg: Object.values(item.quantityByType || {}).reduce((sum, value) => sum + Number(value), 0), quantityByType: item.quantityByType || {}, materialIds: item.materialIds || [], area: item.region || 'Delhi', region: item.region || 'Delhi', regionId: item.regionId, assignedKabadiwalaId: item.assignedKabadiwalaId});
   function groupHouseholdMaterials() {
     if (view !== 'household') return;
     if (!document.getElementById('household-material-groups-style')) {
@@ -136,6 +136,12 @@
     });
     document.querySelector('.workspace[data-theme="household"] .dashboard-functional-title [data-action="add-material"]')?.remove();
     document.querySelector('.workspace[data-theme="household"] .dashboard-partners')?.remove();
+    const reqBtn = document.querySelector('.workspace[data-theme="household"] [data-action="request-collection"]');
+    if (reqBtn && reqBtn.hasAttribute('disabled')) {
+      reqBtn.removeAttribute('disabled');
+      reqBtn.classList.add('needs-material');
+      reqBtn.setAttribute('title', 'Add recyclable materials to request collection');
+    }
     polishCollectionProgress();
   }
   function polishCollectionProgress() {
@@ -145,7 +151,7 @@
     if (!document.getElementById('household-progress-style')) {
       const style = document.createElement('style');
       style.id = 'household-progress-style';
-      style.textContent = '.collection-section .progress-kicker{display:block;margin:0 0 5px;color:var(--primary);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.collection-section .status-line{align-items:center;gap:10px;margin:18px 0 22px}.collection-section .status-line .status-dot{width:9px;height:9px;box-shadow:0 0 0 5px color-mix(in srgb,var(--primary) 15%,transparent)}.collection-section .collection-status-copy{font-weight:700}.collection-section .steps{gap:10px;margin:0 0 24px}.collection-section .step{min-height:48px;padding-top:11px;font-size:11px}.collection-section .step.current{color:var(--primary);font-weight:800}.collection-section .processing-note{margin:0;font-size:12px;line-height:1.6}';
+      style.textContent = '.collection-section .progress-kicker{display:block;margin:0 0 5px;color:var(--primary);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.collection-section .status-line{align-items:center;gap:10px;margin:18px 0 22px}.collection-section .status-line .status-dot{width:9px;height:9px;box-shadow:0 0 0 5px color-mix(in srgb,var(--primary) 15%,transparent)}.collection-section .collection-status-copy{font-weight:700}.collection-section .steps{gap:10px;margin:0 0 24px}.collection-section .step{min-height:48px;padding-top:11px;font-size:11px}.collection-section .step.current{color:var(--primary);font-weight:800}.collection-section .processing-note{margin:0;font-size:12px;line-height:1.6}.collection-section [data-action="request-collection"].needs-material{opacity:0.85;cursor:pointer!important}';
       document.head.append(style);
     }
     const heading = section.querySelector('.section-heading h2');
@@ -174,6 +180,31 @@
     });
     const note = section.querySelector('p.muted');
     if (note) note.remove();
+    let actionsWrap = section.querySelector('.collection-actions-bar');
+    if (!actionsWrap) {
+      actionsWrap = document.createElement('div');
+      actionsWrap.className = 'collection-actions-bar';
+      actionsWrap.style.cssText = 'display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;align-items:center;';
+      section.append(actionsWrap);
+    }
+    if (request.status === 'pending') {
+      actionsWrap.innerHTML = `
+        <button class="btn secondary" type="button" data-action="go-collector" style="font-size:12px;padding:8px 14px;">
+          View in Collection partner &rarr;
+        </button>
+        <button class="btn secondary" type="button" data-action="cancel-collection" data-id="${request.id}" style="font-size:12px;padding:8px 14px;color:var(--red,#c53030);border-color:currentColor;">
+          Cancel request
+        </button>
+      `;
+    } else if (request.status === 'accepted') {
+      actionsWrap.innerHTML = `
+        <button class="btn secondary" type="button" data-action="go-collector" style="font-size:12px;padding:8px 14px;">
+          View in Collection partner to record handover &rarr;
+        </button>
+      `;
+    } else {
+      actionsWrap.remove();
+    }
   }
   async function refreshHousehold() {
     householdId = window.phirIdentity?.idFor('household') || householdId;
@@ -252,7 +283,32 @@
   }
   document.addEventListener('click', event => {
     const button = event.target.closest('[data-action]');
-    if (!button || view !== 'household') return;
+    if (!button) return;
+    const action = button.dataset.action;
+    if (action === 'restart-confirmed') {
+      event.preventDefault(); event.stopImmediatePropagation();
+      modal.close();
+      window.phirLiveStatus?.('Resetting demonstration…', true);
+      api('/api/demo/reset', {method: 'POST'}).then(() => {
+        state = DemoModel.create();
+        selectedStops.clear();
+        routeVisible = false;
+        householdRevision += 1;
+        go('select');
+        render();
+        toast('Sample journey restarted and data refreshed.');
+      }).catch(err => {
+        console.warn('Backend reset failed:', err);
+        state = DemoModel.create();
+        selectedStops.clear();
+        routeVisible = false;
+        go('select');
+        render();
+        toast('Sample journey restarted.');
+      });
+      return;
+    }
+    if (view !== 'household') return;
     const action = button.dataset.action;
     if (action === 'add-material') {
       event.preventDefault(); event.stopImmediatePropagation();
@@ -267,21 +323,47 @@
       setTimeout(() => modal.querySelector('.confirm-material')?.remove(), 0);
     } else if (action === 'request-collection') {
       event.preventDefault(); event.stopImmediatePropagation();
-      householdRevision += 1;
       const selected = state.materials.filter(item => item.status === 'available');
+      if (!selected.length) {
+        toast('Add at least one recyclable material first to request a collection.');
+        openModal('Add material', `<p class="modal-intro">You need at least one available recyclable material to request a collection. Choose how you want to record it:</p><div class="modal-choice-grid"><button class="btn" type="button" data-action="add-material-manual">Add manually</button><button class="btn secondary" type="button" data-action="photo-material">Identify from a photo</button></div>`);
+        return;
+      }
+      householdRevision += 1;
       const requestedBefore = selected.map(item => ({id: item.id, status: item.status}));
       const previousRequests = state.requests.slice();
       const preview = {id: `pending-${Date.now()}`, status: 'pending', quantityKg: selected.reduce((sum, item) => sum + Number(item.quantityKg || 0), 0), area: window.phirIdentity?.profileFor('household')?.locality || 'Delhi'};
       state.materials = state.materials.map(item => item.status === 'available' ? {...item, status: 'requested'} : item);
       state.requests = [...state.requests.filter(item => item.status !== 'pending' && item.status !== 'accepted'), preview];
       render();
-      run(() => api('/api/collection-requests', {method: 'POST', body: JSON.stringify({householdId})}), 'Collection request created.', {
+      run(() => api('/api/collection-requests', {method: 'POST', body: JSON.stringify({householdId})}), 'Collection request created. Switch to Collection partner to accept it.', {
         commit(saved) { state.requests = state.requests.map(item => item.id === preview.id ? localRequest(saved) : item); render(); },
         rollback() {
           requestedBefore.forEach(item => { const current = state.materials.find(material => material.id === item.id); if (current) current.status = item.status; });
           state.requests = [...state.requests.filter(item => item.id !== preview.id), ...previousRequests];
           render();
         },
+      });
+    } else if (action === 'cancel-collection') {
+      event.preventDefault(); event.stopImmediatePropagation();
+      const reqId = button.dataset.id || state.requests.at(-1)?.id;
+      confirmDialog('Cancel this collection request?', 'This returns your recyclable materials back to your available inventory so you can request again.', 'confirm-cancel-collection', reqId);
+    } else if (action === 'confirm-cancel-collection') {
+      event.preventDefault(); event.stopImmediatePropagation();
+      const reqId = button.dataset.id;
+      modal.close();
+      householdRevision += 1;
+      state.materials = state.materials.map(item => item.status === 'requested' ? {...item, status: 'available'} : item);
+      state.requests = state.requests.filter(item => item.id !== reqId && item.status !== 'pending');
+      render();
+      window.phirLiveStatus?.('Cancelling request…', true);
+      api(`/api/collection-requests/${reqId}/cancel`, {method: 'POST', body: JSON.stringify({householdId})}).then(() => {
+        toast('Collection request cancelled. Materials are available again.');
+        window.phirLiveStatus?.('Saved to recovery records');
+        refreshHousehold().catch(console.warn);
+      }).catch(err => {
+        toast(`Could not cancel request: ${err.message}`);
+        refreshHousehold().catch(console.warn);
       });
     } else if (action === 'delete-material') {
       event.preventDefault(); event.stopImmediatePropagation();

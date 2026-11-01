@@ -391,13 +391,61 @@ class SqliteRecoveryRepository:
         cur = self.conn.execute(
             """
             SELECT * FROM collection_requests
-            WHERE household_id = ?
+            WHERE household_id = ? AND status IN ('pending', 'accepted', 'collected')
             ORDER BY created_at DESC LIMIT 1
             """,
             (household_id,)
         )
         row = cur.fetchone()
         return self._format_request(row) if row else None
+
+    def cancel_collection_request(self, household_id: str, request_id: Optional[str] = None) -> Dict[str, Any]:
+        if request_id:
+            cur = self.conn.execute(
+                "SELECT * FROM collection_requests WHERE id = ? AND household_id = ? AND status = 'pending'",
+                (request_id, household_id)
+            )
+        else:
+            cur = self.conn.execute(
+                "SELECT * FROM collection_requests WHERE household_id = ? AND status = 'pending' ORDER BY created_at DESC LIMIT 1",
+                (household_id,)
+            )
+        row = cur.fetchone()
+        if not row:
+            raise ValueError("No pending collection request found to cancel")
+
+        req_id = row["id"]
+        material_ids = json.loads(row["material_ids"] or "[]")
+        now = _now()
+
+        self.conn.execute(
+            "UPDATE collection_requests SET status = 'cancelled', updated_at = ? WHERE id = ?",
+            (now, req_id)
+        )
+
+        if material_ids:
+            q_marks = ",".join("?" for _ in material_ids)
+            self.conn.execute(
+                f"UPDATE materials SET status = 'available', collection_request_id = NULL, updated_at = ? WHERE id IN ({q_marks})",
+                (now, *material_ids)
+            )
+        else:
+            self.conn.execute(
+                "UPDATE materials SET status = 'available', collection_request_id = NULL, updated_at = ? WHERE collection_request_id = ?",
+                (now, req_id)
+            )
+
+        record_audit_event(
+            self.conn,
+            event_type="REQUEST_CANCELLED",
+            entity_type="collection_request",
+            entity_id=req_id,
+            actor_id=household_id,
+            actor_role="household",
+            details={"status": "cancelled", "materialIds": material_ids}
+        )
+        cur = self.conn.execute("SELECT * FROM collection_requests WHERE id = ?", (req_id,))
+        return self._format_request(cur.fetchone())
 
     def accept_collection_request(self, kabadiwala_id: str, request_id: str) -> Dict[str, Any]:
         cur = self.conn.execute("SELECT * FROM collection_requests WHERE id = ?", (request_id,))

@@ -164,6 +164,7 @@ def _ensure_db(target: str) -> None:
             from .repository import SqliteRecoveryRepository
             repo = SqliteRecoveryRepository(conn)
             repo.seed_initial_data()
+            conn.commit()
         _initialized_dbs.add(target)
     finally:
         conn.close()

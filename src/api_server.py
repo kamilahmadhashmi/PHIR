@@ -20,13 +20,15 @@ except ImportError:  # boto3 is optional for local mock mode
 from .area_opportunities import AreaOpportunityService, DELHI_AREAS
 from .image_storage import create_upload, delete_upload
 from .route_planner import plan_preview
-from .recovery_domain import Profile, RecoveryService, RequestStatus, RequirementStatus, Role, new_id
+from .recovery_domain import Profile, RecoveryService, RequestStatus, RequirementStatus, Role, new_id, set_deterministic_seed, reset_deterministic_seed
 
 
 ROOT = Path(__file__).resolve().parent.parent
 
 
 def build_state(with_demo_requests: bool = False) -> tuple[RecoveryService, AreaOpportunityService]:
+    if with_demo_requests:
+        set_deterministic_seed(42)
     service = RecoveryService()
     area_service = AreaOpportunityService()
     areas = {area.name: area for area in DELHI_AREAS}
@@ -135,6 +137,8 @@ def build_state(with_demo_requests: bool = False) -> tuple[RecoveryService, Area
             if index % 3 == 0:
                 requirement.fulfilled_quantity_kg = requirement.required_quantity_kg
                 requirement.status = RequirementStatus.FULFILLED
+    if with_demo_requests:
+        reset_deterministic_seed()
     return service, area_service
 
 

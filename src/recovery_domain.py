@@ -12,6 +12,7 @@ from enum import Enum
 from math import asin, cos, radians, sin, sqrt
 from math import isfinite
 from typing import Dict, Iterable, Optional
+import random
 from uuid import uuid4
 
 
@@ -45,7 +46,22 @@ def now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+_id_rng: Optional[random.Random] = None
+
+
+def set_deterministic_seed(seed: int = 42) -> None:
+    global _id_rng
+    _id_rng = random.Random(seed)
+
+
+def reset_deterministic_seed() -> None:
+    global _id_rng
+    _id_rng = None
+
+
 def new_id(prefix: str) -> str:
+    if _id_rng is not None:
+        return f"{prefix}_{_id_rng.getrandbits(48):012x}"
     return f"{prefix}_{uuid4().hex[:12]}"
 
 

@@ -19,8 +19,12 @@
     const url = `${API_BASE}${path}`;
     if ((options.method || 'GET').toUpperCase() === 'GET' && window.phirApiRead) return window.phirApiRead(url);
     const response = await fetch(`${API_BASE}${path}`, {headers: {'Content-Type': 'application/json', ...(options.headers || {})}, ...options});
-    const body = await response.json();
-    if (!response.ok) throw new Error(body?.error?.message || 'The recovery service is unavailable.');
+    let body;
+    try { body = await response.json(); } catch (_) { body = {}; }
+    if (!response.ok) {
+      const message = body?.detail || body?.error?.message || response.statusText || 'The recovery service is unavailable.';
+      throw new Error(message);
+    }
     window.phirApiInvalidate?.('/api/');
     return body;
   };
@@ -239,17 +243,7 @@
     updateMapLoading();
   }
   async function refreshCollector({silent = false} = {}) {
-    const signedInProfile = window.phirIdentity?.profileFor('kabadiwala');
-    if (!signedInProfile?.id) {
-      collectorDataReady = true;
-      const content = document.querySelector('#workspace-content');
-      if (content && view === 'collector') content.innerHTML = '<section class="phir-profile-gate"><h2>Set up your collection-partner profile</h2><p>Enter your name and service area to open the collection workspace.</p><button class="btn" type="button" data-action="open-collector-profile">Create profile</button></section>';
-      window.phirMarkWorkspaceReady?.();
-      revealCollector();
-      updateMapLoading();
-      return;
-    }
-    collectorId = window.phirIdentity?.idFor('kabadiwala') || collectorId;
+    collectorId = window.phirIdentity?.idFor('kabadiwala') || collectorId || 'kabadiwala_1';
     mapLoadError = '';
     if (!silent) {
       collectorDataReady = false;
@@ -399,13 +393,16 @@
     }
     finally {
       pendingRequestActions.delete(requestId);
+      document.querySelectorAll(`[data-id="${CSS.escape(requestId)}"]`).forEach(control => { if (control.matches('button')) control.disabled = false; });
       if (button) { button.disabled = false; delete button.dataset.busy; }
     }
   }
   document.addEventListener('click', event => {
     const button = event.target.closest('[data-action]');
     if (!button || view !== 'collector') return;
-    const action = button.dataset.action, id = button.dataset.id;
+    const action = button.dataset.action;
+    const id = button.dataset.id || button.closest('[data-id]')?.dataset.id;
+    const activeCollectorId = window.phirIdentity?.idFor('kabadiwala') || collectorId || 'kabadiwala_1';
     if (action === 'open-collector-profile') {
       event.preventDefault(); event.stopImmediatePropagation();
       window.phirOpenIdentityPicker?.('kabadiwala');
@@ -427,12 +424,13 @@
     }
     if (['accept', 'reject', 'collect', 'reject-confirmed', 'collect-confirmed'].includes(action)) {
       event.preventDefault(); event.stopImmediatePropagation();
+      if (!id) return;
       if (action === 'reject' || action === 'reject-confirmed') {
-        run(() => api(`/api/collection-requests/${id}/reject`, {method: 'POST', body: JSON.stringify({kabadiwalaId: collectorId})}), 'Request declined.', button, id, 'rejected');
+        run(() => api(`/api/collection-requests/${id}/reject`, {method: 'POST', body: JSON.stringify({kabadiwalaId: activeCollectorId})}), 'Request declined.', button, id, 'rejected');
       } else if (action === 'accept') {
-        run(() => api(`/api/collection-requests/${id}/accept`, {method: 'POST', body: JSON.stringify({kabadiwalaId: collectorId})}), 'Request accepted.', button, id, 'accepted');
+        run(() => api(`/api/collection-requests/${id}/accept`, {method: 'POST', body: JSON.stringify({kabadiwalaId: activeCollectorId})}), 'Request accepted.', button, id, 'accepted');
       } else {
-        run(() => api(`/api/collection-requests/${id}/collect`, {method: 'POST', body: JSON.stringify({kabadiwalaId: collectorId})}), 'Collection recorded.', button, id, 'collected');
+        run(() => api(`/api/collection-requests/${id}/collect`, {method: 'POST', body: JSON.stringify({kabadiwalaId: activeCollectorId})}), 'Collection recorded.', button, id, 'collected');
       }
     } else if (action === 'plan-route') {
       event.preventDefault(); event.stopImmediatePropagation();

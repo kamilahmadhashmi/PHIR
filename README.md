@@ -134,4 +134,4 @@ From the repository root, run the test suite with:
 python3 -m unittest discover -s tests -v
 ```
 
-All 38 integration and domain unit tests run in <2 seconds with zero external dependencies.
+All 43 integration, domain unit, and multilingual parity tests run in <2 seconds with zero external dependencies.

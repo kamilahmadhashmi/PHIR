@@ -123,7 +123,7 @@ This document records all architectural decisions, code refactoring, feature add
      - Bundled `phir-i18n.js` directly into the build pipeline and cache-busting regex.
      - Recompiled `frontend/amplify-site/` so that the standalone offline bundle includes the complete tri-lingual capabilities.
 - **Verification:**
-  - `python -m unittest discover -s tests -v`: **38/38 tests passing (1.767s)**.
+  - `python -m unittest discover -s tests -v`: **43/43 tests passing (1.337s)** with comprehensive coverage of API workflows, relational data integrity, EPR ledger, static asset serving, and 100% tri-lingual key parity across English, Hindi, and Odia.
   - Verified `http://localhost:8080/phir-i18n.js` returns HTTP 200 (120 KB dictionary bundle).
   - Verified UI rendering and zero-reload language switching across English, Hindi, and Odia.
 

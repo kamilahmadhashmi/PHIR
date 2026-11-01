@@ -56,6 +56,16 @@ class FastApiServerTests(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertIn("window.PHIR_API_BASE", resp.text)
 
+        # Test multilingual i18n bundle
+        resp = self.client.get("/phir-i18n.js")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("PHIR_I18N", resp.text)
+
+        # Test enhancements bundle
+        resp = self.client.get("/phir-enhancements.js")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("phirOpenMandiRates", resp.text)
+
     def test_03_household_lifecycle(self):
         # 1. Add material
         add_resp = self.client.post("/api/materials", json={

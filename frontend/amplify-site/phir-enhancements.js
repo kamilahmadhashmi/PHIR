@@ -17,6 +17,13 @@
   const style = document.createElement('style');
   style.id = 'phir-enhancement-styles';
   style.textContent = `
+    /* Header & Navigation Buttons Blend Seamlessly with Canvas */
+    .topbar,
+    .selection-page .topbar,
+    .workspace .topbar {
+      background: transparent !important;
+      background-color: transparent !important;
+    }
     .phir-rates-btn, .phir-epr-btn, .phir-nav-btn {
       display: inline-flex;
       align-items: center;
@@ -24,10 +31,11 @@
       padding: 7px 13px;
       font-size: 11px;
       font-weight: 800;
-      border: 2px solid var(--primary);
+      border: 1.5px solid var(--primary);
       border-radius: 14px 8px;
-      background: var(--surface);
-      color: var(--primary);
+      background: transparent !important;
+      background-color: transparent !important;
+      color: var(--primary) !important;
       box-shadow: 2px 2px 0 var(--secondary);
       cursor: pointer;
       text-decoration: none;
@@ -35,9 +43,15 @@
       white-space: nowrap;
     }
     .phir-rates-btn:hover, .phir-epr-btn:hover, .phir-nav-btn:hover {
-      background: var(--tint);
+      background: rgba(0, 126, 101, 0.12) !important;
+      background-color: rgba(0, 126, 101, 0.12) !important;
       transform: translateY(-2px);
       box-shadow: 3px 3px 0 var(--secondary);
+    }
+    .workspace .top-links .text-link,
+    .top-links .text-link {
+      background: transparent !important;
+      background-color: transparent !important;
     }
     .phir-pitch-nav-btn {
       background: var(--secondary) !important;

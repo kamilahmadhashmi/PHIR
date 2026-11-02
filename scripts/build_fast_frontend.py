@@ -96,7 +96,7 @@ def build(output: Path) -> None:
     # Otherwise browsers/CDNs may continue using the old interaction handlers.
     html = re.sub(
         r"(phir-(?:config|i18n|polish|identity|api-bridge|recycler-api-bridge|collector-api-bridge|enhancements).js\?v=)[^\" ]+",
-        r"\g<1>20261102-v6",
+        r"\g<1>20261102-v7",
         html,
     )
     role_delay = "},1500);"
@@ -193,7 +193,7 @@ def build(output: Path) -> None:
     (output / "phir-asset-loader.js").write_text(loader, encoding="utf-8")
     built_html = built_html.replace(
         "</body>",
-        '<script src="phir-asset-loader.js?v=20261102-v6" defer></script></body>',
+        '<script src="phir-asset-loader.js?v=20261102-v7" defer></script></body>',
         1,
     )
     (output / "index.html").write_text(built_html, encoding="utf-8")

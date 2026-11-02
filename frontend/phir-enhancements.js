@@ -17,12 +17,33 @@
   const style = document.createElement('style');
   style.id = 'phir-enhancement-styles';
   style.textContent = `
-    /* Header & Navigation Buttons Blend Seamlessly with Canvas */
+    /* Always fixed / sticky topbar with exact opaque canvas background to prevent content superimposing on scroll */
+    .selection-page,
+    .selection-page.wrap,
+    .workspace {
+      overflow: visible !important;
+    }
     .topbar,
     .selection-page .topbar,
     .workspace .topbar {
-      background: transparent !important;
-      background-color: transparent !important;
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 1000 !important;
+      background-color: #e9dab9 !important;
+      background-image: var(--site-paper-grain), var(--site-cardboard-lines), linear-gradient(115deg, #f1e5cb, #e3d0aa 65%, #eee0bf) !important;
+      background-attachment: fixed !important;
+    }
+    .workspace .topbar {
+      background-color: #fff1ca !important;
+      background-image: var(--site-paper-grain), var(--site-cardboard-lines) !important;
+      background-attachment: fixed !important;
+    }
+    html[data-theme="dark"] .topbar,
+    html[data-theme="dark"] .selection-page .topbar,
+    html[data-theme="dark"] .workspace .topbar {
+      background-color: #15171c !important;
+      background-image: var(--site-paper-grain), var(--site-cardboard-lines), linear-gradient(115deg, #191c22, #111317 65%, #1e2028) !important;
+      background-attachment: fixed !important;
     }
     .phir-rates-btn, .phir-epr-btn, .phir-nav-btn {
       display: inline-flex;

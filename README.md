@@ -344,7 +344,7 @@ Q4 2026: Financial Inclusion & ONDC Reverse Logistics
 
 ---
 
-## 📜 License & Acknowledgements
+## 📜 License & Acknowledgements:
 
 - **License**: Distributed under the [MIT License](LICENSE).
 - **Competition**: Developed with pride for **Indiathon 2026 — Powered by E-Cell IIIT Bhubaneswar**.

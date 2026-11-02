@@ -15,6 +15,7 @@
 
   // Inject enhancement styles
   const style = document.createElement('style');
+  style.textContent += `.selection-heading .eyebrow { display: none !important; }\n`;
   style.id = 'phir-enhancement-styles';
   style.textContent = `
     /* Always fixed / sticky topbar with exact opaque canvas background to prevent content superimposing on scroll */

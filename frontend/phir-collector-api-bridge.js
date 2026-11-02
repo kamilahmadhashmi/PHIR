@@ -67,6 +67,19 @@
   function applyOpportunityPagination() {
     const panel = document.querySelector('.map-layout > section:nth-child(2)');
     if (!panel) return;
+    // Inject prominent route button at the top of the collection requests
+    const heading = panel.querySelector('.section-heading');
+    if (heading && !heading.querySelector('.phir-top-route-btn')) {
+      const topRouteBtn = document.createElement('button');
+      topRouteBtn.type = 'button';
+      topRouteBtn.className = 'btn secondary phir-top-route-btn';
+      topRouteBtn.dataset.action = 'plan-route';
+      topRouteBtn.style.cssText = 'margin-left:auto; display:inline-flex; align-items:center; gap:6px; padding:6px 14px; font-size:13px; font-weight:700; border-radius:8px; cursor:pointer;';
+      const count = selectedStops.size;
+      const t = (k, fb) => (window.PHIR_I18N ? window.PHIR_I18N.t(k, fb) : fb);
+      topRouteBtn.innerHTML = count ? `🗺️ ${t('btn_plan_route', 'Plan Route')} (${count})` : t('btn_plan_route', '🗺️ Plan Pickup Route');
+      heading.appendChild(topRouteBtn);
+    }
     const cards = [...panel.querySelectorAll(':scope > article.opportunity')];
     cards.forEach((card, index) => { card.hidden = index >= opportunityCardsShown; });
     panel.querySelector('.phir-load-more-opportunities')?.remove();
@@ -461,10 +474,13 @@
       event.preventDefault(); event.stopImmediatePropagation();
       if (!id) return;
       if (action === 'reject' || action === 'reject-confirmed') {
+        event.preventDefault(); event.stopImmediatePropagation();
         run(() => api(`/api/collection-requests/${id}/reject`, {method: 'POST', body: JSON.stringify({kabadiwalaId: activeCollectorId})}), 'Request declined.', button, id, 'rejected');
       } else if (action === 'accept') {
+        event.preventDefault(); event.stopImmediatePropagation();
         run(() => api(`/api/collection-requests/${id}/accept`, {method: 'POST', body: JSON.stringify({kabadiwalaId: activeCollectorId})}), 'Request accepted.', button, id, 'accepted');
       } else {
+        event.preventDefault(); event.stopImmediatePropagation();
         run(() => api(`/api/collection-requests/${id}/collect`, {method: 'POST', body: JSON.stringify({kabadiwalaId: activeCollectorId})}), 'Collection recorded.', button, id, 'collected');
       }
     } else if (action === 'plan-route') {

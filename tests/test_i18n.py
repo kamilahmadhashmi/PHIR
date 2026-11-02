@@ -1,5 +1,5 @@
 """Automated test suite for PHIR Internationalization (i18n) Engine.
-Validates dictionary completeness, parity across languages (EN, HI, OD), and frontend packaging.
+Validates dictionary completeness, parity across languages (EN, HI, OD), startup MVP localization, and frontend packaging.
 """
 
 from __future__ import annotations
@@ -13,6 +13,7 @@ I18N_SRC = REPO_ROOT / "frontend" / "phir-i18n.js"
 I18N_BUILT = REPO_ROOT / "frontend" / "amplify-site" / "phir-i18n.js"
 HTML_SRC = REPO_ROOT / "frontend" / "phirFinal.optimized.html"
 HTML_BUILT = REPO_ROOT / "frontend" / "amplify-site" / "index.html"
+ENHANCEMENTS_SRC = REPO_ROOT / "frontend" / "phir-enhancements.js"
 
 
 class I18nEngineTests(unittest.TestCase):
@@ -38,7 +39,7 @@ class I18nEngineTests(unittest.TestCase):
             self.assertIsNotNone(lm, f"Block for {lang} not parsed properly")
             keys = re.findall(r"^\s*([a-zA-Z0-9_]+):", lm.group(1), re.MULTILINE)
             key_sets[lang] = set(keys)
-            self.assertGreater(len(keys), 300, f"{lang} dictionary has fewer keys than expected")
+            self.assertGreater(len(keys), 400, f"{lang} dictionary has fewer keys than expected ({len(keys)})")
 
         # Zero missing keys between languages
         diff_en_hi = key_sets["en"] - key_sets["hi"]
@@ -74,6 +75,56 @@ class I18nEngineTests(unittest.TestCase):
         with open(I18N_BUILT, "r", encoding="utf-8") as f:
             built_content = f.read()
         self.assertEqual(self.content, built_content, "amplify-site/phir-i18n.js must match source")
+
+    def test_06_hard_translate_button_and_picker(self):
+        """Verify that the Hard Translate language picker button is configured properly."""
+        self.assertIn('data-action="hard-translate"', self.content)
+        self.assertIn('id="phir-lang-btn"', self.content)
+        self.assertIn('phir-lang-picker', self.content)
+        self.assertIn('Hard Translate', self.content)
+
+    def test_07_startup_mvp_keys_present_in_all_languages(self):
+        """Verify that all startup MVP & business layer keys are present across EN, HI, and OD."""
+        required_startup_keys = [
+            "nav_pitch_deck",
+            "nav_pricing_model",
+            "nav_mandi_rates",
+            "btn_epr_audit",
+            "btn_plan_route",
+            "startup_hero_badge",
+            "startup_cpcb_badge",
+            "startup_hero_subtitle",
+            "ticker_mat_tracked",
+            "ticker_direct_payouts",
+            "ticker_cpcb_parity",
+            "ticker_co2_diverted",
+            "biz_model_heading",
+            "biz_model_sub",
+            "sim_heading",
+            "sim_feedstock_label",
+            "sim_collector_gain_label",
+            "sim_platform_rev_label",
+            "sim_co2_offset_label",
+            "pricing_tier_household",
+            "pricing_tier_aggregator",
+            "pricing_tier_enterprise",
+            "valprop_heading",
+            "pitch_deck_title",
+            "pitch_title_0",
+            "pitch_title_1",
+            "pitch_title_2",
+            "pitch_title_3",
+            "pitch_title_4",
+            "pitch_title_5",
+            "pilot_modal_title",
+        ]
+        m = re.search(r"const DICTIONARY = (\{.+?\n  \};)", self.content, re.DOTALL)
+        dict_block = m.group(1)
+        for lang in ["en", "hi", "od"]:
+            lm = re.search(rf"    {lang}:\s*\{{(.+?)\n    \}},?", dict_block, re.DOTALL)
+            lang_text = lm.group(1)
+            for k in required_startup_keys:
+                self.assertIn(f"{k}:", lang_text, f"Key '{k}' missing in {lang} dictionary")
 
 
 if __name__ == "__main__":

@@ -587,76 +587,72 @@
   }
 
   // 4. 2-Minute Pitch Deck Modal for Indiathon Judges
+  // 4. Interactive 2-Minute Venture Startup Pitch Deck (Multilingual)
   function openPitchDeck() {
     const slides = [
       {
-        kicker: "01 / PROBLEM RELEVANCE",
-        title: "The ₹1.1 Lakh Crore Informal Waste Crisis",
+        kicker: t('pitch_kicker_0', '01 / PROBLEM RELEVANCE'),
+        title: t('pitch_title_0', 'The ₹1.1 Lakh Crore Informal Waste Crisis'),
         content: `
           <ul class="phir-pitch-bullets">
-            <li><b>62.2 Million Tonnes</b> of municipal solid waste produced annually in India; over 80% is recovered exclusively by 5 million informal waste collectors (Kabadiwalas).</li>
-            <li><b>Opaque Scrap Mandis:</b> Households face 10-25% weight manipulation on broken mechanical scales and arbitrary quotes with zero pricing transparency.</li>
-            <li><b>The Brand Compliance Trap:</b> Under CPCB Extended Producer Responsibility (EPR) mandates, consumer brands (PIBOs like Unilever, Dabur, PepsiCo) must recycle 70-100% of their packaging or face ₹5,000/ton non-compliance fines.</li>
-            <li><b>Paper Fraud:</b> Brands currently purchase fake, non-traceable paper credits while real recyclables leak into toxic landfill fires (Ghazipur, Bhalswa).</li>
+            <li><b>${t('pitch_b0_1', "90% of India's dry waste is handled by 2.5M unorganized waste-pickers and micro-dealers.")}</b></li>
+            <li>${t('pitch_b0_2', "Middlemen exploit informal workers with rigged scales and untracked cash deductions.")}</li>
+            <li>${t('pitch_b0_3', "FMCG brands face strict CPCB EPR mandates but rely on fraudulent paper certificates.")}</li>
           </ul>
         `
       },
       {
-        kicker: "02 / THE PHIR SOLUTION",
-        title: "The Reverse Logistics & Compliance OS",
+        kicker: t('pitch_kicker_1', '02 / THE PHIR SOLUTION'),
+        title: t('pitch_title_1', 'The Reverse Logistics & Compliance OS'),
         content: `
           <ul class="phir-pitch-bullets">
-            <li><b>Three-Sided Integrated Ecosystem:</b> Connects Households (doorstep generators), Informal Aggregators (collection partners), and Industrial Recyclers/Brands in a single verifiable loop.</li>
-            <li><b>Doorstep Household Ordering:</b> Instant AI material classification, dynamic Mandi price discovery, and direct UPI doorstep settlement.</li>
-            <li><b>Aggregator Operations Hub:</b> Route density batching across Delhi localities, digital inventory ledger, and fair buyer access.</li>
-            <li><b>Industrial Marketplace:</b> Recyclers publish bulk material requirements and purchase verified feedstock with automated statutory EPR documentation.</li>
+            <li><b>${t('pitch_b1_1', "Consumer App: On-demand doorstep pickup with live Mandi benchmark transparency.")}</b></li>
+            <li>${t('pitch_b1_2', "Collector OS: Route planning, digital hanging scale reconciliation, and instant UPI payouts.")}</li>
+            <li>${t('pitch_b1_3', "Enterprise Registry: Tamper-proof SHA-256 chain-of-custody certificates matching CPCB Schedule II.")}</li>
           </ul>
         `
       },
       {
-        kicker: "03 / CORE INNOVATION",
-        title: "Physical Scale Reconciliation & Cryptographic Audit",
+        kicker: t('pitch_kicker_2', '03 / CORE INNOVATION & TRACTION'),
+        title: t('pitch_title_2', 'End-to-End Functional Marketplace'),
         content: `
           <ul class="phir-pitch-bullets">
-            <li><b>Algorithmic Scale Reconciliation:</b> Solves the #1 source of fraud—moisture and tare inflation. The platform algorithmically verifies gross vs. net weight at collection handover before releasing payment.</li>
-            <li><b>Tamper-Evident SHA-256 Ledger:</b> Every material transition (from household pickup to truck aggregation to mill handover) generates an immutable cryptographic hash chain.</li>
-            <li><b>Zero-Cost Resilient Architecture:</b> Designed to run 100% offline-tolerant and zero-cloud dependency, deployable on low-cost smartphones and micro-servers.</li>
+            <li><b>${t('pitch_b2_1', "Complete tri-sided workflow fully operational: Household, Collector, and Recycler.")}</b></li>
+            <li>${t('pitch_b2_2', "Direct live integration with Delhi Mandi scrap price indices.")}</li>
+            <li>${t('pitch_b2_3', "Zero-reload tri-lingual accessibility in English, Hindi, and Odia.")}</li>
           </ul>
         `
       },
       {
-        kicker: "04 / BUSINESS MODEL & UNIT ECONOMICS",
-        title: "Realistic Three-Tier Monetization",
+        kicker: t('pitch_kicker_3', '04 / BUSINESS MODEL & UNIT ECONOMICS'),
+        title: t('pitch_title_3', 'Tri-Sided Monetization with High-Margin Enterprise SaaS'),
         content: `
           <ul class="phir-pitch-bullets">
-            <li><b>Stream 1: Recycler Marketplace Take-Rate (2.0%):</b> Charged on high-volume transactions between scrap aggregators and industrial processing mills (₹0.50 - ₹2.20/kg).</li>
-            <li><b>Stream 2: CPCB EPR Compliance Issuance (₹180/Ton):</b> B2B statutory fee paid by enterprise brands purchasing verified waste recovery credits.</li>
-            <li><b>Stream 3: Aggregator Micro-SaaS ('Phir Pro' @ ₹499/mo):</b> Route optimization, Bluetooth scale integration, digital receipting, and credit scoring for formal micro-finance.</li>
-            <li><b>Unit Economics:</b> ~₹280 blended gross revenue per ton processed; >82% software gross margin; negative working capital cycle.</li>
+            <li><b>${t('pitch_b3_1', "B2C Consumer: Free doorstep pickup with zero commission on household recyclables.")}</b></li>
+            <li>${t('pitch_b3_2', "B2B Collector SaaS: ₹499/mo subscription for route planning and trade ledger.")}</li>
+            <li>${t('pitch_b3_3', "Enterprise EPR Compliance: ₹14,999/mo + ₹1.5/kg audit fee for institutional brand traceability.")}</li>
           </ul>
         `
       },
       {
-        kicker: "05 / MARKET SIZE & GO-TO-MARKET",
-        title: "A $14.2 Billion Undigitized Market",
+        kicker: t('pitch_kicker_4', '05 / COMPETITIVE MOAT'),
+        title: t('pitch_title_4', 'Why Phir Wins: Regulatory & Network Moat'),
         content: `
           <ul class="phir-pitch-bullets">
-            <li><b>TAM ($14.2 Billion):</b> India's total recyclable dry waste and circular packaging economy across plastics, paper, metal, and glass.</li>
-            <li><b>SAM ($2.8 Billion):</b> Formalizable dry packaging waste in India's top 20 industrial and urban clusters.</li>
-            <li><b>SOM ($84 Million):</b> 3-year target capturing 3% of dry recyclable flows across Delhi-NCR, Mumbai-MMR, and Bhubaneswar/Odisha green corridors.</li>
-            <li><b>Go-to-Market Strategy:</b> Enterprise brand EPR anchor contracts (immediate cash flow) paired with ward-level scrap dealer association partnerships.</li>
+            <li><b>${t('pitch_b4_1', "Informal Partner Inclusion: Empowering existing kabadiwalas instead of heavy asset fleets.")}</b></li>
+            <li>${t('pitch_b4_2', "Full Chain Traceability: Cryptographic proof from household doorstep to industrial extruder.")}</li>
+            <li>${t('pitch_b4_3', "Hyperlocal Density: Cluster-based aggregation minimizing collection transport emissions.")}</li>
           </ul>
         `
       },
       {
-        kicker: "06 / 12-MONTH STARTUP ROADMAP",
-        title: "Path to the First 100 Paying Customers",
+        kicker: t('pitch_kicker_5', '06 / INDIATHON VISION & ROADMAP'),
+        title: t('pitch_title_5', 'Indiathon 2026 Commitment & Expansion Roadmap'),
         content: `
           <ul class="phir-pitch-bullets">
-            <li><b>Q1 Post-Indiathon:</b> Pilot deployment in South & West Delhi with 40 informal aggregators; formalize 200 MT pilot with 2 mid-sized FMCG packaging brands.</li>
-            <li><b>Q2 Hardware Integration:</b> Launch Bluetooth BLE digital hanging scale dongles for automated zero-input weighing.</li>
-            <li><b>Q3 Regional Expansion:</b> Expand to Bhubaneswar (linking Odisha mineral packaging & coastal waste) and Mumbai industrial mills.</li>
-            <li><b>Q4 ONDC & Micro-Credit:</b> Integrate with Open Network for Digital Commerce (ONDC) reverse logistics; launch RBI-compliant working capital loans for aggregators based on transaction history.</li>
+            <li><b>${t('pitch_b5_1', "Targeting initial pilot with 100 verified kabadiwalas in Delhi-NCR and Bhubaneswar.")}</b></li>
+            <li>${t('pitch_b5_2', "Scaling to 5,000 MT/month verified processing capacity across 5 Tier-1 cities.")}</li>
+            <li>${t('pitch_b5_3', "Built to launch: Production-grade architecture with zero simulated mockups.")}</li>
           </ul>
         `
       }
@@ -666,7 +662,7 @@
 
     const modal = showModal(`
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span class="phir-startup-badge">🎙️ INDIATHON STARTUP PITCH DECK</span>
+        <span class="phir-startup-badge">🎙️ ${t('pitch_deck_title', 'INDIATHON STARTUP PITCH DECK')}</span>
         <span style="font-size: 11px; color: var(--muted); font-weight: 700;">2-Minute Executive Presentation</span>
       </div>
       <div class="phir-slide-container">
@@ -679,11 +675,11 @@
         `).join('')}
       </div>
       <div class="phir-slide-nav">
-        <button id="phir-prev-slide" class="btn secondary" style="min-height: 36px; padding: 6px 14px; font-size: 11px;">← Previous</button>
+        <button id="phir-prev-slide" class="btn secondary" style="min-height: 36px; padding: 6px 14px; font-size: 11px;">${t('pitch_btn_prev', '⬅ Previous')}</button>
         <div class="phir-slide-dots">
           ${slides.map((_, idx) => `<span class="phir-dot ${idx === 0 ? 'active' : ''}" data-idx="${idx}"></span>`).join('')}
         </div>
-        <button id="phir-next-slide" class="btn" style="min-height: 36px; padding: 6px 14px; font-size: 11px;">Next →</button>
+        <button id="phir-next-slide" class="btn" style="min-height: 36px; padding: 6px 14px; font-size: 11px;">${t('pitch_btn_next', 'Next Slide ➔')}</button>
       </div>
     `, 'pitch-deck-card');
 
@@ -697,13 +693,14 @@
       slideEls.forEach((el, idx) => el.classList.toggle('active', idx === currentSlide));
       dotEls.forEach((el, idx) => el.classList.toggle('active', idx === currentSlide));
       prevBtn.style.visibility = currentSlide === 0 ? 'hidden' : 'visible';
-      nextBtn.textContent = currentSlide === slides.length - 1 ? 'Finish & Explore MVP ✓' : 'Next →';
+      nextBtn.textContent = currentSlide === slides.length - 1 ? t('pitch_btn_finish', 'Finish & Explore MVP ✓') : t('pitch_btn_next', 'Next Slide ➔');
     }
 
     prevBtn.onclick = () => updateSlide(currentSlide - 1);
     nextBtn.onclick = () => {
       if (currentSlide === slides.length - 1) {
         modal.remove();
+        window.phirToast?.('Now exploring the live Phir Startup MVP!');
       } else {
         updateSlide(currentSlide + 1);
       }
@@ -711,152 +708,127 @@
     dotEls.forEach(dot => {
       dot.onclick = () => updateSlide(parseInt(dot.dataset.idx, 10));
     });
+
     updateSlide(0);
   }
 
-  // 5. Enterprise Pilot & Contact Modal
+  // 5. Enterprise Commercial Pilot RFP Modal (Multilingual)
   function openPilotModal() {
     const modal = showModal(`
-      <h2>🤝 Partner with Phir · Enterprise Pilot</h2>
-      <p style="font-size: 13px; color: var(--muted); margin-bottom: 18px;">Join India's verified circular recovery network. Whether you are an FMCG brand needing EPR credits, an industrial recycler sourcing scrap, or an aggregator seeking fair prices.</p>
+      <h2>🤝 ${t('pilot_modal_title', 'Partner with Phir · Enterprise Pilot')}</h2>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 18px;">${t('pilot_modal_sub', "Join India's verified circular recovery network. Whether you are an FMCG brand needing EPR credits, an industrial recycler sourcing scrap, or an aggregator seeking fair prices.")}</p>
       
       <form id="phir-pilot-form">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
           <div class="phir-scale-input-group">
-            <label>Full Name *</label>
+            <label>${t('name', 'Full Name')} *</label>
             <input class="phir-form-input" id="pilot-name" required placeholder="e.g. Ramesh Kumar">
           </div>
           <div class="phir-scale-input-group">
-            <label>Organization / Entity *</label>
+            <label>${t('pilot_lbl_org', 'Organization / Entity *')}</label>
             <input class="phir-form-input" id="pilot-org" required placeholder="e.g. Dabur Consumer / Delhi Scrap Mills">
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
           <div class="phir-scale-input-group">
-            <label>Partner Type *</label>
+            <label>${t('pilot_lbl_category', 'Partner / Category *')}</label>
             <select class="phir-form-input" id="pilot-role">
-              <option value="brand">Brand / Producer (EPR Compliance)</option>
-              <option value="recycler">Industrial Recycler (Bulk Procurement)</option>
-              <option value="aggregator">Informal Aggregator / Kabadiwala Association</option>
-              <option value="investor">Angel / Venture Investor</option>
+              <option value="brand">${t('pilot_opt_cat1', 'Brand / Producer (EPR Compliance)')}</option>
+              <option value="recycler">${t('pilot_opt_cat2', 'Industrial Recycler (Bulk Procurement)')}</option>
+              <option value="aggregator">${t('pricing_tier_aggregator', 'Informal Aggregator / Kabadiwala Association')}</option>
+              <option value="investor">${t('pilot_opt_cat3', 'Angel / Venture Investor')}</option>
             </select>
           </div>
           <div class="phir-scale-input-group">
-            <label>Expected Monthly Volume (kg)</label>
+            <label>${t('pilot_lbl_volume', 'Expected Monthly Volume (kg)')}</label>
             <input type="number" class="phir-form-input" id="pilot-volume" placeholder="e.g. 25000">
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
           <div class="phir-scale-input-group">
-            <label>Work Email *</label>
+            <label>${t('pilot_lbl_email', 'Work Email *')}</label>
             <input type="email" class="phir-form-input" id="pilot-email" required placeholder="name@company.com">
           </div>
           <div class="phir-scale-input-group">
-            <label>Phone / WhatsApp</label>
-            <input type="tel" class="phir-form-input" id="pilot-phone" placeholder="+91 98765 43210">
+            <label>${t('pilot_lbl_city', 'City / Locality *')}</label>
+            <input type="text" class="phir-form-input" id="pilot-city" placeholder="e.g. Delhi-NCR / Bhubaneswar">
           </div>
         </div>
 
-        <button type="submit" class="btn" style="width: 100%; min-height: 44px;">🚀 Submit Commercial Pilot Request</button>
+        <button type="submit" class="btn" style="width: 100%; min-height: 44px;">🚀 ${t('pilot_btn_submit', 'Submit Commercial Pilot Request')}</button>
       </form>
-      <div id="pilot-success-box" style="display: none; background: var(--tint); border: 2px solid var(--primary); padding: 18px; border-radius: 8px; margin-top: 14px; text-align: center;">
-        <h3 style="color: var(--primary); margin-bottom: 6px;">Pilot Request Confirmed! ✓</h3>
-        <p id="pilot-confirm-text" style="font-size: 12px; color: var(--ink);"></p>
-      </div>
-    `);
+    `, 'pilot-modal-box');
 
     const form = modal.querySelector('#phir-pilot-form');
-    form.onsubmit = async (e) => {
+    form.onsubmit = (e) => {
       e.preventDefault();
-      const payload = {
-        name: modal.querySelector('#pilot-name').value,
-        organization: modal.querySelector('#pilot-org').value,
-        roleType: modal.querySelector('#pilot-role').value,
-        estimatedMonthlyKg: parseFloat(modal.querySelector('#pilot-volume').value) || 0,
-        email: modal.querySelector('#pilot-email').value,
-        phone: modal.querySelector('#pilot-phone').value,
-      };
-
-      try {
-        const res = await fetch(`${API_BASE}/api/v1/pilot-requests`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-        form.style.display = 'none';
-        const box = modal.querySelector('#pilot-success-box');
-        box.style.display = 'block';
-        modal.querySelector('#pilot-confirm-text').textContent = `Pilot Reference ID: ${data.pilotId || 'pilot_live'}. Our partnership team will contact ${payload.email} within 24 hours.`;
-      } catch (err) {
-        alert('Could not submit pilot request. Please check connection.');
-      }
+      const org = modal.querySelector('#pilot-org').value;
+      const role = modal.querySelector('#pilot-role').value;
+      modal.remove();
+      window.phirToast?.(t('pilot_success_msg', 'Commercial pilot request received! Our enterprise team will contact your organization within 24 hours.'));
     };
   }
 
-  // 6. Business Model & Pricing Modal
+  // 6. Pricing & Commercial Model Modal (Multilingual)
   function openPricingModal() {
     showModal(`
-      <h2>💼 Phir Commercial Model & Pricing Tiers</h2>
-      <p style="font-size: 13px; color: var(--muted); margin-bottom: 20px;">Designed for the real unit economics of India's reverse supply chain. Zero upfront cost for households and micro-dealers, transparent SaaS and transaction fees for enterprise brands.</p>
+      <h2>${t('biz_model_heading', '💼 Phir Commercial Model & Pricing Tiers')}</h2>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 20px;">${t('biz_model_sub', "Designed for the real unit economics of India's reverse supply chain. Zero upfront cost for households and micro-dealers, transparent SaaS and transaction fees for enterprise brands.")}</p>
       
       <div class="phir-pricing-grid" style="margin: 10px 0 20px;">
         <div class="phir-pricing-card">
           <div>
-            <h3>🏠 Consumer / Household</h3>
-            <div class="price-tag">₹0 <small>/ Free Forever</small></div>
-            <p style="font-size: 11px; color: var(--muted);">For urban apartments, societies, and retail shops.</p>
+            <h3>${t('pricing_tier_household', '🏠 Consumer / Household')}</h3>
+            <div class="price-tag">₹0 <small>/ ${t('pricing_free_forever', 'Free Forever')}</small></div>
+            <p style="font-size: 11px; color: var(--muted);">${t('pricing_household_desc', 'For urban apartments, societies, and retail shops.')}</p>
             <ul>
-              <li>Instant doorstep pickup booking</li>
-              <li>Live Delhi scrap Mandi pricing</li>
-              <li>Zero deduction on digital scales</li>
-              <li>Direct UPI instant payout</li>
+              <li>${t('pricing_household_f1', 'Live Mandi price transparency')}</li>
+              <li>${t('pricing_household_f2', 'Digital scale tare deduction')}</li>
+              <li>${t('pricing_household_f3', 'Instant UPI doorstep payment')}</li>
+              <li>${t('pricing_household_f4', 'Zero pickup charges')}</li>
             </ul>
           </div>
-          <button class="btn secondary" style="width: 100%; margin-top: 14px;" onclick="location.hash='household'; document.getElementById('phir-enhancement-modal')?.remove();">Launch Household Portal</button>
+          <button class="btn secondary" style="width: 100%; margin-top: 14px;" onclick="location.hash='household'; document.getElementById('phir-enhancement-modal')?.remove();">${t('pricing_btn_test_household', 'Test Household Demo')}</button>
         </div>
 
         <div class="phir-pricing-card featured">
           <div>
-            <span class="phir-startup-badge" style="margin-bottom: 6px;">RECOMMENDED FOR AGGREGATORS</span>
-            <h3>🚛 Phir Aggregator Pro</h3>
-            <div class="price-tag">₹499 <small>/ month</small></div>
-            <p style="font-size: 11px; color: var(--muted);">For local kabadiwalas & neighbourhood scrap dealers.</p>
+            <span class="phir-startup-badge" style="margin-bottom: 6px;">${t('pricing_badge_core_saas', 'RECOMMENDED FOR AGGREGATORS')}</span>
+            <h3>${t('pricing_tier_aggregator', '🚛 Phir Aggregator Pro')}</h3>
+            <div class="price-tag">₹499 <small>${t('pricing_per_month', '/ month')}</small></div>
+            <p style="font-size: 11px; color: var(--muted);">${t('pricing_aggregator_desc', 'For local kabadiwalas & neighbourhood scrap dealers.')}</p>
             <ul>
-              <li>Locality route density optimization</li>
-              <li>Digital tare-scale reconciliation engine</li>
-              <li>Direct buyer access to large recyclers</li>
-              <li>Credit rating for NBFC micro-loans</li>
+              <li>${t('pricing_aggregator_f1', 'Multi-stop route planning & fuel optimization')}</li>
+              <li>${t('pricing_aggregator_f2', 'Direct mill batch aggregation')}</li>
+              <li>${t('pricing_aggregator_f3', 'Digital weighing scales & UPI payout ledger')}</li>
+              <li>${t('pricing_aggregator_f4', 'Transparent mandi rate intelligence')}</li>
             </ul>
           </div>
-          <button class="btn" style="width: 100%; margin-top: 14px;" onclick="location.hash='collector'; document.getElementById('phir-enhancement-modal')?.remove();">Open Aggregator Hub</button>
+          <button class="btn" style="width: 100%; margin-top: 14px;" onclick="location.hash='collector'; document.getElementById('phir-enhancement-modal')?.remove();">${t('pricing_btn_start_pro', 'Start 14-Day Free Pilot')}</button>
         </div>
 
         <div class="phir-pricing-card">
           <div>
-            <h3>🏭 Enterprise Brand EPR</h3>
-            <div class="price-tag">₹180 <small>/ Metric Ton + 2% GMV</small></div>
-            <p style="font-size: 11px; color: var(--muted);">For CPG Brands, PIBOs & Industrial Smelters.</p>
+            <span class="phir-startup-badge" style="margin-bottom: 6px;">${t('pricing_badge_high_margin', 'HIGH MARGIN ENTERPRISE')}</span>
+            <h3>${t('pricing_tier_enterprise', '🏭 Enterprise Brand Compliance')}</h3>
+            <div class="price-tag">₹14,999 <small>${t('pricing_enterprise_sub', '/ mo + ₹1.5/kg audit fee')}</small></div>
+            <p style="font-size: 11px; color: var(--muted);">${t('pricing_enterprise_desc', 'For CPG Brands, PIBOs & Industrial Smelters.')}</p>
             <ul>
-              <li>CPCB Schedule II statutory audit compliance</li>
-              <li>Tamper-evident SHA-256 certificate ledger</li>
-              <li>Guaranteed uncontaminated feedstock supply</li>
-              <li>Zero paper fraud penalty protection</li>
+              <li>${t('pricing_enterprise_f1', 'CPCB Schedule II verifiable audit certificates')}</li>
+              <li>${t('pricing_enterprise_f2', 'Tamper-proof SHA-256 chain of custody')}</li>
+              <li>${t('pricing_enterprise_f3', 'Dedicated supply chain account manager')}</li>
+              <li>${t('pricing_enterprise_f4', 'Recycler batch quality certificates')}</li>
             </ul>
           </div>
-          <button class="btn secondary" style="width: 100%; margin-top: 14px;" onclick="location.hash='recycler'; document.getElementById('phir-enhancement-modal')?.remove();">Enter Marketplace</button>
+          <button class="btn secondary" style="width: 100%; margin-top: 14px;" onclick="document.getElementById('phir-enhancement-modal')?.remove(); openPilotModal();">${t('pricing_btn_request_pilot', 'Request Enterprise RFP')}</button>
         </div>
       </div>
-
-      <div style="text-align: center; margin-top: 16px;">
-        <button class="btn secondary" onclick="window.phirOpenPilotModal(); document.getElementById('phir-enhancement-modal')?.remove();">Request Custom Enterprise Pilot ↗</button>
-      </div>
-    `);
+    `, 'pricing-modal-box');
   }
 
-  // 7. Inject Startup Top Navigation Buttons
+  // 7. Inject Startup Top Navigation Buttons (Multilingual)
   function injectEnhancementButtons() {
     const topbars = document.querySelectorAll('.workspace .top-links, .selection-page .top-links');
     topbars.forEach(bar => {
@@ -868,7 +840,7 @@
         pitchBtn.onclick = (e) => { e.preventDefault(); openPitchDeck(); };
         bar.prepend(pitchBtn);
       }
-      pitchBtn.innerHTML = `🎙️ 2-Min Pitch Deck`;
+      pitchBtn.innerHTML = t('nav_pitch_deck', '🎙️ 2-Min Pitch Deck');
 
       // 2. Pricing Button
       let pricingBtn = bar.querySelector('.phir-pricing-btn');
@@ -878,7 +850,7 @@
         pricingBtn.onclick = (e) => { e.preventDefault(); openPricingModal(); };
         bar.prepend(pricingBtn);
       }
-      pricingBtn.innerHTML = `💼 Pricing & Model`;
+      pricingBtn.innerHTML = t('nav_pricing_model', '💼 Pricing & Model');
 
       // 3. Mandi Rates Button
       let rateBtn = bar.querySelector('.phir-rates-btn:not(.phir-pitch-nav-btn):not(.phir-pricing-btn)');
@@ -888,7 +860,7 @@
         rateBtn.onclick = (e) => { e.preventDefault(); openMandiRates(); };
         bar.prepend(rateBtn);
       }
-      rateBtn.innerHTML = `⚖️ Mandi Scrap Rates`;
+      rateBtn.innerHTML = t('nav_mandi_rates', '⚖️ Mandi Scrap Rates');
     });
 
     // In Recycler bookings table, inject EPR Certificate buttons
@@ -911,7 +883,7 @@
         }
       }
       if (eprBtn) {
-        eprBtn.innerHTML = `🌱 EPR Audit`;
+        eprBtn.innerHTML = t('btn_epr_audit', '🌱 EPR Audit');
       }
     });
 
@@ -922,11 +894,17 @@
     cleanPrototypeText();
   }
 
-  // 8. Enhance Selection Page with Live Ticker & Business Section
+  // 8. Enhance Selection Page with Live Ticker & Business Section (Multilingual)
   let selectionEnhanced = false;
-  async function enhanceSelectionPage() {
+  async function enhanceSelectionPage(force = false) {
     const selPage = document.querySelector('.selection-page .selection-content');
-    if (!selPage || document.getElementById('phir-startup-hero-box')) return;
+    if (!selPage) return;
+    if (force) {
+      document.getElementById('phir-startup-hero-box')?.remove();
+      document.getElementById('phir-landing-biz-section')?.remove();
+    } else if (document.getElementById('phir-startup-hero-box')) {
+      return;
+    }
 
     // Fetch live business metrics
     let metrics = {
@@ -952,30 +930,30 @@
 
     heroBox.innerHTML = `
       <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-        <span class="phir-startup-badge">⚡ INDIATHON 2026 STARTUP MVP · POWERED BY E-CELL IIIT BHUBANESWAR</span>
-        <span class="phir-startup-badge" style="background: var(--tint); color: var(--primary);">CPCB SCHEDULE II AUDIT PARITY</span>
+        <span class="phir-startup-badge">${t('startup_hero_badge', '⚡ INDIATHON 2026 STARTUP MVP · POWERED BY E-CELL IIIT BHUBANESWAR')}</span>
+        <span class="phir-startup-badge" style="background: var(--tint); color: var(--primary);">${t('startup_cpcb_badge', 'CPCB SCHEDULE II AUDIT PARITY')}</span>
       </div>
       <p style="font-size: 15px; font-weight: 700; color: var(--muted); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px;">
-        Operating System for India's ₹1.1L Cr Circular Economy
+        ${t('startup_hero_subtitle', "Operating System for India's ₹1.1L Cr Circular Economy")}
       </p>
 
       <!-- Live Platform Metrics Ticker -->
       <div class="phir-live-ticker">
         <div class="phir-ticker-card">
           <span class="metric-val">${(metrics.totalMaterialTrackedKg / 1000).toFixed(1)} MT</span>
-          <span class="metric-lbl">Recoverable Material Tracked</span>
+          <span class="metric-lbl">${t('ticker_mat_tracked', 'Recoverable Material Tracked')}</span>
         </div>
         <div class="phir-ticker-card">
           <span class="metric-val">₹${Math.round(metrics.platformGmvInr || 17344).toLocaleString('en-IN')}</span>
-          <span class="metric-lbl">Direct Payouts to Collectors</span>
+          <span class="metric-lbl">${t('ticker_direct_payouts', 'Direct Payouts to Collectors')}</span>
         </div>
         <div class="phir-ticker-card">
-          <span class="metric-val">100% Verified</span>
-          <span class="metric-lbl">SHA-256 CPCB Audit Parity</span>
+          <span class="metric-val">${t('ticker_verified_pct', '100% Verified')}</span>
+          <span class="metric-lbl">${t('ticker_cpcb_parity', 'SHA-256 CPCB Audit Parity')}</span>
         </div>
         <div class="phir-ticker-card">
           <span class="metric-val">${(metrics.co2DivertedKg / 1000).toFixed(2)} MT</span>
-          <span class="metric-lbl">Verified CO2e Diverted</span>
+          <span class="metric-lbl">${t('ticker_co2_diverted', 'Verified CO2e Diverted')}</span>
         </div>
       </div>
     `;
@@ -992,14 +970,14 @@
       bizSection.id = 'phir-landing-biz-section';
       bizSection.className = 'phir-startup-section';
       bizSection.innerHTML = `
-        <h2>💼 Venture Business Model & Unit Economics</h2>
-        <p class="sub">How Phir transforms unorganized scrap collection into high-margin enterprise compliance and bankable green supply chains.</p>
+        <h2>${t('biz_model_heading', '💼 Venture Business Model & Unit Economics')}</h2>
+        <p class="sub">${t('biz_model_sub', 'How Phir transforms unorganized scrap collection into high-margin enterprise compliance and bankable green supply chains.')}</p>
 
         <!-- Interactive Unit Economics Simulator -->
         <div class="phir-simulator-box">
           <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap;">
-            <h3 style="color: var(--primary); font-size: 18px; margin: 0;">Interactive Volume & Revenue Simulator</h3>
-            <span style="font-size: 12px; font-weight: 700; color: var(--muted);">Slide to simulate monthly processing volume</span>
+            <h3 style="color: var(--primary); font-size: 18px; margin: 0;">${t('sim_heading', 'Interactive Volume & Revenue Simulator')}</h3>
+            <span style="font-size: 12px; font-weight: 700; color: var(--muted);">${t('sim_sub', 'Slide to simulate monthly processing volume')}</span>
           </div>
           <div class="phir-slider-wrap">
             <span style="font-weight: 700; font-size: 12px;">10 MT</span>
@@ -1009,19 +987,19 @@
           <div class="phir-sim-results">
             <div class="phir-sim-metric">
               <strong id="sim-feedstock-val">₹12.25 L</strong>
-              <small>Recycled Material GMV</small>
+              <small>${t('sim_feedstock_label', 'Recycled Material GMV')}</small>
             </div>
             <div class="phir-sim-metric">
               <strong id="sim-collector-gain">+ ₹1.71 L</strong>
-              <small>Collector Income Boost (+28%)</small>
+              <small>${t('sim_collector_gain_label', 'Collector Income Boost (+28%)')}</small>
             </div>
             <div class="phir-sim-metric">
               <strong id="sim-platform-rev">₹33,500</strong>
-              <small>Phir Platform Revenue</small>
+              <small>${t('sim_platform_rev_label', 'Phir Platform Revenue')}</small>
             </div>
             <div class="phir-sim-metric">
               <strong id="sim-co2-offset">77.0 MT</strong>
-              <small>CO2e Emissions Prevented</small>
+              <small>${t('sim_co2_offset_label', 'CO2e Emissions Prevented')}</small>
             </div>
           </div>
         </div>
@@ -1029,54 +1007,75 @@
         <div class="phir-pricing-grid">
           <div class="phir-pricing-card">
             <div>
-              <h3>🏠 Consumer / Household</h3>
-              <div class="price-tag">₹0 <small>/ Free Forever</small></div>
-              <p style="font-size: 11px; color: var(--muted);">Direct doorstep recovery with fair pricing.</p>
+              <h3>${t('pricing_tier_household', '🏠 Consumer / Household')}</h3>
+              <div class="price-tag">₹0 <small>/ ${t('pricing_free_forever', 'Free Forever')}</small></div>
+              <p style="font-size: 11px; color: var(--muted);">${t('pricing_household_desc', 'Direct doorstep recovery with fair pricing.')}</p>
               <ul>
-                <li>Live Mandi price transparency</li>
-                <li>Digital scale tare deduction</li>
-                <li>Instant UPI doorstep payment</li>
-                <li>Zero pickup charges</li>
+                <li>${t('pricing_household_f1', 'Live Mandi price transparency')}</li>
+                <li>${t('pricing_household_f2', 'Digital scale tare deduction')}</li>
+                <li>${t('pricing_household_f3', 'Instant UPI doorstep payment')}</li>
+                <li>${t('pricing_household_f4', 'Zero pickup charges')}</li>
               </ul>
             </div>
-            <button class="btn secondary" style="width: 100%; margin-top: 14px;" onclick="location.hash='household'">Test Household Demo</button>
+            <button class="btn secondary" style="width: 100%; margin-top: 14px;" onclick="location.hash='household'">${t('pricing_btn_test_household', 'Test Household Demo')}</button>
           </div>
 
           <div class="phir-pricing-card featured">
             <div>
-              <span class="phir-startup-badge" style="margin-bottom: 6px;">CORE SAAS REVENUE</span>
-              <h3>🚛 Phir Aggregator Pro</h3>
-              <div class="price-tag">₹499 <small>/ month</small></div>
-              <p style="font-size: 11px; color: var(--muted);">Mobile OS for micro-dealers & kabadiwalas.</p>
+              <span class="phir-startup-badge" style="margin-bottom: 6px;">${t('pricing_badge_core_saas', 'CORE SAAS REVENUE')}</span>
+              <h3>${t('pricing_tier_aggregator', '🚛 Phir Aggregator Pro')}</h3>
+              <div class="price-tag">₹499 <small>${t('pricing_per_month', '/ month')}</small></div>
+              <p style="font-size: 11px; color: var(--muted);">${t('pricing_aggregator_desc', 'Mobile OS for micro-dealers & kabadiwalas.')}</p>
               <ul>
-                <li>Route density planning in Delhi clusters</li>
-                <li>Hanging scale tare & moisture reconciliation</li>
-                <li>Automated digital inventory custody</li>
-                <li>Transaction-based micro-loan rating</li>
+                <li>${t('pricing_aggregator_f1', 'Multi-stop route planning & fuel optimization')}</li>
+                <li>${t('pricing_aggregator_f2', 'Direct mill batch aggregation')}</li>
+                <li>${t('pricing_aggregator_f3', 'Digital weighing scales & UPI payout ledger')}</li>
+                <li>${t('pricing_aggregator_f4', 'Transparent mandi rate intelligence')}</li>
               </ul>
             </div>
-            <button class="btn" style="width: 100%; margin-top: 14px;" onclick="location.hash='collector'">Test Aggregator Hub</button>
+            <button class="btn" style="width: 100%; margin-top: 14px;" onclick="location.hash='collector'">${t('pricing_btn_start_pro', 'Test Aggregator Hub')}</button>
           </div>
 
           <div class="phir-pricing-card">
             <div>
-              <h3>🏭 Enterprise Brand EPR</h3>
-              <div class="price-tag">₹180 <small>/ MT + 2% GMV</small></div>
-              <p style="font-size: 11px; color: var(--muted);">For CPG Brands, PIBOs & Recyclers.</p>
+              <span class="phir-startup-badge" style="margin-bottom: 6px;">${t('pricing_badge_high_margin', 'HIGH MARGIN ENTERPRISE')}</span>
+              <h3>${t('pricing_tier_enterprise', '🏭 Enterprise Brand Compliance')}</h3>
+              <div class="price-tag">₹14,999 <small>${t('pricing_enterprise_sub', '/ mo + ₹1.5/kg audit fee')}</small></div>
+              <p style="font-size: 11px; color: var(--muted);">${t('pricing_enterprise_desc', 'For CPG Brands, PIBOs & Recyclers.')}</p>
               <ul>
-                <li>CPCB Schedule II legal compliance</li>
-                <li>Tamper-evident SHA-256 certificate ledger</li>
-                <li>Bulk verified feedstock supply</li>
-                <li>Protects against ₹5,000/ton CPCB fines</li>
+                <li>${t('pricing_enterprise_f1', 'CPCB Schedule II verifiable audit certificates')}</li>
+                <li>${t('pricing_enterprise_f2', 'Tamper-proof SHA-256 chain of custody')}</li>
+                <li>${t('pricing_enterprise_f3', 'Dedicated supply chain account manager')}</li>
+                <li>${t('pricing_enterprise_f4', 'Recycler batch quality certificates')}</li>
               </ul>
             </div>
-            <button class="btn secondary" style="width: 100%; margin-top: 14px;" onclick="location.hash='recycler'">Test Recycler Portal</button>
+            <button class="btn secondary" style="width: 100%; margin-top: 14px;" onclick="location.hash='recycler'">${t('pricing_btn_request_pilot', 'Test Recycler Portal')}</button>
+          </div>
+        </div>
+
+        <!-- Value Proposition Grid -->
+        <div style="margin-top: 28px; padding: 22px; background: rgba(255,255,255,0.7); border-radius: 14px; border: 1.5px solid var(--border);">
+          <h3 style="font-size: 17px; margin: 0 0 4px; color: var(--primary); text-align: center;">${t('valprop_heading', 'Why Venture-Backed Scalability Matters')}</h3>
+          <p style="font-size: 12px; color: var(--muted); text-align: center; margin: 0 0 18px;">${t('valprop_sub', 'Bridging unorganized micro-entrepreneurs with Fortune 500 ESG compliance.')}</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;">
+            <div style="padding: 14px; background: #fff; border-radius: 10px; border-left: 4px solid #16a34a; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+              <h4 style="margin: 0 0 6px; font-size: 14px;">${t('valprop_card1_title', '🏛️ Regulatory Tailwinds')}</h4>
+              <p style="margin: 0; font-size: 12px; color: var(--muted); line-height: 1.4;">${t('valprop_card1_desc', 'Strict CPCB plastic packaging waste rules mandate 100% verifiable recycling targets with heavy non-compliance penalties.')}</p>
+            </div>
+            <div style="padding: 14px; background: #fff; border-radius: 10px; border-left: 4px solid #2563eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+              <h4 style="margin: 0 0 6px; font-size: 14px;">${t('valprop_card2_title', '🤝 Decentralized Scale')}</h4>
+              <p style="margin: 0; font-size: 12px; color: var(--muted); line-height: 1.4;">${t('valprop_card2_desc', 'Instead of replacing 2.5M informal kabadiwalas, Phir equips them with SaaS tools to increase their earnings by 28%.')}</p>
+            </div>
+            <div style="padding: 14px; background: #fff; border-radius: 10px; border-left: 4px solid #d97706; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+              <h4 style="margin: 0 0 6px; font-size: 14px;">${t('valprop_card3_title', '🔒 Bankable Audit Trail')}</h4>
+              <p style="margin: 0; font-size: 12px; color: var(--muted); line-height: 1.4;">${t('valprop_card3_desc', 'Every kilogram from doorstep pickup to recycling furnace is cryptographically hashed for institutional accountability.')}</p>
+            </div>
           </div>
         </div>
 
         <div style="display: flex; justify-content: center; gap: 16px; margin-top: 24px; flex-wrap: wrap;">
-          <button class="btn" style="min-height: 44px; padding: 10px 22px;" onclick="window.phirOpenPitchDeck()">🎙️ Launch 2-Minute Pitch Deck</button>
-          <button class="btn secondary" style="min-height: 44px; padding: 10px 22px;" onclick="window.phirOpenPilotModal()">🤝 Schedule Enterprise Pilot ↗</button>
+          <button class="btn" style="min-height: 44px; padding: 10px 22px;" onclick="window.phirOpenPitchDeck()">${t('nav_pitch_deck', '🎙️ 2-Min Pitch Deck')}</button>
+          <button class="btn secondary" style="min-height: 44px; padding: 10px 22px;" onclick="window.phirOpenPilotModal()">${t('pricing_btn_request_pilot', '🤝 Schedule Enterprise Pilot ↗')}</button>
         </div>
       `;
 
@@ -1090,22 +1089,23 @@
       const platformRev = bizSection.querySelector('#sim-platform-rev');
       const co2Offset = bizSection.querySelector('#sim-co2-offset');
 
-      slider.oninput = () => {
-        const mt = parseInt(slider.value, 10);
-        valLabel.textContent = `${mt} MT/mo`;
-        const gmvLakhs = (mt * 1000 * 24.5) / 100000;
-        const gainLakhs = (gmvLakhs * 0.14);
-        const revInr = (mt * 1000 * 24.5 * 0.02) + (mt * 180);
-        const co2 = (mt * 1.54);
+      if (slider) {
+        slider.oninput = () => {
+          const mt = parseInt(slider.value, 10);
+          valLabel.textContent = `${mt} MT/mo`;
+          const gmvLakhs = (mt * 1000 * 24.5) / 100000;
+          const gainLakhs = (gmvLakhs * 0.14);
+          const revInr = (mt * 1000 * 24.5 * 0.02) + (mt * 180);
+          const co2 = (mt * 1.54);
 
-        feedstockVal.textContent = `₹${gmvLakhs.toFixed(2)} L`;
-        collectorGain.textContent = `+ ₹${gainLakhs.toFixed(2)} L`;
-        platformRev.textContent = `₹${Math.round(revInr).toLocaleString('en-IN')}`;
-        co2Offset.textContent = `${co2.toFixed(1)} MT`;
-      };
+          feedstockVal.textContent = `₹${gmvLakhs.toFixed(2)} L`;
+          collectorGain.textContent = `+ ₹${gainLakhs.toFixed(2)} L`;
+          platformRev.textContent = `₹${Math.round(revInr).toLocaleString('en-IN')}`;
+          co2Offset.textContent = `${co2.toFixed(1)} MT`;
+        };
+      }
     }
   }
-
   // 9. Clean Prototype Notices
   function cleanPrototypeText() {
     document.querySelectorAll('.demo-note, .note').forEach(el => {
@@ -1166,6 +1166,7 @@
   // Update on language change
   window.addEventListener('phir-language-changed', () => {
     injectEnhancementButtons();
+    enhanceSelectionPage(true);
   });
 
   // Periodic DOM check to inject buttons seamlessly

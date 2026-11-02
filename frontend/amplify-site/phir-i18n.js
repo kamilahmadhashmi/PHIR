@@ -381,7 +381,7 @@
       live_saved_records: 'Saved to recovery records',
       live_profile_ready: 'Company profile ready',
       live_inventory_refresh: 'Inventory needs a refresh',
-      live_recovery_records: 'Live recovery records'
+      live_recovery_records: 'Live recovery records',
       // === Indiathon 2026 Startup MVP & Business Layer (en) ===
       nav_pitch_deck: '🎙️ 2-Min Pitch Deck',
       nav_pricing_model: '💼 Pricing & Model',
@@ -857,7 +857,7 @@
       live_saved_records: 'पुनर्प्राप्ति रिकॉर्ड में सहेजा गया',
       live_profile_ready: 'कंपनी प्रोफ़ाइल तैयार है',
       live_inventory_refresh: 'इन्वेंटरी को रीफ्रेश करने की आवश्यकता है',
-      live_recovery_records: 'सक्रिय पुनर्प्राप्ति रिकॉर्ड'
+      live_recovery_records: 'सक्रिय पुनर्प्राप्ति रिकॉर्ड',
       // === Indiathon 2026 Startup MVP & Business Layer (hi) ===
       nav_pitch_deck: '🎙️ 2-मिनट पिच डेक',
       nav_pricing_model: '💼 मूल्य निर्धारण और मॉडल',
@@ -1333,7 +1333,7 @@
       live_saved_records: 'ପୁନରୁଦ୍ଧାର ରେକର୍ଡରେ ସାଇତାଗଲା',
       live_profile_ready: 'କମ୍ପାନୀ ପ୍ରୋଫାଇଲ୍ ପ୍ରସ୍ତୁତ',
       live_inventory_refresh: 'ଇନଭେଣ୍ଟୋରୀ ରିଫ୍ରେଶ୍ ଆବଶ୍ୟକ',
-      live_recovery_records: 'ସକ୍ରିୟ ପୁନରୁଦ୍ଧାର ରେକର୍ଡ'
+      live_recovery_records: 'ସକ୍ରିୟ ପୁନରୁଦ୍ଧାର ରେକର୍ଡ',
       // === Indiathon 2026 Startup MVP & Business Layer (od) ===
       nav_pitch_deck: '🎙️ ୨-ମିନିଟ୍ ପିଚ୍ ଡେକ୍',
       nav_pricing_model: '💼 ମୂଲ୍ୟ ନିର୍ଦ୍ଧାରଣ ଓ ମଡେଲ',
@@ -1952,7 +1952,7 @@
     ['Saved to recovery records', 'live_saved_records'],
     ['Company profile ready', 'live_profile_ready'],
     ['Inventory needs a refresh', 'live_inventory_refresh'],
-    ['Live recovery records', 'live_recovery_records']
+    ['Live recovery records', 'live_recovery_records'],
 
     // Startup MVP & Business Layer phrase mappings
     ['🎙️ 2-Min Pitch Deck', 'nav_pitch_deck'],
@@ -2327,6 +2327,7 @@
       }
     }
 
+    setInterval(injectLanguageSelector, 1000);
     observer.observe(document.body || document.documentElement, {
       childList: true,
       subtree: true

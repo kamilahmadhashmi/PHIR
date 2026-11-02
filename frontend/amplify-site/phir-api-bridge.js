@@ -309,7 +309,6 @@
       return;
     }
     if (view !== 'household') return;
-    const action = button.dataset.action;
     if (action === 'add-material') {
       event.preventDefault(); event.stopImmediatePropagation();
       openModal('Add material', `<p class="modal-intro">Choose how you want to record your recyclable material.</p><div class="modal-choice-grid"><button class="btn" type="button" data-action="add-material-manual">Add manually</button><button class="btn secondary" type="button" data-action="photo-material">Identify from a photo</button></div>`);

@@ -18,6 +18,9 @@
   style.textContent += `.selection-heading .eyebrow { display: none !important; }\n`;
   style.id = 'phir-enhancement-styles';
   style.textContent = `
+    /* Hide live ticker metric cards */
+    #phir-startup-hero-box, .phir-live-ticker, .phir-ticker-card { display: none !important; }
+
     /* Always fixed / sticky topbar with exact opaque canvas background to prevent content superimposing on scroll */
     .selection-page,
     .selection-page.wrap,
@@ -969,7 +972,7 @@
     if (force) {
       document.getElementById('phir-startup-hero-box')?.remove();
       document.getElementById('phir-landing-biz-section')?.remove();
-    } else if (document.getElementById('phir-startup-hero-box')) {
+    } else if (document.getElementById('phir-landing-biz-section')) {
       return;
     }
 
@@ -987,47 +990,12 @@
         metrics = await res.json();
       }
     } catch (_) {}
+    // Ensure any lingering ticker is removed
+    document.getElementById('phir-startup-hero-box')?.remove();
 
-    // Hero element insertion above selector
-    const heroBox = document.createElement('div');
-    heroBox.id = 'phir-startup-hero-box';
-    heroBox.style.textAlign = 'center';
-    heroBox.style.margin = '32px auto 24px';
-    heroBox.style.maxWidth = '1050px';
-
-    heroBox.innerHTML = `
-
-      <!-- Live Platform Metrics Ticker -->
-      <div class="phir-live-ticker">
-        <div class="phir-ticker-card">
-          <span class="metric-val">${(metrics.totalMaterialTrackedKg / 1000).toFixed(1)} MT</span>
-          <span class="metric-lbl">${t('ticker_mat_tracked', 'Recoverable Material Tracked')}</span>
-        </div>
-        <div class="phir-ticker-card">
-          <span class="metric-val">₹${Math.round(metrics.platformGmvInr || 17344).toLocaleString('en-IN')}</span>
-          <span class="metric-lbl">${t('ticker_direct_payouts', 'Direct Payouts to Collectors')}</span>
-        </div>
-        <div class="phir-ticker-card">
-          <span class="metric-val">${t('ticker_verified_pct', '100% Verified')}</span>
-          <span class="metric-lbl">${t('ticker_cpcb_parity', 'SHA-256 CPCB Audit Parity')}</span>
-        </div>
-        <div class="phir-ticker-card">
-          <span class="metric-val">${(metrics.co2DivertedKg / 1000).toFixed(2)} MT</span>
-          <span class="metric-lbl">${t('ticker_co2_diverted', 'Verified CO2e Diverted')}</span>
-        </div>
-      </div>
-    `;
-
-    // Position hero metrics below character cards so the 3 roles appear first
-    const caption = selPage.querySelector('.selection-caption');
-    if (caption) {
-      caption.after(heroBox);
-    } else {
-      selPage.append(heroBox);
-    }
-
-    // Business Model Section below character cards and live metrics
+    // Business Model Section below character cards
     if (!document.getElementById('phir-landing-biz-section')) {
+      const caption = selPage.querySelector('.selection-caption');
       const bizSection = document.createElement('section');
       bizSection.id = 'phir-landing-biz-section';
       bizSection.className = 'phir-startup-section';
@@ -1043,20 +1011,20 @@
           </div>
           <div class="phir-slider-wrap">
             <span style="font-weight: 700; font-size: 12px;">10 MT</span>
-            <input type="range" id="phir-volume-slider" min="10" max="500" value="50" step="5">
-            <span style="font-weight: 700; font-size: 14px; color: var(--primary); min-width: 70px;" id="phir-slider-val">50 MT/mo</span>
+            <input type="range" id="phir-vol-slider" min="10" max="500" value="80" step="5" class="phir-slider">
+            <span style="font-weight: 700; font-size: 12px;">500 MT</span>
           </div>
           <div class="phir-sim-results">
             <div class="phir-sim-metric">
-              <strong id="sim-feedstock-val">₹12.25 L</strong>
-              <small>${t('sim_feedstock_label', 'Recycled Material GMV')}</small>
+              <strong id="sim-vol-display">80 MT</strong>
+              <small>${t('sim_monthly_vol_label', 'Monthly Processed')}</small>
             </div>
             <div class="phir-sim-metric">
-              <strong id="sim-collector-gain">+ ₹1.71 L</strong>
-              <small>${t('sim_collector_gain_label', 'Collector Income Boost (+28%)')}</small>
+              <strong id="sim-gmv-display" style="color: #007e65;">₹17,60,000</strong>
+              <small>${t('sim_gross_turnover_label', 'EPR Traceable GMV')}</small>
             </div>
             <div class="phir-sim-metric">
-              <strong id="sim-platform-rev">₹33,500</strong>
+              <strong id="sim-rev-display" style="color: var(--primary);">₹1,76,000</strong>
               <small>${t('sim_platform_rev_label', 'Phir Platform Revenue')}</small>
             </div>
             <div class="phir-sim-metric">
@@ -1089,29 +1057,29 @@
               <div class="price-tag">₹499 <small>${t('pricing_per_month', '/ month')}</small></div>
               <p style="font-size: 11px; color: var(--muted);">${t('pricing_aggregator_desc', 'Mobile OS for micro-dealers & kabadiwalas.')}</p>
               <ul>
-                <li>${t('pricing_aggregator_f1', 'Multi-stop route planning & fuel optimization')}</li>
-                <li>${t('pricing_aggregator_f2', 'Direct mill batch aggregation')}</li>
-                <li>${t('pricing_aggregator_f3', 'Digital weighing scales & UPI payout ledger')}</li>
-                <li>${t('pricing_aggregator_f4', 'Transparent mandi rate intelligence')}</li>
+                <li>${t('pricing_aggregator_f1', 'Dynamic cluster dispatch')}</li>
+                <li>${t('pricing_aggregator_f2', 'Automated tare & weight receipts')}</li>
+                <li>${t('pricing_aggregator_f3', 'Direct B2B miller marketplace link')}</li>
+                <li>${t('pricing_aggregator_f4', 'Verified GST / CPCB transaction book')}</li>
               </ul>
             </div>
-            <button class="btn" style="width: 100%; margin-top: 14px;" onclick="location.hash='collector'">${t('pricing_btn_start_pro', 'Test Aggregator Hub')}</button>
+            <button class="btn" style="width: 100%; margin-top: 14px;" onclick="location.hash='collector'">${t('pricing_btn_test_collector', 'Test Collector Demo')}</button>
           </div>
 
           <div class="phir-pricing-card">
             <div>
-              <span class="phir-startup-badge" style="margin-bottom: 6px;">${t('pricing_badge_high_margin', 'HIGH MARGIN ENTERPRISE')}</span>
-              <h3>${t('pricing_tier_enterprise', '🏭 Enterprise Brand Compliance')}</h3>
-              <div class="price-tag">₹14,999 <small>${t('pricing_enterprise_sub', '/ mo + ₹1.5/kg audit fee')}</small></div>
-              <p style="font-size: 11px; color: var(--muted);">${t('pricing_enterprise_desc', 'For CPG Brands, PIBOs & Recyclers.')}</p>
+              <span class="phir-startup-badge" style="margin-bottom: 6px;">${t('pricing_badge_enterprise_epr', 'ENTERPRISE EPR')}</span>
+              <h3>${t('pricing_tier_enterprise', '🏭 Recycler / Brand OS')}</h3>
+              <div class="price-tag">₹4,999 <small>${t('pricing_per_month', '/ month')}</small></div>
+              <p style="font-size: 11px; color: var(--muted);">${t('pricing_enterprise_desc', 'For registered recyclers & brand owners.')}</p>
               <ul>
-                <li>${t('pricing_enterprise_f1', 'CPCB Schedule II verifiable audit certificates')}</li>
-                <li>${t('pricing_enterprise_f2', 'Tamper-proof SHA-256 chain of custody')}</li>
-                <li>${t('pricing_enterprise_f3', 'Dedicated supply chain account manager')}</li>
-                <li>${t('pricing_enterprise_f4', 'Recycler batch quality certificates')}</li>
+                <li>${t('pricing_enterprise_f1', 'Forward inventory lot booking')}</li>
+                <li>${t('pricing_enterprise_f2', 'Raw material quality audit certificate')}</li>
+                <li>${t('pricing_enterprise_f3', 'Cryptographic SHA-256 batch ledger')}</li>
+                <li>${t('pricing_enterprise_f4', 'Direct CPCB portal API export')}</li>
               </ul>
             </div>
-            <button class="btn secondary" style="width: 100%; margin-top: 14px;" onclick="location.hash='recycler'">${t('pricing_btn_request_pilot', 'Test Recycler Portal')}</button>
+            <button class="btn secondary" style="width: 100%; margin-top: 14px;" onclick="location.hash='recycler'">${t('pricing_btn_test_recycler', 'Test Recycler Demo')}</button>
           </div>
         </div>
 
@@ -1141,7 +1109,11 @@
         </div>
       `;
 
-      heroBox ? heroBox.after(bizSection) : caption.after(bizSection);
+      if (caption) {
+        caption.after(bizSection);
+      } else {
+        selPage.append(bizSection);
+      }
 
       // Wire simulator slider
       const slider = bizSection.querySelector('#phir-volume-slider');

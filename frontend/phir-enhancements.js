@@ -995,13 +995,6 @@
     heroBox.style.maxWidth = '1050px';
 
     heroBox.innerHTML = `
-      <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-        <span class="phir-startup-badge">${t('startup_hero_badge', '⚡ INDIATHON 2026 STARTUP MVP · POWERED BY E-CELL IIIT BHUBANESWAR')}</span>
-        <span class="phir-startup-badge" style="background: var(--tint); color: var(--primary);">${t('startup_cpcb_badge', 'CPCB SCHEDULE II AUDIT PARITY')}</span>
-      </div>
-      <p style="font-size: 15px; font-weight: 700; color: var(--muted); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px;">
-        ${t('startup_hero_subtitle', "Operating System for India's ₹1.1L Cr Circular Economy")}
-      </p>
 
       <!-- Live Platform Metrics Ticker -->
       <div class="phir-live-ticker">

@@ -830,19 +830,21 @@
 
   // 7. Inject Startup Top Navigation Buttons (Multilingual)
   function injectEnhancementButtons() {
-    const topbars = document.querySelectorAll('.workspace .top-links, .selection-page .top-links');
-    topbars.forEach(bar => {
-      // 1. Pitch Deck Button
-      let pitchBtn = bar.querySelector('.phir-pitch-nav-btn');
-      if (!pitchBtn) {
-        pitchBtn = document.createElement('button');
-        pitchBtn.className = 'phir-rates-btn phir-pitch-nav-btn';
-        pitchBtn.onclick = (e) => { e.preventDefault(); openPitchDeck(); };
-        bar.prepend(pitchBtn);
-      }
-      pitchBtn.innerHTML = t('nav_pitch_deck', '🎙️ 2-Min Pitch Deck');
+    const isStory = Boolean(document.querySelector('.story-page, .story-nav') || location.hash === '#story');
 
-      // 2. Pricing Button
+    // Remove pitch deck button from non-story topbars
+    if (!isStory) {
+      document.querySelectorAll('.workspace .phir-pitch-nav-btn, .selection-page .phir-pitch-nav-btn, .topbar:not(.story-nav) .phir-pitch-nav-btn').forEach(el => el.remove());
+      document.getElementById('story-pitch-deck-banner')?.remove();
+    }
+
+    // Inject Pricing and Mandi Rates in workspace & selection topbars
+    const standardTopbars = document.querySelectorAll('.workspace .top-links, .selection-page .top-links, .topbar:not(.story-nav) .top-links');
+    standardTopbars.forEach(bar => {
+      // Ensure pitch button is never present on standard topbars
+      bar.querySelector('.phir-pitch-nav-btn')?.remove();
+
+      // 1. Pricing Button
       let pricingBtn = bar.querySelector('.phir-pricing-btn');
       if (!pricingBtn) {
         pricingBtn = document.createElement('button');
@@ -852,7 +854,7 @@
       }
       pricingBtn.innerHTML = t('nav_pricing_model', '💼 Pricing & Model');
 
-      // 3. Mandi Rates Button
+      // 2. Mandi Rates Button
       let rateBtn = bar.querySelector('.phir-rates-btn:not(.phir-pitch-nav-btn):not(.phir-pricing-btn)');
       if (!rateBtn) {
         rateBtn = document.createElement('button');
@@ -863,6 +865,35 @@
       rateBtn.innerHTML = t('nav_mandi_rates', '⚖️ Mandi Scrap Rates');
     });
 
+    // When on Story page, inject the 2-Min Pitch Deck button inside Enter the Story
+    if (isStory) {
+      const storyNavLinks = document.querySelector('.story-nav .top-links');
+      if (storyNavLinks) {
+        let storyPitchBtn = storyNavLinks.querySelector('.phir-pitch-nav-btn');
+        if (!storyPitchBtn) {
+          storyPitchBtn = document.createElement('button');
+          storyPitchBtn.className = 'phir-rates-btn phir-pitch-nav-btn';
+          storyPitchBtn.onclick = (e) => { e.preventDefault(); openPitchDeck(); };
+          storyNavLinks.prepend(storyPitchBtn);
+        }
+        storyPitchBtn.innerHTML = t('nav_pitch_deck', '🎙️ 2-Min Pitch Deck');
+      }
+
+      // Also inject a prominent story banner for the pitch deck
+      const storyPage = document.querySelector('.story-page');
+      if (storyPage && !document.getElementById('story-pitch-deck-banner')) {
+        const banner = document.createElement('div');
+        banner.id = 'story-pitch-deck-banner';
+        banner.style.cssText = 'position:relative; z-index:50; text-align:center; padding:12px 16px; background:rgba(255,255,255,0.94); border-bottom:2px solid var(--border); box-shadow:0 2px 8px rgba(0,0,0,0.06); display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap;';
+        banner.innerHTML = `
+          <span style="font-weight:700; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;">⚡ Indiathon 2026 Pitch:</span>
+          <button class="btn phir-pitch-story-btn" onclick="window.phirOpenPitchDeck()" style="padding:6px 18px; font-size:12px; font-weight:800; border-radius:18px;">${t('nav_pitch_deck', '🎙️ 2-Min Pitch Deck')}</button>
+        `;
+        const nav = storyPage.querySelector('.story-nav');
+        if (nav) nav.after(banner);
+        else storyPage.prepend(banner);
+      }
+    }
     // In Recycler bookings table, inject EPR Certificate buttons
     const bookingRows = document.querySelectorAll('.workspace[data-theme="recycler"] tbody tr');
     bookingRows.forEach(row => {
@@ -1074,7 +1105,7 @@
         </div>
 
         <div style="display: flex; justify-content: center; gap: 16px; margin-top: 24px; flex-wrap: wrap;">
-          <button class="btn" style="min-height: 44px; padding: 10px 22px;" onclick="window.phirOpenPitchDeck()">${t('nav_pitch_deck', '🎙️ 2-Min Pitch Deck')}</button>
+          <button class="btn" style="min-height: 44px; padding: 10px 22px;" onclick="location.hash='story'">${t('enter_story', 'Enter the story ↗')}</button>
           <button class="btn secondary" style="min-height: 44px; padding: 10px 22px;" onclick="window.phirOpenPilotModal()">${t('pricing_btn_request_pilot', '🤝 Schedule Enterprise Pilot ↗')}</button>
         </div>
       `;

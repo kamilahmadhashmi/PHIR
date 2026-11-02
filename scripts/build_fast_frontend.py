@@ -193,7 +193,7 @@ def build(output: Path) -> None:
     (output / "phir-asset-loader.js").write_text(loader, encoding="utf-8")
     built_html = built_html.replace(
         "</body>",
-        '<script src="phir-asset-loader.js?v=20261102-v12" defer></script></body>',
+        '<script src="phir-asset-loader.js?v=20261102-v13" defer></script></body>',
         1,
     )
     (output / "index.html").write_text(built_html, encoding="utf-8")

@@ -991,7 +991,7 @@
     const heroBox = document.createElement('div');
     heroBox.id = 'phir-startup-hero-box';
     heroBox.style.textAlign = 'center';
-    heroBox.style.margin = '0 auto 20px';
+    heroBox.style.margin = '32px auto 24px';
     heroBox.style.maxWidth = '1050px';
 
     heroBox.innerHTML = `
@@ -1017,14 +1017,16 @@
       </div>
     `;
 
-    const heading = selPage.querySelector('.selection-heading');
-    if (heading) {
-      heading.prepend(heroBox);
+    // Position hero metrics below character cards so the 3 roles appear first
+    const caption = selPage.querySelector('.selection-caption');
+    if (caption) {
+      caption.after(heroBox);
+    } else {
+      selPage.append(heroBox);
     }
 
-    // Business Model Section below character cards
-    const caption = selPage.querySelector('.selection-caption');
-    if (caption && !document.getElementById('phir-landing-biz-section')) {
+    // Business Model Section below character cards and live metrics
+    if (!document.getElementById('phir-landing-biz-section')) {
       const bizSection = document.createElement('section');
       bizSection.id = 'phir-landing-biz-section';
       bizSection.className = 'phir-startup-section';
@@ -1138,7 +1140,7 @@
         </div>
       `;
 
-      caption.after(bizSection);
+      heroBox ? heroBox.after(bizSection) : caption.after(bizSection);
 
       // Wire simulator slider
       const slider = bizSection.querySelector('#phir-volume-slider');

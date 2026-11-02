@@ -138,6 +138,17 @@ CREATE TABLE IF NOT EXISTS audit_events (
     verification_hash TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS pilot_requests (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    organization TEXT NOT NULL,
+    role_type TEXT NOT NULL,
+    email TEXT NOT NULL,
+    phone TEXT,
+    estimated_monthly_kg REAL DEFAULT 0.0,
+    created_at TEXT NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_materials_holder_status ON materials(current_holder_id, status);
 CREATE INDEX IF NOT EXISTS idx_materials_source ON materials(source_id, status);
 CREATE INDEX IF NOT EXISTS idx_requests_status ON collection_requests(status);

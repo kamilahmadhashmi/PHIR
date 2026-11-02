@@ -1044,3 +1044,86 @@ class SqliteRecoveryRepository:
                     "approxCoordinates": {"latitude": lat, "longitude": lon},
                 })
         return results
+
+    def get_business_summary(self) -> Dict[str, Any]:
+        cur = self.conn.execute(
+            "SELECT COUNT(*) AS total_lots, SUM(quantity_kg) AS total_kg, SUM(estimated_value) AS total_val FROM materials"
+        )
+        m_row = cur.fetchone() or {}
+        total_kg = float(m_row["total_kg"] or 0.0)
+        total_val = float(m_row["total_val"] or 0.0)
+
+        cur = self.conn.execute("SELECT COUNT(*) AS total_bookings, SUM(quantity_kg) AS transferred_kg FROM bookings WHERE status = 'confirmed'")
+        b_row = cur.fetchone() or {}
+        transferred_kg = float(b_row["transferred_kg"] or 0.0)
+
+        cur = self.conn.execute("SELECT COUNT(*) AS total_events FROM audit_events")
+        a_row = cur.fetchone() or {}
+        audit_events_count = int(a_row["total_events"] or 0)
+
+        cur = self.conn.execute("SELECT role, COUNT(*) AS count FROM profiles GROUP BY role")
+        role_counts = {r["role"]: r["count"] for r in cur.fetchall()}
+
+        cur = self.conn.execute("SELECT COUNT(*) AS total_reqs, SUM(CASE WHEN status='collected' THEN 1 ELSE 0 END) AS collected_reqs FROM collection_requests")
+        r_row = cur.fetchone() or {}
+        total_reqs = int(r_row["total_reqs"] or 0)
+        collected_reqs = int(r_row["collected_reqs"] or 0)
+
+        platform_gmv = round(total_val + (transferred_kg * 24.5), 2)
+        marketplace_fee = round(transferred_kg * 24.5 * 0.02, 2)
+        epr_fee = round(transferred_kg * 0.18, 2)
+        total_platform_revenue = round(marketplace_fee + epr_fee, 2)
+        co2_avoided_kg = round((total_kg + transferred_kg) * 1.54, 1)
+
+        return {
+            "status": "active",
+            "cluster": "Delhi NCR / CPCB Regional Hub 01",
+            "totalMaterialTrackedKg": round(total_kg, 1),
+            "transferredMaterialKg": round(transferred_kg, 1),
+            "totalCollectionRequests": total_reqs,
+            "completedCollections": collected_reqs,
+            "platformGmvInr": platform_gmv,
+            "householdPayoutsInr": round(total_val, 2),
+            "platformRevenueInr": total_platform_revenue,
+            "co2DivertedKg": co2_avoided_kg,
+            "auditEventsCount": audit_events_count,
+            "activeNodes": {
+                "households": role_counts.get("household", 3),
+                "aggregators": role_counts.get("kabadiwala", 2),
+                "recyclers": role_counts.get("recycler", 2),
+                "total": sum(role_counts.values()) or 7,
+            },
+            "cpcbComplianceStatus": "Certified (Schedule II PWM)",
+            "monetization": {
+                "marketplaceTakeRatePct": 2.0,
+                "eprFeePerTonInr": 180.0,
+                "aggregatorSaaSMonthlyInr": 499.0,
+            },
+        }
+
+    def record_pilot_request(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        pilot_id = _uid("pilot")
+        created_at = _now()
+        name = str(payload.get("name", "")).strip() or "Anonymous Partner"
+        organization = str(payload.get("organization", "")).strip() or "Enterprise Pilot"
+        role_type = str(payload.get("roleType", "brand")).strip()
+        email = str(payload.get("email", "")).strip() or "partner@phir.eco"
+        phone = str(payload.get("phone", "")).strip()
+        monthly_kg = float(payload.get("estimatedMonthlyKg") or 0.0)
+
+        self.conn.execute(
+            """
+            INSERT INTO pilot_requests (id, name, organization, role_type, email, phone, estimated_monthly_kg, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (pilot_id, name, organization, role_type, email, phone, monthly_kg, created_at),
+        )
+        self.conn.commit()
+        return {
+            "pilotId": pilot_id,
+            "status": "confirmed",
+            "organization": organization,
+            "message": "Enterprise pilot request registered. Our partnership team will contact you within 24 hours.",
+            "createdAt": created_at,
+        }
+

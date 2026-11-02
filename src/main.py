@@ -537,6 +537,21 @@ def get_rate_cards():
     return {"rates": DEFAULT_MANDI_RATES, "locality": "Delhi", "currency": "INR"}
 
 
+@app.get("/api/v1/business-metrics", tags=["Business"])
+def get_business_metrics():
+    with get_db() as conn:
+        repo = SqliteRecoveryRepository(conn)
+        return repo.get_business_summary()
+
+
+@app.post("/api/v1/pilot-requests", status_code=status.HTTP_201_CREATED, tags=["Business"])
+def register_pilot_request(payload: Dict[str, Any]):
+    with get_db() as conn:
+        repo = SqliteRecoveryRepository(conn)
+        return repo.record_pilot_request(payload)
+
+
+
 # --- Serve Full Folk-Art Static Frontend ---
 if FRONTEND_DIR.exists():
     app.mount("/media", StaticFiles(directory=str(FRONTEND_DIR / "media")), name="media")

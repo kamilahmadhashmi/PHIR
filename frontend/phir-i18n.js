@@ -1492,21 +1492,59 @@
       margin-left: 6px;
       z-index: 100;
     }
+    /* Sticky Topbar to keep navigation and translation always in view */
+    .topbar {
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 1000 !important;
+      background: var(--bg, #fbf7ee) !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important;
+    }
+
     .phir-lang-btn {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      height: 32px;
-      padding: 4px 10px;
+      gap: 6px;
+      height: 34px;
+      padding: 4px 12px;
       border: 2px solid var(--primary);
-      border-radius: 16px 10px;
-      background: var(--surface);
+      border-radius: 18px;
+      background: var(--surface, #ffffff);
       color: var(--ink);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 800;
       box-shadow: 2px 2px 0 var(--secondary);
       cursor: pointer;
       transition: transform .2s var(--spring), background .2s, box-shadow .2s;
+    }
+    .phir-lang-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 0.02em;
+    }
+
+    /* Floating Language Switcher for instant access anywhere on page */
+    .phir-floating-lang {
+      position: fixed !important;
+      bottom: 24px !important;
+      right: 24px !important;
+      z-index: 99999 !important;
+    }
+    .phir-floating-btn {
+      height: 42px !important;
+      padding: 8px 16px !important;
+      font-size: 13px !important;
+      border: 2.5px solid var(--primary, #1e3a8a) !important;
+      border-radius: 24px !important;
+      background: #ffffff !important;
+      color: var(--ink, #1f2937) !important;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2) !important;
+    }
+    .phir-floating-dropdown {
+      bottom: calc(100% + 8px) !important;
+      top: auto !important;
+      right: 0 !important;
     }
     .phir-lang-btn:hover {
       background: var(--tint);
@@ -2102,6 +2140,7 @@
       picker.innerHTML = `
         <button class="phir-lang-btn" id="phir-lang-btn" data-action="hard-translate" aria-haspopup="true" aria-expanded="false" title="Translate / भाषा बदलें / ଭାଷା ବଦଳାନ୍ତୁ (Hard Translate)">
           <span class="phir-lang-globe">🌐</span>
+          <span class="phir-lang-label">${currentLang === 'hi' ? 'भाषा' : currentLang === 'od' ? 'ଭାଷା' : 'Translate'}</span>
           <span class="phir-lang-current">${currentLang.toUpperCase()}</span>
           <span class="phir-lang-arrow">▾</span>
         </button>
@@ -2137,6 +2176,51 @@
 
       links.appendChild(picker);
     });
+
+    // Also inject persistent floating language pill so translate is always 1-click reachable anywhere
+    if (!document.getElementById('phir-floating-lang-picker') && document.body) {
+      const floating = document.createElement('div');
+      floating.className = 'phir-lang-picker phir-floating-lang';
+      floating.id = 'phir-floating-lang-picker';
+      floating.innerHTML = `
+        <button class="phir-lang-btn phir-floating-btn" data-action="hard-translate" aria-haspopup="true" aria-expanded="false" title="Translate / भाषा बदलें / ଭାଷା ବଦଳାନ୍ତୁ (Hard Translate)">
+          <span class="phir-lang-globe">🌐</span>
+          <span class="phir-lang-label">${currentLang === 'hi' ? 'भाषा' : currentLang === 'od' ? 'ଭାଷା' : 'Translate'}</span>
+          <span class="phir-lang-current">${currentLang.toUpperCase()}</span>
+          <span class="phir-lang-arrow">▾</span>
+        </button>
+        <div class="phir-lang-dropdown phir-floating-dropdown" role="menu">
+          <button class="phir-lang-opt ${currentLang === 'en' ? 'active' : ''}" data-lang="en" role="menuitem">
+            <span>English</span> <span class="phir-lang-badge">EN</span>
+          </button>
+          <button class="phir-lang-opt ${currentLang === 'hi' ? 'active' : ''}" data-lang="hi" role="menuitem">
+            <span>हिन्दी</span> <span class="phir-lang-badge">HI</span>
+          </button>
+          <button class="phir-lang-opt ${currentLang === 'od' ? 'active' : ''}" data-lang="od" role="menuitem">
+            <span>ଓଡ଼ିଆ</span> <span class="phir-lang-badge">OD</span>
+          </button>
+        </div>
+      `;
+
+      const fBtn = floating.querySelector('.phir-lang-btn');
+      fBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = floating.classList.toggle('open');
+        fBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      floating.querySelectorAll('.phir-lang-opt').forEach(opt => {
+        opt.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const targetLang = opt.dataset.lang;
+          floating.classList.remove('open');
+          fBtn.setAttribute('aria-expanded', 'false');
+          setLanguage(targetLang);
+        });
+      });
+
+      document.body.appendChild(floating);
+    }
   }
 
   // Global click handler to close dropdown when clicking outside
@@ -2162,6 +2246,9 @@
     // Update Language Picker Displays
     document.querySelectorAll('.phir-lang-current').forEach(el => {
       el.textContent = lang.toUpperCase();
+    });
+    document.querySelectorAll('.phir-lang-label').forEach(el => {
+      el.textContent = lang === 'hi' ? 'भाषा' : lang === 'od' ? 'ଭାଷା' : 'Translate';
     });
     document.querySelectorAll('.phir-lang-opt').forEach(el => {
       el.classList.toggle('active', el.dataset.lang === lang);

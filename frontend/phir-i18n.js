@@ -2131,62 +2131,16 @@
 
   // 6. Language Switcher UI Injection & Lifecycle Management
   function injectLanguageSelector() {
-    const topbars = document.querySelectorAll('.topbar .top-links, .story-nav .top-links, header .top-links, .workspace .top-links, .selection-page .top-links');
-    topbars.forEach(links => {
-      if (links.querySelector('.phir-lang-picker')) return;
+    // Clean up any legacy topbar language pickers to keep ONLY the single floating bottom-right translate button
+    document.querySelectorAll('.topbar .phir-lang-picker, .story-nav .phir-lang-picker, header .phir-lang-picker').forEach(el => el.remove());
 
-      const picker = document.createElement('div');
-      picker.className = 'phir-lang-picker';
-      picker.id = 'phir-lang-picker';
-      picker.innerHTML = `
-        <button class="phir-lang-btn" id="phir-lang-btn" data-action="hard-translate" aria-haspopup="true" aria-expanded="false" title="Translate / भाषा बदलें / ଭାଷା ବଦଳାନ୍ତୁ (Hard Translate)">
-          <span class="phir-lang-globe">🌐</span>
-          <span class="phir-lang-label">${currentLang === 'hi' ? 'भाषा' : currentLang === 'od' ? 'ଭାଷା' : 'Translate'}</span>
-          <span class="phir-lang-current">${currentLang.toUpperCase()}</span>
-          <span class="phir-lang-arrow">▾</span>
-        </button>
-        <div class="phir-lang-dropdown" role="menu">
-          <button class="phir-lang-opt ${currentLang === 'en' ? 'active' : ''}" data-lang="en" role="menuitem">
-            <span>English</span> <span class="phir-lang-badge">EN</span>
-          </button>
-          <button class="phir-lang-opt ${currentLang === 'hi' ? 'active' : ''}" data-lang="hi" role="menuitem">
-            <span>हिन्दी</span> <span class="phir-lang-badge">HI</span>
-          </button>
-          <button class="phir-lang-opt ${currentLang === 'od' ? 'active' : ''}" data-lang="od" role="menuitem">
-            <span>ଓଡ଼ିଆ</span> <span class="phir-lang-badge">OD</span>
-          </button>
-        </div>
-      `;
-
-      const btn = picker.querySelector('.phir-lang-btn');
-      if (btn) {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const isOpen = picker.classList.toggle('open');
-          btn.setAttribute('aria-expanded', String(isOpen));
-        });
-      }
-
-      picker.querySelectorAll('.phir-lang-opt').forEach(opt => {
-        opt.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const targetLang = opt.dataset.lang;
-          picker.classList.remove('open');
-          btn?.setAttribute('aria-expanded', 'false');
-          setLanguage(targetLang);
-        });
-      });
-
-      links.appendChild(picker);
-    });
-
-    // Also inject persistent floating language pill so translate is always 1-click reachable anywhere
+    // Inject dedicated, persistent floating language pill at the bottom-right corner
     if (!document.getElementById('phir-floating-lang-picker') && document.body) {
       const floating = document.createElement('div');
       floating.className = 'phir-lang-picker phir-floating-lang';
       floating.id = 'phir-floating-lang-picker';
       floating.innerHTML = `
-        <button class="phir-lang-btn phir-floating-btn" data-action="hard-translate" aria-haspopup="true" aria-expanded="false" title="Translate / भाषा बदलें / ଭାଷା ବଦଳାନ୍ତୁ (Hard Translate)">
+        <button class="phir-lang-btn phir-floating-btn" id="phir-lang-btn" data-action="hard-translate" aria-haspopup="true" aria-expanded="false" title="Translate / भाषा बदलें / ଭାଷା ବଦଳାନ୍ତୁ (Hard Translate)">
           <span class="phir-lang-globe">🌐</span>
           <span class="phir-lang-label">${currentLang === 'hi' ? 'भाषा' : currentLang === 'od' ? 'ଭାଷା' : 'Translate'}</span>
           <span class="phir-lang-current">${currentLang.toUpperCase()}</span>

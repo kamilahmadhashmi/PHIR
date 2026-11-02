@@ -1529,7 +1529,8 @@
       position: fixed !important;
       bottom: 24px !important;
       right: 24px !important;
-      z-index: 99999 !important;
+      z-index: 2147483647 !important;
+      pointer-events: auto !important;
     }
     .phir-floating-btn {
       height: 42px !important;
@@ -2130,7 +2131,7 @@
 
   // 6. Language Switcher UI Injection & Lifecycle Management
   function injectLanguageSelector() {
-    const topbars = document.querySelectorAll('.topbar .top-links, .story-nav .top-links');
+    const topbars = document.querySelectorAll('.topbar .top-links, .story-nav .top-links, header .top-links, .workspace .top-links, .selection-page .top-links');
     topbars.forEach(links => {
       if (links.querySelector('.phir-lang-picker')) return;
 
@@ -2158,18 +2159,20 @@
       `;
 
       const btn = picker.querySelector('.phir-lang-btn');
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = picker.classList.toggle('open');
-        btn.setAttribute('aria-expanded', String(isOpen));
-      });
+      if (btn) {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = picker.classList.toggle('open');
+          btn.setAttribute('aria-expanded', String(isOpen));
+        });
+      }
 
       picker.querySelectorAll('.phir-lang-opt').forEach(opt => {
         opt.addEventListener('click', (e) => {
           e.stopPropagation();
           const targetLang = opt.dataset.lang;
           picker.classList.remove('open');
-          btn.setAttribute('aria-expanded', 'false');
+          btn?.setAttribute('aria-expanded', 'false');
           setLanguage(targetLang);
         });
       });
@@ -2203,18 +2206,20 @@
       `;
 
       const fBtn = floating.querySelector('.phir-lang-btn');
-      fBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = floating.classList.toggle('open');
-        fBtn.setAttribute('aria-expanded', String(isOpen));
-      });
+      if (fBtn) {
+        fBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = floating.classList.toggle('open');
+          fBtn.setAttribute('aria-expanded', String(isOpen));
+        });
+      }
 
       floating.querySelectorAll('.phir-lang-opt').forEach(opt => {
         opt.addEventListener('click', (e) => {
           e.stopPropagation();
           const targetLang = opt.dataset.lang;
           floating.classList.remove('open');
-          fBtn.setAttribute('aria-expanded', 'false');
+          fBtn?.setAttribute('aria-expanded', 'false');
           setLanguage(targetLang);
         });
       });

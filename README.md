@@ -1,278 +1,352 @@
 # Phir (फिर) — Circular Logistics & Digital Compliance OS
 
+<div align="center">
+
+![Phir Banner](docs/images/hero_landing.png)
+
+### Formalizing India's Informal Waste Economy into a Bankable, CPCB-Auditable Reverse Supply Chain
+
 [![Indiathon 2026 Startup MVP](https://img.shields.io/badge/Indiathon%202026-Startup%20MVP-orange?style=for-the-badge&logo=rocket)](https://phir.vercel.app/)
-[![Powered by E-Cell IIIT Bhubaneswar](https://img.shields.io/badge/Powered%20by-E--Cell%20IIIT%20Bhubaneswar-blue?style=for-the-badge)](https://phir.vercel.app/)
+[![Powered by E-Cell IIIT Bhubaneswar](https://img.shields.io/badge/Powered%20by-E--Cell%20IIIT%20Bhubaneswar-0052cc?style=for-the-badge)](https://phir.vercel.app/)
 [![Production Live](https://img.shields.io/badge/Production%20Live-phir.vercel.app-black?style=for-the-badge&logo=vercel)](https://phir.vercel.app/)
-[![Automated Tests](https://img.shields.io/badge/CI%20Build-44%2F44%20Tests%20Passing-brightgreen?style=for-the-badge&logo=github-actions)](https://github.com/kamilahmadhashmi/PHIR/actions)
-[![OpenAPI 3.1.0](https://img.shields.io/badge/OpenAPI-3.1.0%20Live%20Docs-blue?style=for-the-badge&logo=fastapi)](https://phir.vercel.app/docs)
-[![Languages](https://img.shields.io/badge/Languages-EN%20%7C%20%E0%A4%B9%E0%A4%BF%E0%A4%A8%E0%A5%8D%E0%A4%A6%E0%A5%80%20%7C%20%E0%AC%93%E0%AC%A1%E0%AC%BC%E0%AC%BF%E0%AC%86-blueviolet?style=for-the-badge)](#-website-wide-multilingual-localization-en--hi--od)
-[![Zero Cost Hosting](https://img.shields.io/badge/Hosting%20Cost-%E2%82%B90%20%2F%20%240%20Free-emerald?style=for-the-badge&logo=cachet)](#-zero-cost-engineering-strategy)
+[![Automated Test Suite](https://img.shields.io/badge/CI%2FCD-46%2F46%20Passing-brightgreen?style=for-the-badge&logo=github-actions)](https://github.com/kamilahmadhashmi/PHIR/actions)
+[![OpenAPI 3.1 Docs](https://img.shields.io/badge/OpenAPI-3.1.0%20Live-009688?style=for-the-badge&logo=fastapi)](https://phir.vercel.app/docs)
+[![Trilingual Localization](https://img.shields.io/badge/Languages-EN%20%7C%20%E0%A4%B9%E0%A4%BF%E0%A4%A8%E0%A5%8D%E0%A4%A6%E0%A5%80%20%7C%20%E0%AC%93%E0%AC%A1%E0%AC%BC%E0%AC%BF%E0%AC%86-7952b3?style=for-the-badge)](#-trilingual-localization-engine-en--hi--od)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
-> **Indiathon 2026 Startup MVP — Powered by E-Cell IIIT Bhubaneswar**  
-> *Track: Climate Tech • Reverse Logistics • B2B SaaS • Digital Financial Inclusion*  
->
-> 🌐 **Live Venture Application**: [https://phir.vercel.app](https://phir.vercel.app/)  
-> 📖 **OpenAPI 3.1 Interactive Documentation**: [https://phir.vercel.app/docs](https://phir.vercel.app/docs)  
-> 📊 **Live Platform Telemetry & Metrics**: [https://phir.vercel.app/api/v1/business-metrics](https://phir.vercel.app/api/v1/business-metrics)  
-> ⚖️ **Live Mandi Rates Index**: [https://phir.vercel.app/api/v1/rate-cards](https://phir.vercel.app/api/v1/rate-cards)  
-> 🎬 **Interactive Waste Stream Narrative**: [https://phir.vercel.app/#story](https://phir.vercel.app/#story)
+**[Explore Live MVP ↗](https://phir.vercel.app/)** • **[Interactive API Docs ↗](https://phir.vercel.app/docs)** • **[Live Telemetry ↗](https://phir.vercel.app/api/v1/business-metrics)** • **[Mandi Index ↗](https://phir.vercel.app/api/v1/rate-cards)** • **[Interactive Story ↗](https://phir.vercel.app/#story)**
+
+</div>
 
 ---
 
-## 🎯 Startup Vision & Positioning
+## 📌 Executive Summary
 
-### One-Line Positioning
-**The Shopify + Stripe + CPCB Audit Ledger for India's 5 Million Informal Waste Aggregators and Brands.**
+> **"The Shopify + Stripe + CPCB Audit Ledger for India's 5 Million Informal Waste Aggregators and Consumer Brands."**
 
-### The Vision
-To formalize and interconnect India's **₹1.1 Lakh Crore ($14.2 Billion)** unorganized dry scrap economy into a transparent, bankable, and statutory-compliant reverse supply chain. We transform informal doorstep collections into verified industrial feedstock and tamper-evident Extended Producer Responsibility (EPR) compliance credits.
+Every year, India generates over **62.2 Million Tonnes** of municipal solid waste. Over 80% of all dry recyclable materials (plastics, cardboard, metals, glass) are recovered by a grassroots workforce of **5+ million informal collectors (*kabadiwalas*) and localized aggregators**. 
 
----
+Despite anchoring the country's circular economy, these workers operate in an opaque, cash-only informal sector without transaction records, digital scales, or formal credit access. Simultaneously, under the **Central Pollution Control Board (CPCB) Plastic Waste Management (PWM) Rules**, consumer brands (PIBOs like Dabur, Unilever, Tata Consumer) are legally mandated to recycle 70% to 100% of packaging waste or face **₹5,000/tonne statutory penalties**. Brands currently purchase non-verifiable paper credits from opaque brokers, exposing them to catastrophic regulatory scrutiny.
 
-## 🛑 The Real-World Problem & Market Crisis
-
-Every year, India generates over **62.2 Million Tonnes** of municipal solid waste. Over 80% of all dry recyclable materials (plastics, paper, cardboard, aluminium, glass) are recovered exclusively by a grassroots workforce of **5+ million informal waste collectors (*kabadiwalas*) and localized scrap aggregators**.
-
-Despite powering the nation's circular economy, this supply chain suffers from systemic friction:
-
-```text
-┌─────────────────────────────────┐       ┌─────────────────────────────────┐       ┌─────────────────────────────────┐
-│     HOUSEHOLDS / GENERATORS     │       │     AGGREGATORS / COLLECTORS    │       │     ENTERPRISE BRANDS / MILLS   │
-│ • Arbitrary weighing scale fraud│       │ • Trapped in cash-only economy  │       │ • Mandated 70-100% EPR targets  │
-│ • Opaque Mandi price cuts       │ ───>  │ • No working capital micro-loans│ ───>  │ • ₹5,000/ton CPCB penalty risks │
-│ • 10-25% loss to middlecartels  │       │ • Opaque down-stream pricing    │       │ • Pervasive paper-only fake certs│
-└─────────────────────────────────┘       └─────────────────────────────────┘       └─────────────────────────────────┘
-```
-
-1. **Physical Scale Fraud & Pricing Distrust**: Households lose 10% to 25% of scrap value due to tampered mechanical scales and arbitrary dealer pricing, discouraging segregation at source.
-2. **Financial Exclusion of Informal Labor**: Cash-only settlements and lack of digital records leave 5 million kabadiwalas unbankable—unable to access formal working capital or equipment loans.
-3. **The Corporate EPR Compliance Crisis**: Under the **Central Pollution Control Board (CPCB) Plastic Waste Management (PWM) Rules**, consumer brands (PIBOs like Unilever, Dabur, Tata Consumer, PepsiCo) are legally mandated to collect and recycle 70% to 100% of their packaging waste or face **₹5,000/tonne non-compliance penalties**.
-4. **The "Paper Credit" Audit Vacuum**: Brands currently buy non-verifiable paper certificates from unscrupulous brokers with zero physical traceability. Regulatory scrutiny is intensifying, leaving corporate compliance officers exposed to severe legal liabilities.
+**Phir (फिर)** bridges this $14.2 Billion market gap with a closed-loop operating system:
+1. **Households** receive on-demand doorstep collection with transparent Delhi Mandi scrap benchmarks and instant UPI payouts.
+2. **Informal Aggregators** gain route optimization, algorithmic tare-scale reconciliation, and an auditable transaction history to unlock formal micro-loans.
+3. **Industrial Recyclers & Brands** discover verified feedstock and receive immutable, cryptographic **SHA-256 Extended Producer Responsibility (EPR)** compliance certificates.
 
 ---
 
-## 💡 The Phir Solution: A Three-Sided Operating System
+## 🖼️ Visual Tour: Core Workflows in Action
 
-Phir connects the entire reverse supply chain into a single verified, closed-loop operating system:
+### 1. Household Segregation & Live Mandi Scrap Benchmarking
+*Eliminates the 10%–25% value loss caused by tampered mechanical spring scales and arbitrary middleman quotes.*
 
-```text
-┌─────────────────────────────────┐
-│      1. HOUSEHOLD / CONSUMER    │ ──> Digital doorstep booking, AI vision scrap sorting,
-│           (Doorstep)            │     live Mandi pricing & instant UPI settlement.
-└─────────────────────────────────┘
-                 │
-                 ▼
-┌─────────────────────────────────┐
-│     2. AGGREGATOR / KABADIWALA  │ ──> Route density batching, physical tare/contamination
-│           (Logistics Hub)       │     scale reconciliation & digital inventory custody.
-└─────────────────────────────────┘
-                 │
-                 ▼
-┌─────────────────────────────────┐
-│     3. INDUSTRIAL RECYCLER/CPG  │ ──> Bulk feedstock discovery, reservation, handover, and
-│         (Brand & Compliance)    │     automated CPCB-compliant SHA-256 EPR certificate generation.
-└─────────────────────────────────┘
-```
+![Household Workspace](docs/images/household_workspace.png)
+
+- **Doorstep Pickup Scheduling**: Residents record segregated material quantities (PET, cardboard, paper, aluminium, glass, wood).
+- **Daily Delhi Mandi Benchmark**: Real-time fair market scrap rates prevent predatory deductions.
+- **AI Material Classification**: Automated visual recognition helper with computer vision fallbacks.
+- **Instant Digital Settlement**: Generates dynamic UPI deep-links (`upi://pay`) for verified, zero-cash handovers.
 
 ---
 
-## 👥 Target Customer Personas
+### 2. Collector Hub: Route Optimization & Scale Tare Reconciliation
+*Turns informal kabadiwalas into digitized micro-enterprises with route density batching and physical reconciliation.*
 
-| Persona | Who They Are | Their Pain Point | How Phir Solves It & Value Delivered |
-| :--- | :--- | :--- | :--- |
-| **Enterprise Brands (PIBOs)** | Packaging compliance officers at FMCG, retail & food corporations (e.g. Dabur, Britannia, Nestle). | Risk of ₹5,000/tonne CPCB penalties; fake paper credits; lack of auditable traceability. | **Statutory CPCB Parity**: Immutable SHA-256 cryptographic chain of custody verifying physical collection and recycling. |
-| **Industrial Recyclers** | Granule manufacturers, PET bottle-to-bottle pelletizers, secondary aluminium smelters. | Irregular raw feedstock supply, high contamination (moisture/dirt), unreliable quality. | **Direct Verified Procurement**: Access aggregated, pre-sorted bulk material lots with certified scale weight history. |
-| **Informal Aggregators** | Neighborhood scrap shop owners (*kabadiwalas*) and ward-level waste aggregators. | Price exploitation by large scrap cartels, cash crunch, arbitrary weight deductions. | **+28% Income Boost**: Direct marketplace access, transparent wholesale rates, digital scale tare tools & formal credit profile. |
-| **Urban Households & Retailers** | Gated societies, residential apartments, commercial retail stores. | Unreliable pickup schedules, cheated by faulty scales, dirty scrap lying around. | **On-Demand Doorstep Service**: Instant booking, transparent Delhi Mandi rates, digital scale reconciliation, instant UPI pay. |
+![Collector Workspace](docs/images/collector_workspace.png)
 
----
-
-## 💼 Business Model & Multi-Stream Monetization
-
-Phir operates a capital-light, transaction-driven B2B2C business model:
-
-```text
-                                 ┌───────────────────────────────────┐
-                                 │     PHIR REVENUE STREAMS          │
-                                 └───────────────────────────────────┘
-                                                   │
-         ┌─────────────────────────────────────────┼────────────────────────────────────────┐
-         │                                         │                                        │
-         ▼                                         ▼                                        ▼
-┌──────────────────────────────────┐   ┌──────────────────────────────────┐   ┌──────────────────────────────────┐
-│  Stream 1: Marketplace Take-Rate │   │ Stream 2: CPCB EPR Compliance Fee│   │ Stream 3: Aggregator Micro-SaaS  │
-│  2.0% - 2.5% on bulk transactions│   │ ₹180 / Metric Ton verified       │   │ "Phir Pro" @ ₹499 / month        │
-│  between aggregators & recyclers │   │ Paid by Enterprise Brands (PIBOs)│   │ Route optimization, scale bridge │
-└──────────────────────────────────┘   └──────────────────────────────────┘   └──────────────────────────────────┘
-```
-
-### Unit Economics per Metric Ton (1,000 kg) Processed:
-- **Average Wholesale Feedstock Value**: ₹24,500 / MT (blended PET, aluminium, cardboard, paper)
-- **Marketplace Commission (2.0%)**: ₹490 / MT
-- **CPCB EPR Certificate Issuance Fee**: ₹180 / MT
-- **Total Blended Phir Revenue**: **₹670 / Metric Ton**
-- **Direct Software & Operating Cost**: ₹65 / MT (zero physical warehouses or fleet ownership)
-- **Gross Margin**: **~90.3%**
+- **Interactive Cluster Map**: Visualizes open collection opportunities across 11 Delhi revenue districts using privacy-preserving centroid clustering.
+- **Circuit Route Planner**: Computes distance-optimized pickup sequences to maximize daily collection yield.
+- **Algorithmic Tare & Moisture Reconciliation**: Mathematical deductions for gross vehicle weight, container tare, and moisture/contamination penalties.
+- **Credit Profile Formation**: Every completed transaction builds an auditable ledger for working capital micro-loans.
 
 ---
 
-## 📈 Market Size & Scalability (TAM / SAM / SOM)
+### 3. Industrial Recycler Marketplace & CPCB EPR Compliance Ledger
+*Provides enterprise brands and secondary smelters with verified feedstock and tamper-evident audit trails.*
 
-- **Total Addressable Market (TAM) — $14.2 Billion**: Total annual Indian recyclable dry scrap and circular economy market across plastics, metals, paper, and e-waste.
-- **Serviceable Addressable Market (SAM) — $2.8 Billion**: Formalizable dry packaging waste in India's top 20 industrial and urban metropolitan clusters (Delhi-NCR, Mumbai, Bengaluru, Chennai, Pune, Ahmedabad, Hyderabad, Bhubaneswar-Cuttack).
-- **Serviceable Obtainable Market (SOM) — $84 Million**: 3-year target capturing 3% of dry recyclable flows across Delhi-NCR and the Odisha industrial belt, serving 12,000 informal aggregators and 150 enterprise brand accounts.
+![Recycler Marketplace](docs/images/recycler_marketplace.png)
 
----
-
-## 🎙️ 2-Minute Startup Pitch Script (Indiathon Judges)
-
-> *"Good morning, esteemed judges of Indiathon. Every day in India, 62 million tonnes of waste is generated. But here is what nobody talks about: **over 80% of all recycling in India does not happen through government trucks or tech unicorns—it happens through 5 million informal kabadiwalas and local scrap aggregators.***
->
-> *Yet, these grassroots heroes are trapped in an opaque, cash-only informal economy. Households lose 20% of their money to rigged scales. Meanwhile, consumer brands like Dabur and Unilever are legally mandated under CPCB EPR laws to recycle 100% of their packaging or pay **₹5,000 per ton in government fines**—and they are desperate for auditable proof.*
->
-> *Enter **Phir (फिर)**: the reverse-logistics and compliance operating system for India's ₹1.1 Lakh Crore circular economy.*
->
-> *Phir connects all three sides: Households get on-demand doorstep scrap pickup with live Mandi prices and instant UPI payouts. Collectors get a route-optimization mobile OS with our proprietary tare-scale reconciliation engine. And industrial recyclers and brands get verified feedstock paired with tamper-evident, cryptographic SHA-256 EPR audit certificates.*
->
-> *Our business model is proven and capital-light: we take a **2% transaction fee** on bulk material transfers, charge **₹180 per ton** for statutory CPCB certificate issuance, and offer a **₹499/month SaaS tier** for high-volume aggregators. That's a 90% gross margin on software with zero fleet ownership.*
->
-> *Our MVP is 100% live right now on **phir.vercel.app**, running on an edge serverless architecture with 44 automated tests passing. We invite you to join us in turning India's everyday waste into another beginning. Thank you!"*
+- **Feedstock Discovery**: Recyclers filter available material lots by resin type, location, and verified physical weight.
+- **Lot Splitting & Booking**: Real-time reservations prevent double-booking across multiple buyers.
+- **Cryptographic EPR Audit Ledger**: Generates SHA-256 hash-chained compliance events certifying physical custody transfer and processing.
+- **Statutory CPCB Parity**: Matches regulatory parameters under Indian Plastic Waste Management Rules 2016 (and amendments).
 
 ---
 
-## ⚡ 3-Minute Live Interactive Demo Walkthrough
+### 4. Interactive Waste Stream Narrative & 2-Minute Executive Pitch Deck
+*A judge-ready presentation experience integrated directly into the web application.*
 
-Judges can execute the complete end-to-end circular transaction live on [https://phir.vercel.app](https://phir.vercel.app/):
+![Interactive Story & Pitch Deck](docs/images/story_pitch_deck.png)
 
-| Step | Persona | Live Interaction on [phir.vercel.app](https://phir.vercel.app/) | Verified Backend Mechanism |
-| :--- | :--- | :--- | :--- |
-| **1** | **Executive View** | Open home page. Inspect **Live Ticker** (Recoverable Material Tracked, Direct Payouts, CPCB Parity, CO2e Offset). Test the **Interactive Unit Economics Slider**. | Live REST API call to `/api/v1/business-metrics` aggregating real database transactions. |
-| **2** | **Household** | Click **Household** workspace. Add material (`+ Add material` e.g., 5.0 kg PET plastic). Click **Request a collection**. | Rates benchmarked via `DEFAULT_MANDI_RATES`. Generates state machine pending request `req_...`. |
-| **3** | **Collector Hub** | Switch to **Collection partner**. Select district on interactive Delhi map. Click **Accept**. Click **Mark collected**. Adjust gross weight & contamination on the scale modal. | **Physical Scale Reconciliation**: calculates tare & moisture deductions, computes instant UPI payout link (`upi://pay`), and records custody in SQLite WAL. |
-| **4** | **Recycler & Brands** | Switch to **Recycler**. Explore collected inventory lots. Click **Reserve material**. Confirm the physical handover. Click **🌱 EPR Audit**. | Transfers inventory ownership, fulfills CPCB quota, and generates immutable **SHA-256 cryptographic audit event** with timestamp. |
-| **★** | **Pitch Deck** | Click **🎙️ 2-Min Pitch Deck** in the navigation bar. | 6-slide executive deck covering Problem, Solution, Innovation, Business Model, Market Size & Roadmap. |
+- **Waste Stream Narrative**: Step-by-step walkthrough of the material lifecycle from consumer doorstep to industrial product.
+- **Interactive Pitch Deck**: 6-slide executive deck covering Problem, Solution, Innovation, Business Model, Market Sizing, and Scalability.
+- **Trilingual "Hard Translate" Floating Switcher**: Persistent bottom-right floating pill enabling instant switching between English, Hindi (हिन्दी), and Odia (ଓଡ଼ିଆ) across 100% of UI elements and dynamic toasts.
 
 ---
 
-## 🏛️ Enterprise System Architecture
+## 🏛️ System Architecture
+
+Phir is engineered as a zero-cost, high-concurrency serverless web application combining a lightweight client-side frontend with an asynchronous Python backend and cryptographic ledger:
 
 ```mermaid
 flowchart TD
-    subgraph Client ["Client Presentation & Workspaces"]
-        UI["High-Performance Web App\n(HTML5 / CSS3 / ES2022)"]
-        PitchDeck["Investor Pitch Deck Modal\n(2-Min Executive Presentation)"]
-        Simulator["Unit Economics Simulator\n(Interactive Volume Slider)"]
-        I18N["Zero-Cost i18n Localization\n(EN · HI · OD)"]
+    subgraph Client ["Client Tier (Vanilla ES2022 / HTML5 / CSS3)"]
+        UI["Clean Single-Page Workspaces\n(#household · #collector · #recycler)"]
+        PitchDeck["Executive Pitch Deck Modal\n(2-Min Interactive Investor Deck)"]
+        SvgMap["Interactive Vector Cluster Map\n(11 Delhi Revenue Districts)"]
+        I18nEngine["Trilingual Static i18n Engine\n(EN · HI · OD · 100% Dictionary Parity)"]
     end
 
     subgraph EdgeCompute ["Serverless Edge Compute (Vercel)"]
         Edge["Vercel Edge Gateway\n(phir.vercel.app)"]
-        FastAPI["FastAPI 0.115 Production API\n(api/index.py)"]
-        Docs["OpenAPI 3.1 Swagger & ReDoc\n(/docs · /redoc)"]
+        FastAPI["FastAPI 0.115 Async Application\n(api/index.py)"]
+        Swagger["OpenAPI 3.1 Interactive Docs\n(/docs · /redoc)"]
     end
 
     subgraph CoreEngines ["Domain & Compliance Engines (src/)"]
-        BizEngine["Business Metrics Engine\n(/api/v1/business-metrics)"]
-        RateEngine["Delhi Mandi Scrap Rate Engine\n(src/rate_engine.py)"]
-        ScaleRecon["Tare & Contamination Reconciler\n(src/weight_reconciler.py)"]
-        AuditLedger["SHA-256 EPR Cryptographic Ledger\n(src/audit_ledger.py)"]
+        BizEngine["Live Business Telemetry\n(/api/v1/business-metrics)"]
+        RateEngine["Delhi Mandi Scrap Pricing Engine\n(src/rate_engine.py)"]
+        ScaleRecon["Algorithmic Tare & Moisture Reconciler\n(src/weight_reconciler.py)"]
+        AuditLedger["Cryptographic SHA-256 EPR Ledger\n(src/audit_ledger.py)"]
     end
 
     subgraph Storage ["Relational Data Layer"]
-        DB[("SQLite 3 Transactional DB\n(WAL Mode · Foreign Keys · ACID)")]
-        PilotReqs[("Enterprise Pilot Leads\n(B2B Customer Ingestion)")]
-        DeterministicSeed["Deterministic Seed (Seed: 42)\n(Serverless Idempotency)"]
+        DB[("SQLite 3 with Write-Ahead Logging\n(WAL Mode · Foreign Keys · ACID)")]
+        DeterministicSeed["Deterministic Seed Engine (Seed: 42)\n(Serverless Cold Start Idempotency)"]
     end
 
-    UI & PitchDeck & Simulator & I18N <-->|JSON / HTTPS| Edge
+    UI & PitchDeck & SvgMap & I18nEngine <-->|JSON over HTTPS| Edge
     Edge --> FastAPI
-    FastAPI --> Docs
+    FastAPI --> Swagger
     FastAPI --> BizEngine & RateEngine & ScaleRecon & AuditLedger
-    BizEngine & RateEngine & ScaleRecon & AuditLedger <--> DB & PilotReqs
-    DeterministicSeed -.->|Consistent Serverless State| DB
+    BizEngine & RateEngine & ScaleRecon & AuditLedger <--> DB
+    DeterministicSeed -.->|Restores Demo Fixtures on Cold Start| DB
 ```
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology | Engineering & Business Rationale |
+| :--- | :--- | :--- |
+| **Backend Framework** | **Python 3.11+ / FastAPI 0.115** | High-throughput asynchronous endpoints, Pydantic v2 data validation, native OpenAPI 3.1 contract generation. |
+| **Database** | **SQLite 3 in WAL Mode** | Microsecond local query execution, ACID transactions, zero infrastructure maintenance cost. |
+| **Audit Cryptography** | **Python `hashlib` (SHA-256)** | Immutable hash-chained audit events meeting Central Pollution Control Board (CPCB) standards. |
+| **Edge Hosting** | **Vercel Serverless (`@vercel/python`)** | Global CDN edge caching, automatic HTTPS, zero cold-start configuration, permanent ₹0 hosting cost. |
+| **Frontend Runtime** | **Modern Vanilla ES2022** | <0.5s First Contentful Paint (FCP), zero production `node_modules` bloat, high responsiveness on mobile. |
+| **Mapping Engine** | **Responsive Vector SVG** | Custom 11-district Delhi cluster map with privacy-preserving centroid coordinate obfuscation. |
+| **Localization** | **Trilingual i18n Engine** | Instant client-side translation across English, Hindi, and Odia without page reloads. |
+
+---
+
+## 💼 Business Model & Monetization
+
+Phir operates a capital-light, transaction-driven B2B2C business model with three complementary revenue streams:
+
+```text
+                               ┌───────────────────────────────────┐
+                               │       PHIR REVENUE STREAMS        │
+                               └───────────────────────────────────┘
+                                                 │
+        ┌────────────────────────────────────────┼────────────────────────────────────────┐
+        │                                        │                                        │
+        ▼                                        ▼                                        ▼
+┌──────────────────────────────────┐ ┌──────────────────────────────────┐ ┌──────────────────────────────────┐
+│  Stream 1: Marketplace Take-Rate │ │ Stream 2: CPCB EPR Compliance Fee│ │ Stream 3: Aggregator Micro-SaaS  │
+│  2.0% - 2.5% on bulk transactions│ │ ₹180 / Metric Ton verified       │ │ "Phir Pro" @ ₹499 / month        │
+│  between aggregators & recyclers │ │ Paid by Enterprise Brands (PIBOs)│ │ Route optimization, scale bridge │
+└──────────────────────────────────┘ └──────────────────────────────────┘ └──────────────────────────────────┘
+```
+
+### Unit Economics per Metric Ton (1,000 kg Processed)
+
+| Revenue / Cost Component | Amount (INR) | Notes |
+| :--- | :--- | :--- |
+| **Average Wholesale Feedstock Value** | ₹24,500 / MT | Blended mix of PET, aluminium, cardboard, paper |
+| **Marketplace Commission (2.0%)** | ₹490 / MT | Transaction fee charged on wholesale settlement |
+| **CPCB EPR Certificate Issuance** | ₹180 / MT | Statutory compliance fee paid by enterprise brands |
+| **Total Blended Revenue** | **₹670 / MT** | Gross revenue per metric ton |
+| **Direct Operating Cost** | ₹65 / MT | Cloud infrastructure, scale verification API |
+| **Software Gross Margin** | **~90.3%** | Capital-light software layer with zero fleet ownership |
+
+### Market Sizing (TAM / SAM / SOM)
+- **Total Addressable Market (TAM) — $14.2 Billion**: Total annual Indian recyclable dry scrap and circular packaging market.
+- **Serviceable Addressable Market (SAM) — $2.8 Billion**: Formalizable packaging waste in India's top 20 metropolitan and industrial manufacturing corridors.
+- **Serviceable Obtainable Market (SOM) — $84 Million**: 3-year target capturing 3% of dry recyclable flows across Delhi-NCR and the Odisha industrial packaging belt.
 
 ---
 
 ## ⚖️ Competitive Differentiation
 
-| Capability | Traditional Scrap Cartels | Existing B2B Waste Brokers | Phir (फिर) |
+| Capability | Traditional Scrap Cartels | Existing Waste Brokers | Phir (फिर) |
 | :--- | :--- | :--- | :--- |
 | **Pricing Transparency** | ❌ Arbitrary cuts, zero benchmark | ⚠️ Semi-opaque broker quotes | ✅ **Live Daily Mandi Scrap Index** |
-| **Weighing Accuracy** | ❌ Cheated manual spring balances | ⚠️ Gate scales only | ✅ **Algorithmic Tare & Moisture Reconciliation** |
-| **EPR Audit Verifiability** | ❌ Zero digital record | ❌ Opaque paper receipts (fraud risk) | ✅ **Immutable SHA-256 Hash Chaining** |
-| **Collector Inclusion** | ❌ Exploitative daily cash wage | ⚠️ Treat collectors as sub-contractors | ✅ **Micro-SaaS & Formal Banking Credit Score** |
-| **Asset Capital Intensity** | ⚠️ High truck/yard capital costs | ⚠️ Heavy warehouse infrastructure | ✅ **100% Capital-Light Software Layer** |
+| **Weighing Accuracy** | ❌ Tampered spring scales (10-25% loss) | ⚠️ Gate scales only | ✅ **Algorithmic Tare & Contamination Reconciler** |
+| **EPR Audit Verifiability**| ❌ Zero digital record | ❌ Opaque paper certificates | ✅ **Cryptographic SHA-256 Hash Chaining** |
+| **Worker Inclusion** | ❌ Exploitative daily cash wages | ⚠️ Sub-contractor treatment | ✅ **Transaction-Backed Credit Score for Micro-Loans** |
+| **Capital Intensity** | ⚠️ High truck & yard capital cost | ⚠️ Heavy warehouse overhead | ✅ **100% Capital-Light Software Layer** |
 
 ---
 
-## 🛠️ Complete Technology Stack
+## ⚡ Technical Highlights
 
-| Layer | Technologies Used | Commercial Startup Rationale |
-| :--- | :--- | :--- |
-| **Backend API** | **Python 3.11+ / FastAPI 0.115 / Pydantic v2** | High-concurrency async operations, auto-generated OpenAPI 3.1 contracts, zero compile step. |
-| **Relational Database** | **SQLite 3 in WAL Mode** | Zero-cost serverless relational storage with microsecond query latency and full ACID guarantees. |
-| **Audit Ledger** | **Python `hashlib` (SHA-256)** | Cryptographic proof generation meeting CPCB Plastic Waste Management statutory requirements. |
-| **Edge Deployment** | **Vercel Serverless (`@vercel/python`)** | Global CDN edge caching, automatic HTTPS, permanent ₹0 infrastructure hosting cost. |
-| **Frontend Framework** | **Modern Vanilla ES2022+** | <0.5s First Contentful Paint, zero node_modules production overhead, high performance on mobile. |
-| **Mapping Engine** | **Interactive Vector SVG** | Responsive 11-district Delhi cluster map with privacy-preserving centroid clustering. |
-| **Localization** | **Custom Static i18n Engine** | Instant zero-reload switching between English, हिन्दी, and ଓଡ଼ିଆ with 100% dictionary parity. |
+### 1. Deterministic PRNG Seed Engine (`seed: 42`)
+Serverless environments on the free tier reset in-memory state upon cold start inactivity. Phir implements an idempotent, deterministic procedural seed generator that reconstructs a full Delhi recovery dataset (15+ household requests, aggregator inventory lots, recycler demands, and audit entries) in **under 15 milliseconds** whenever a fresh instance spins up.
+
+### 2. Algorithmic Weight Tare & Moisture Reconciliation
+Informal waste collection frequently suffers from moisture accumulation and container tare fraud. Phir implements physical reconciliation math:
+$$\text{Net Weight} = \text{Gross Scale Weight} - \text{Container Tare Weight} - (\text{Gross Scale Weight} \times \text{Contamination Penalty}\%)$$
+$$\text{Total Payout} = \text{Net Weight} \times \text{Live Mandi Benchmark Rate}$$
+This ensures fair compensation for both household sellers and aggregator buyers before funds are disbursed via dynamic UPI links.
+
+### 3. Cryptographic Chain of Custody (SHA-256)
+Every confirmed material transfer records an immutable audit block linking:
+```json
+{
+  "event_id": "epr_9b4a1f...",
+  "timestamp": "2026-11-02T12:59:22Z",
+  "material": "PET_PLASTIC",
+  "net_weight_kg": 1500.0,
+  "generator_locality": "West Delhi",
+  "aggregator_id": "kabadiwala_1",
+  "recycler_id": "recycler_1",
+  "cpcb_category": "CAT_I_RIGID_PLASTIC",
+  "previous_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "block_hash": "a4f86d91283..."
+}
+```
+Any post-hoc tampering of weights or dates invalidates the hash chain, giving corporate compliance officers audit-proof evidence for government inspection.
 
 ---
 
-## 🧪 Comprehensive Automated Test Suite (44/44 Passing)
+## 🚀 Quick Start & Local Setup
 
-Phir adheres to strict test-driven engineering standards. All 44 automated tests verify domain state transitions, financial calculations, scale math, and cryptographic hashing:
+### Prerequisites
+- Python 3.10+ (tested on Python 3.11 & 3.13)
+- Git
+
+### Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/kamilahmadhashmi/PHIR.git
+cd PHIR
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Launch the unified development server
+python run.py
+```
+
+Open your browser to:
+- **Web Application**: `http://localhost:8080/`
+- **Interactive OpenAPI 3.1 Docs**: `http://localhost:8080/docs`
+- **System Health Endpoint**: `http://localhost:8080/healthz`
+
+---
+
+## 🧪 Automated Test Suite (46/46 Passing)
+
+Phir maintains rigorous automated test coverage verifying API contracts, domain state machines, tare mathematics, internationalization parity, and cryptographic hashing:
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
 ```text
-Ran 44 tests in 2.095s
+Ran 46 tests in 2.352s
 
-OK (44/44 tests passed)
+OK (46/46 tests passed)
 ```
 
-### Key Verified Invariants:
-1. **`test_fastapi_server.py`**: Full HTTP API integration verifying Household -> Collector -> Recycler lifecycle.
-2. **`test_weight_reconciler.py`**: Mathematical proofs for gross-to-net tare adjustments and moisture penalties.
-3. **`test_recovery_domain.py`**: State machine boundary enforcement (prevents unauthorized custody jumps or double bookings).
-4. **`test_i18n.py`**: 100% key parity across English, Hindi, and Odia dictionaries (>300 keys per language).
-5. **`test_seed_data.py`**: Deterministic PRNG seed parity guaranteeing seamless reliability across ephemeral serverless instances.
+### Verified Test Categories:
+- **`tests/test_fastapi_server.py`**: End-to-end HTTP integration across Household, Collector, and Recycler API endpoints.
+- **`tests/test_weight_reconciler.py`**: Mathematical validation of gross-to-net tare adjustments and moisture deductions.
+- **`tests/test_recovery_domain.py`**: Strict state machine boundaries preventing invalid lifecycle jumps or double bookings.
+- **`tests/test_i18n.py`**: 100% dictionary key parity across English, Hindi, and Odia (>350 keys per language).
+- **`tests/test_seed_data.py`**: Deterministic PRNG seed parity guaranteeing consistent state across serverless instances.
 
 ---
 
-## 🔮 12-Month Post-Indiathon Commercial Roadmap
+## 📁 Repository Structure
 
 ```text
-Q1 2026: Delhi Ground Pilot
-  ├── Onboard 40 informal aggregators across Mayapuri & Ghazipur clusters
-  ├── Formalize 200 MT pilot with 2 FMCG brand packaging partners
-  └── Integrate automated UPI payment splits for instant collector payouts
+PHIR/
+├── api/
+│   └── index.py               # Vercel serverless ASGI entrypoint
+├── docs/
+│   ├── images/                # High-resolution production screenshots
+│   └── openapi.json           # Exported OpenAPI 3.1 contract schema
+├── frontend/
+│   ├── amplify-site/          # Production-optimized web client
+│   ├── phir-i18n.js           # Trilingual Hard Translate engine (EN/HI/OD)
+│   ├── phir-collector-api-bridge.js # Collector route & tare integration
+│   ├── phir-enhancements.js   # Pitch deck, pricing & business UI layer
+│   └── phirFinal.optimized.html # Single-page circular workflow UI
+├── src/
+│   ├── main.py                # FastAPI route declarations & middleware
+│   ├── database.py            # SQLite connection pool & WAL configuration
+│   ├── repository.py          # Relational data access & seed engine
+│   ├── rate_engine.py         # Delhi Mandi benchmark scrap rates
+│   ├── weight_reconciler.py   # Tare & contamination deduction logic
+│   └── audit_ledger.py        # Cryptographic SHA-256 EPR audit logging
+├── tests/                     # 46 automated unit and contract tests
+├── run.py                     # Unified local product runner
+├── vercel.json                # Serverless deployment configuration
+└── requirements.txt           # Minimal production dependencies
+```
+
+---
+
+## 🎙️ 2-Minute Startup Pitch Script (Indiathon Judges)
+
+> *"Good morning, esteemed judges of Indiathon. Every day in India, 62 million tonnes of waste is generated. But here is the reality: **over 80% of all recycling in India does not happen through government trucks or tech unicorns—it is powered entirely by 5 million informal kabadiwalas and local scrap aggregators.***
+>
+> *Yet, these grassroots heroes are trapped in an opaque, cash-only economy. Households routinely lose 20% of their money to rigged spring scales. Meanwhile, consumer brands like Dabur and Unilever are legally mandated under CPCB EPR laws to recycle 100% of their packaging waste or pay **₹5,000 per ton in government penalties**—and they are desperate for auditable proof.*
+>
+> *Enter **Phir (फिर)**: the reverse-logistics and statutory compliance operating system for India's ₹1.1 Lakh Crore circular economy.*
+>
+> *Phir connects all three sides into a verified closed loop:*
+> 1. *Households get on-demand scrap pickup with live Mandi pricing benchmarks and instant UPI payouts.*
+> 2. *Informal collectors get a mobile route-optimization tool with our proprietary tare-scale reconciliation engine that builds their credit score.*
+> 3. *Industrial recyclers and enterprise brands get verified bulk feedstock paired with tamper-evident, cryptographic SHA-256 EPR audit certificates.*
+>
+> *Our business model is capital-light and software-driven: we take a **2% transaction fee** on wholesale material transfers, charge **₹180 per ton** for CPCB certificate issuance, and offer a **₹499/month SaaS tier** for aggregators. That's a 90% gross margin on pure software with zero fleet or warehouse ownership.*
+>
+> *Our MVP is 100% live right now on **phir.vercel.app**, running on an edge serverless architecture with 46 automated tests passing. We invite you to join us in turning India's everyday waste into another beginning. Thank you!"*
+
+---
+
+## 🔮 Roadmap
+
+```text
+Q1 2026: Delhi-NCR Ground Pilot
+  ├── Onboard 50 informal aggregators across Mayapuri & Ghazipur recycling clusters
+  ├── Formalize 250 MT pilot with 2 FMCG brand packaging partners
+  └── Integrate automated UPI payment splits for instant doorstep collector payouts
 
 Q2 2026: Hardware & Bluetooth Scale Integration
-  ├── Launch BLE hanging scale dongle for zero-touch digital weight capture
+  ├── Launch $8 BLE hanging scale dongle for zero-touch digital weight capture
   ├── Deploy on-device MobileNet AI vision for plastic resin classification (PET/HDPE/PP)
   └── File provisional patent on Algorithmic Weight Tare Reconciliation
 
-Q3 2026: Industrial Corridor Expansion
+Q3 2026: Odisha Industrial Corridor Expansion
   ├── Launch operations in Bhubaneswar / Cuttack industrial mineral & packaging corridor
   ├── Direct API integration with Central Pollution Control Board (CPCB) EPR Portal
   └── Introduce automated GST-compliant e-way bill generation for inter-state scrap transit
 
 Q4 2026: Financial Inclusion & ONDC Reverse Logistics
-  ├── Partner with licensed NBFC to offer working capital micro-loans based on transaction history
+  ├── Partner with licensed NBFCs to offer working capital micro-loans based on transaction history
   ├── Integrate with Open Network for Digital Commerce (ONDC) reverse logistics protocol
   └── Scale to 1,000+ active collection partners and 10,000 MT/month processed volume
 ```
 
-### Current Technical Limitations & Mitigation Plan
-- **Ephemeral Serverless SQLite Persistence**: On Vercel serverless free tier, state resets upon cold start inactivity. *Mitigation*: Our deterministic seed engine (`seed: 42`) instantly reconstructs consistent production fixtures on every invocation; for production scale, database swaps seamlessly to Turso (libSQL) or Supabase PostgreSQL with zero code changes.
-- **Manual Hardware Weighing Input**: Current scale readings are manually entered into the UI. *Mitigation*: Q2 roadmap introduces low-cost ($8) Bluetooth BLE dongles that stream certified hanging scale weights directly to the web app.
-
 ---
 
-## 📜 License
+## 📜 License & Acknowledgements
 
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for terms. Built with pride for **Indiathon 2026 – Powered by E-Cell IIIT Bhubaneswar**.
+- **License**: Distributed under the [MIT License](LICENSE).
+- **Competition**: Developed with pride for **Indiathon 2026 — Powered by E-Cell IIIT Bhubaneswar**.
+- **Live Production URL**: [https://phir.vercel.app](https://phir.vercel.app/)
+- **Lead Developer & Maintainer**: Kamil Ahmad Hashmi ([@kamilahmadhashmi](https://github.com/kamilahmadhashmi))

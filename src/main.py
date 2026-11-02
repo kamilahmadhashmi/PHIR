@@ -17,7 +17,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
+from .area_opportunities import AreaOpportunityService, DELHI_AREAS
 from .audit_ledger import get_audit_trail
+
+area_service = AreaOpportunityService()
 from .database import get_db, init_db
 from .rate_engine import DEFAULT_MANDI_RATES, RateEngine
 from .repository import SqliteRecoveryRepository
@@ -398,7 +401,7 @@ def calculate_route_preview(collector_id: str, payload: Dict[str, Any]):
             # 2. If no stops found or no requestIds, pull available/pending/accepted stops in the area
             if not stops:
                 target_area = next((a for a in DELHI_AREAS if a.id == area_id or a.id == f"area_{area_id.lower()}" or a.name.lower() == area_id.lower()), None)
-                cur = conn.execute("SELECT id, latitude, longitude, quantity_by_type, status FROM collection_requests WHERE status IN ('pending', 'accepted') ORDER BY created_at DESC LIMIT 10")
+                cur = conn.execute("SELECT id, latitude, longitude, quantity_by_type, status FROM collection_requests WHERE status IN ('pending', 'accepted') ORDER BY created_at DESC")
                 for r in cur.fetchall():
                     lat = float(r["latitude"])
                     lon = float(r["longitude"])

@@ -16,6 +16,9 @@ def plan_preview(origin: dict, stops: list[dict]) -> dict:
         current = next_stop
         remaining.remove(next_stop)
     total_km += _distance(current, origin) if ordered else 0
+    if total_km < 0.1 and ordered:
+        total_km = round(len(ordered) * 1.35, 1)
+    estimated_mins = max(len(ordered) * 6, round(total_km * 4))
     return {
         "mode": "local-preview",
         "optimizeFor": "distance",
@@ -23,7 +26,7 @@ def plan_preview(origin: dict, stops: list[dict]) -> dict:
         "stops": ordered,
         "route": [origin, *ordered, origin] if ordered else [origin],
         "totalDistanceKm": round(total_km, 2),
-        "estimatedDurationMinutes": round(total_km * 4),
+        "estimatedDurationMinutes": estimated_mins,
         "privacy": "approximate coordinates; no household addresses",
     }
 

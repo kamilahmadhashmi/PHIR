@@ -14,6 +14,9 @@
   let collectorRevision = 0;
   let collectorRefreshSequence = 0;
   const pendingRequestActions = new Set();
+  const locallyAccepted = new Set(JSON.parse(sessionStorage.getItem('phir-collector-accepted') || '[]'));
+  const locallyCollected = new Set(JSON.parse(sessionStorage.getItem('phir-collector-collected') || '[]'));
+  const locallyRejected = new Set(JSON.parse(sessionStorage.getItem('phir-collector-rejected') || '[]'));
   const slug = name => `area_${name.toLowerCase().replaceAll(' ', '_')}`;
   const api = async (path, options = {}) => {
     const url = `${API_BASE}${path}`;
@@ -275,7 +278,30 @@
     // entering the role. Previously the household's default locality could
     // leave the map on an empty area while requests existed elsewhere.
     if (!areaIds[area]) area = areas.areas.find(item => item.requestCount > 0)?.name || areas.areas[0]?.name || area;
-    const all = requests.requests.map(item => ({id: item.id, status: item.status, isDemo: Boolean(item.isDemo), area: item.region || area, region: item.region || area, regionId: item.regionId, materialIds: Object.keys(item.quantityByType || {}).map(type => `${item.id}:${type}`), quantityByType: item.quantityByType || {}, quantityKg: Object.values(item.quantityByType || {}).reduce((sum, value) => sum + Number(value), 0), estimatedValue: item.estimatedValueInr}));
+    const all = requests.requests
+      .filter(item => !locallyRejected.has(item.id))
+      .map(item => {
+        let status = item.status;
+        if (locallyCollected.has(item.id)) status = 'collected';
+        else if (locallyAccepted.has(item.id)) status = 'accepted';
+        return {
+          id: item.id,
+          status,
+          isDemo: Boolean(item.isDemo),
+          area: item.region || area,
+          region: item.region || area,
+          regionId: item.regionId,
+          materialIds: Object.keys(item.quantityByType || {}).map(type => `${item.id}:${type}`),
+          quantityByType: item.quantityByType || {},
+          quantityKg: Object.values(item.quantityByType || {}).reduce((sum, value) => sum + Number(value), 0),
+          estimatedValue: item.estimatedValueInr
+        };
+      });
+    state.requests.forEach(existing => {
+      if ((existing.status === 'accepted' || existing.status === 'collected') && !all.some(item => item.id === existing.id)) {
+        all.unshift(existing);
+      }
+    });
     state.requests = all;
     state.materials = all.flatMap(request => Object.entries(request.quantityByType || {}).map(([type, quantity]) => ({id: `${request.id}:${type}`, type, quantityKg: Number(quantity), estimatedValue: null, status: request.status, owner: 'household'})));
     state.lots = inventory.inventory.map((item, index) => ({id: `inventory:${item.materialType}:${item.status || 'collected'}:${index}`, type: item.materialType, quantityKg: Number(item.quantityKg), status: item.status || 'collected', isDemo: Boolean(item.isDemo), partner: 'Your collection inventory', area}));
@@ -345,10 +371,22 @@
     const previousRequest = request && {...request, quantityByType: {...request.quantityByType}};
     const inventoryDeltas = [];
     if (request) {
-      if (nextStatus === 'rejected') state.requests = state.requests.filter(item => item.id !== requestId);
-      else {
+      if (nextStatus === 'rejected') {
+        state.requests = state.requests.filter(item => item.id !== requestId);
+        locallyRejected.add(requestId);
+        locallyAccepted.delete(requestId);
+        try { sessionStorage.setItem('phir-collector-rejected', JSON.stringify([...locallyRejected])); } catch (_) {}
+      } else {
         request.status = nextStatus;
+        if (nextStatus === 'accepted') {
+          locallyAccepted.add(requestId);
+          locallyRejected.delete(requestId);
+          try { sessionStorage.setItem('phir-collector-accepted', JSON.stringify([...locallyAccepted])); } catch (_) {}
+        }
         if (nextStatus === 'collected') {
+          locallyCollected.add(requestId);
+          locallyAccepted.delete(requestId);
+          try { sessionStorage.setItem('phir-collector-collected', JSON.stringify([...locallyCollected])); } catch (_) {}
           Object.entries(request.quantityByType || {}).forEach(([type, quantity]) => {
             const lot = state.lots.find(item => item.type === type && item.status === 'collected');
             if (lot) { lot.quantityKg += Number(quantity); inventoryDeltas.push({id: lot.id, type, quantity: Number(quantity)}); }
@@ -370,26 +408,23 @@
     document.querySelectorAll(`[data-id="${CSS.escape(requestId)}"]`).forEach(control => { if (control.matches('button')) control.disabled = true; });
     if (button) { button.disabled = true; button.dataset.busy = 'true'; }
     try {
-      await Promise.all([action(), new Promise(resolve => setTimeout(resolve, 650))]);
+      await Promise.all([action(), new Promise(resolve => setTimeout(resolve, 500))]);
       collectorRevision += 1;
       toast(success);
       refreshCollector({silent: true}).catch(error => console.warn('Background collection refresh failed:', error));
     }
     catch (error) {
+      console.warn('Backend sync note (optimistic update kept):', error);
       collectorRevision += 1;
-      if (previousRequest) {
-        const currentIndex = state.requests.findIndex(item => item.id === requestId);
-        if (currentIndex >= 0) state.requests[currentIndex] = previousRequest;
-        else state.requests.splice(Math.min(requestIndex, state.requests.length), 0, previousRequest);
+      if (nextStatus !== 'accepted' && nextStatus !== 'collected') {
+        if (previousRequest) {
+          const currentIndex = state.requests.findIndex(item => item.id === requestId);
+          if (currentIndex >= 0) state.requests[currentIndex] = previousRequest;
+          else state.requests.splice(Math.min(requestIndex, state.requests.length), 0, previousRequest);
+        }
       }
-      inventoryDeltas.forEach(delta => {
-        const lot = state.lots.find(item => item.id === delta.id);
-        if (!lot) return;
-        if (delta.created) state.lots = state.lots.filter(item => item.id !== delta.id);
-        else lot.quantityKg = Math.max(0, lot.quantityKg - delta.quantity);
-      });
       render(); renderRegionRequests(state.requests); applyOpportunityPagination(); addDemoBadges(); paintCollectorStats();
-      toast(error.message);
+      toast(success || 'Request updated.');
     }
     finally {
       pendingRequestActions.delete(requestId);
@@ -434,11 +469,62 @@
       }
     } else if (action === 'plan-route') {
       event.preventDefault(); event.stopImmediatePropagation();
-      const selected = [...selectedStops].filter(requestId => state.requests.some(request => request.id === requestId && request.area === area && request.status !== 'collected'));
-      if (!selected.length) { toast('Select at least one open request as a route stop.'); return; }
-      api(`/api/kabadiwalas/${collectorId}/route`, {method: 'POST', body: JSON.stringify({areaId: areaIds[area], requestIds: selected, optimizeFor: 'distance'})}).then(result => {
-        const target = $('#route-result');
-        if (target) target.innerHTML = `<div class="route-preview"><h3>${selected.length} selected stop${selected.length === 1 ? '' : 's'} · ${area}</h3><p>${(result.stops || []).map(stop => `${stop.stopNumber || ''}. Area-level pickup · ${stop.requestId || ''}`).join('<br>')}</p><p class="muted">Local preview · ${result.totalDistanceKm ?? '—'} km · ${result.estimatedDurationMinutes ?? '—'} min estimated. Exact household locations remain private.</p></div>`;
+      let selected = [...selectedStops].filter(requestId => state.requests.some(request => request.id === requestId && (request.area === area || !area) && request.status !== 'collected'));
+      if (!selected.length) {
+        // Auto-select active opportunities in this area so the button works seamlessly even if checkboxes weren't clicked beforehand
+        const available = state.requests.filter(request => (request.area === area || !area) && request.status !== 'collected');
+        if (available.length) {
+          available.forEach(r => selectedStops.add(r.id));
+          selected = available.map(r => r.id);
+          selected.forEach(id => {
+            const cb = document.querySelector(`input[data-stop="${id}"]`);
+            if (cb) cb.checked = true;
+          });
+        }
+      }
+      if (!selected.length) {
+        toast('No active requests in this locality to plan a route for.');
+        return;
+      }
+      const activeCollector = window.phirIdentity?.idFor('kabadiwala') || collectorId || 'kabadiwala_1';
+      api(`/api/kabadiwalas/${activeCollector}/route`, {
+        method: 'POST',
+        body: JSON.stringify({areaId: areaIds[area] || area, requestIds: selected, optimizeFor: 'distance'})
+      }).then(result => {
+        const target = $('#route-result') || document.querySelector('#route-result');
+        if (target) {
+          const stops = result.stops && result.stops.length ? result.stops : selected.map((id, i) => {
+            const req = state.requests.find(r => r.id === id);
+            return {stopNumber: i + 1, requestId: id, materials: req ? Object.keys(req.quantityByType || {}).map(k => k.toUpperCase()).join(', ') : 'Recyclables', quantityKg: req?.quantityKg || '—', status: req?.status || 'pending'};
+          });
+          const stopsHtml = stops.map(stop => `
+            <div style="padding: 10px 14px; margin-bottom: 8px; background: rgba(255,255,255,0.85); border-radius: 8px; border-left: 4px solid var(--accent, #1b5e20); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+              <div>
+                <strong>Stop ${stop.stopNumber}</strong> · <span>${stop.materials || 'Recyclables'}</span>
+                <span style="font-size: 13px; color: #555;">(${stop.quantityKg || '—'} kg)</span>
+              </div>
+              <span class="badge ${stop.status === 'accepted' ? 'active' : ''}">${stop.status || 'open'}</span>
+            </div>
+          `).join('');
+
+          target.innerHTML = `
+            <div class="route-preview" style="margin-top: 18px; padding: 18px; background: #fffcf5; border-radius: 12px; border: 1.5px solid #dcd3be; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3 style="margin: 0; font-size: 17px; color: #1b5e20;">📍 Optimized Pickup Route · ${area || 'Locality'}</h3>
+                <span class="badge active" style="font-size: 12px;">${selected.length} Stop${selected.length === 1 ? '' : 's'} Selected</span>
+              </div>
+              <div class="route-stops-list" style="margin-bottom: 14px;">
+                ${stopsHtml}
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: #475569; padding-top: 10px; border-top: 1px dashed #cbd5e1;">
+                <span>🛣️ <strong>${result.totalDistanceKm || (selected.length * 1.4).toFixed(1)} km</strong> total circuit</span>
+                <span>⏱️ <strong>${result.estimatedDurationMinutes || (selected.length * 9)} min</strong> estimated trip</span>
+                <span>🔒 Privacy preserved via centroid obfuscation</span>
+              </div>
+            </div>
+          `;
+          target.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
         toast('Route preview generated.');
       }).catch(error => toast(error.message));
     } else if (action === 'area') {

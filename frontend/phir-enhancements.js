@@ -1150,7 +1150,10 @@
       .then(data => {
         window.phirToast?.('Collection & scale reconciliation recorded.');
         btn.textContent = `Collected ✓`;
-        setTimeout(() => location.reload(), 1200);
+        setTimeout(() => {
+          window.phirRefreshCollector?.();
+          if (typeof render === 'function') render();
+        }, 600);
       })
       .catch(err => {
         window.phirToast?.(`Error: ${err.message}`);

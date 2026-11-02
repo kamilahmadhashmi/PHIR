@@ -6,6 +6,7 @@ and serves the rich truck-art folk frontend seamlessly with zero cloud dependenc
 
 from __future__ import annotations
 
+import json
 import os
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -363,25 +364,58 @@ def calculate_route_preview(collector_id: str, payload: Dict[str, Any]):
         repo = SqliteRecoveryRepository(conn)
         profile = repo.get_profile(collector_id)
         origin = {
-            "latitude": profile["latitude"] if profile else 28.6800,
-            "longitude": profile["longitude"] if profile else 77.1500,
+            "latitude": float(profile["latitude"]) if profile and profile.get("latitude") else 28.6600,
+            "longitude": float(profile["longitude"]) if profile and profile.get("longitude") else 77.1000,
         }
         raw_stops = payload.get("stops")
         if raw_stops:
             stops = raw_stops
         else:
-            req_ids = set(payload.get("requestIds", []))
+            req_ids = [str(r) for r in payload.get("requestIds", []) if r]
             area_id = payload.get("areaId", "")
-            opportunities = repo.get_area_opportunities(area_id)
-            matched = [o for o in opportunities if o["requestId"] in req_ids] if req_ids else opportunities
-            stops = [
-                {
-                    "requestId": o["requestId"],
-                    "latitude": o.get("approximateLatitude") or origin["latitude"],
-                    "longitude": o.get("approximateLongitude") or origin["longitude"],
-                }
-                for o in matched
-            ]
+            stops = []
+
+            # 1. Fetch exact requested stops directly by id if requestIds provided
+            if req_ids:
+                placeholders = ",".join("?" for _ in req_ids)
+                cur = conn.execute(
+                    f"SELECT id, latitude, longitude, quantity_by_type, status FROM collection_requests WHERE id IN ({placeholders})",
+                    req_ids
+                )
+                for r in cur.fetchall():
+                    qty = json.loads(r["quantity_by_type"] or "{}")
+                    kg_val = round(sum(qty.values()), 1)
+                    mat_labels = [k.replace("_", " ").title() for k in qty.keys()]
+                    stops.append({
+                        "requestId": r["id"],
+                        "latitude": float(r["latitude"]) if r["latitude"] else origin["latitude"] + 0.005,
+                        "longitude": float(r["longitude"]) if r["longitude"] else origin["longitude"] + 0.005,
+                        "quantityKg": kg_val,
+                        "materials": ", ".join(mat_labels) or "Recyclables",
+                        "status": r["status"]
+                    })
+
+            # 2. If no stops found or no requestIds, pull available/pending/accepted stops in the area
+            if not stops:
+                target_area = next((a for a in DELHI_AREAS if a.id == area_id or a.id == f"area_{area_id.lower()}" or a.name.lower() == area_id.lower()), None)
+                cur = conn.execute("SELECT id, latitude, longitude, quantity_by_type, status FROM collection_requests WHERE status IN ('pending', 'accepted') ORDER BY created_at DESC LIMIT 10")
+                for r in cur.fetchall():
+                    lat = float(r["latitude"])
+                    lon = float(r["longitude"])
+                    matched = area_service.area_for(lat, lon)
+                    if not target_area or matched.id == target_area.id:
+                        qty = json.loads(r["quantity_by_type"] or "{}")
+                        stops.append({
+                            "requestId": r["id"],
+                            "latitude": lat,
+                            "longitude": lon,
+                            "quantityKg": round(sum(qty.values()), 1),
+                            "materials": ", ".join(k.replace("_", " ").title() for k in qty.keys()) or "Recyclables",
+                            "status": r["status"]
+                        })
+                        if len(stops) >= 5:
+                            break
+
         return plan_preview(origin, stops)
 
 

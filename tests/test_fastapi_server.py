@@ -125,6 +125,19 @@ class FastApiServerTests(unittest.TestCase):
         self.assertEqual(acc_resp.status_code, 200)
         self.assertEqual(acc_resp.json()["status"], "accepted")
 
+        # 2b. Verify route preview for accepted stop
+        route_resp = self.client.post("/api/kabadiwalas/kabadiwala_1/route", json={
+            "areaId": "area_west",
+            "requestIds": [req_id],
+            "optimizeFor": "distance"
+        })
+        self.assertEqual(route_resp.status_code, 200)
+        route_data = route_resp.json()
+        self.assertGreaterEqual(len(route_data["stops"]), 1)
+        self.assertEqual(route_data["stops"][0]["requestId"], req_id)
+        self.assertIn("stopNumber", route_data["stops"][0])
+        self.assertGreaterEqual(route_data["totalDistanceKm"], 0.0)
+
         # 3. Complete collection with physical weight reconciliation and 5% contamination
         col_resp = self.client.post(f"/api/collection-requests/{req_id}/collect", json={
             "kabadiwalaId": "kabadiwala_1",
